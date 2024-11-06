@@ -1,0 +1,4 @@
+FichiersAudio/
+*.idea
+/config/deefy.db.ini
+/CreationBD
