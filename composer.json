@@ -1,10 +1,10 @@
 {
-  "name": "s3/deefy",
-  "description": "le meilleur streaming FichiersAudio de tout l'iut",
+  "name": "s3/nrv",
+  "description": "le meilleur festival de tout l'iut",
   "type": "project",
   "autoload": {
     "psr-4": {
-      "iutnc\\deefy\\" : "src/classes"
+      "iutnc\\nrv\\" : "src/classes"
     }
   },
   "require": {

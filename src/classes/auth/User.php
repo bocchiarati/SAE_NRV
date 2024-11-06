@@ -1,8 +1,8 @@
 <?php
 
-namespace iutnc\deefy\auth;
+namespace iutnc\nrv\auth;
 
-use iutnc\deefy\exception\InvalidPropertyNameException;
+use iutnc\nrv\exception\InvalidPropertyNameException;
 
 class User
 {

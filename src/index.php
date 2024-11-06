@@ -1,18 +1,15 @@
 <?php
 declare(strict_types=1);
 
-use iutnc\deefy\audio\lists\PlayList;
-use iutnc\deefy\audio\tracks\AudioTrack;
-use iutnc\deefy\audio\tracks\PodcastTrack;
-use iutnc\deefy\repository\DeefyRepository;
+use iutnc\nrv\repository\NrvRepository;
 
 session_start();
 
 require_once '../vendor/autoload.php';
 
-DeefyRepository::setConfig(__DIR__ . '/../config/deefy.db.ini');
+NrvRepository::setConfig(__DIR__ . '/../config/nrv.db.ini');
 
-$repo = DeefyRepository::getInstance();
+$repo = NrvRepository::getInstance();
 
 $action = "";
 if(isset($_GET['action'])) {
@@ -21,7 +18,7 @@ if(isset($_GET['action'])) {
     $action = $_POST['action'];
 }
 
-$dispatcher = new \iutnc\deefy\dispatch\Dispatcher($action);
+$dispatcher = new \iutnc\nrv\dispatch\Dispatcher($action);
 $dispatcher->run();
 
 

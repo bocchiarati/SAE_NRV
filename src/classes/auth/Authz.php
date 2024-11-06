@@ -1,8 +1,8 @@
 <?php
 
-namespace iutnc\deefy\auth;
+namespace iutnc\nrv\auth;
 
-use iutnc\deefy\repository\DeefyRepository;
+use iutnc\nrv\repository\DeefyRepository;
 
 class Authz {
 

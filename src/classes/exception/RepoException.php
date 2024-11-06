@@ -1,6 +1,6 @@
 <?php
 
-namespace iutnc\deefy\exception;
+namespace iutnc\nrv\exception;
 
 class RepoException extends \Exception
 {

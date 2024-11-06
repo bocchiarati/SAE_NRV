@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'iutnc\\deefy\\' => array($baseDir . '/src/classes'),
+    'iutnc\\nrv\\' => array($baseDir . '/src/classes'),
 );

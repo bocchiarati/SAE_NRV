@@ -1,16 +1,12 @@
 <?php
 
-namespace iutnc\deefy\dispatch;
+namespace iutnc\nrv\dispatch;
 
-use iutnc\deefy\action\ActionAfficher;
-use iutnc\deefy\action\ActionAddTrack;
-use iutnc\deefy\action\ActionDefaut;
-use iutnc\deefy\action\ActionAddPlaylist;
-use iutnc\deefy\action\ActionDisplayPlaylist;
-use iutnc\deefy\action\ActionRegister;
-use iutnc\deefy\action\ActionSignin;
-use iutnc\deefy\auth\AuthnProvider;
-use iutnc\deefy\exception\AuthException;
+use iutnc\nrv\action\ActionDefaut;
+use iutnc\nrv\action\ActionRegister;
+use iutnc\nrv\action\ActionSignin;
+use iutnc\nrv\auth\AuthnProvider;
+use iutnc\nrv\exception\AuthException;
 
 class Dispatcher
 {
@@ -32,12 +28,8 @@ class Dispatcher
 
         //Les autres actions sur le site
         $action = match ($this->action) {
-            "addPlaylist" => new ActionAddPlaylist(),
-            "afficher" => new ActionAfficher(),
-            "addTrack" => new ActionAddTrack(),
             "signin" => new ActionSignin(),
             "register" => new ActionRegister(),
-            "display-playlist" => new ActionDisplayPlaylist(),
             default => new ActionDefaut(),
         };
         $this->renderPage($action->execute());
@@ -51,7 +43,7 @@ class Dispatcher
         $pageHtml = <<<END
         <html lang="fr">
         <header>
-        <title>Deefy</title>
+        <title>NRV</title>
         <meta charset="utf-8">
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
         <style>
@@ -96,20 +88,9 @@ class Dispatcher
         </style>
         </header>
         <body>
-        <h1>Deefy</h1>
+        <h1>FESTIVAL NRV</h1>
         <ul class="nav">
-            <li>
-                <a href="?">Accueil</a>
-            </li>
-            <li>
-                <a href="?action=addPlaylist">Initialiser une playlist</a>
-            </li>
-            <li>
-                <a href="?action=addTrack">Ajouter un track à la playlist</a>
-            </li>
-            <li>
-                <a href="?action=afficher">Afficher vos playlists</a>
-            </li>
+            <li><a href="?">Accueil</a></li>
             <li><a href="?action=signin">Se connecter</a></li>
             <li><a href="?action=signout">Se deconnecter</a></li>
         </ul>

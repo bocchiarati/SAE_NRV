@@ -1,6 +1,6 @@
 <?php
 
-namespace iutnc\deefy\loader;
+namespace iutnc\nrv\loader;
 
 class Psr4ClassLoader
 {

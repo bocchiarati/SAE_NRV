@@ -1,6 +1,6 @@
 <?php
 
-namespace iutnc\deefy\action;
+namespace iutnc\nrv\action;
 
 use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\auth\AuthnProvider;
