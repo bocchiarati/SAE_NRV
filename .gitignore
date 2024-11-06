@@ -2,3 +2,4 @@ FichiersAudio/
 *.idea
 /config/nrv.db.ini
 /CreationBD
+/config/config.nrv.db.ini
