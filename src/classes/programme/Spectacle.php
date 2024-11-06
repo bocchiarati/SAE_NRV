@@ -1,0 +1,18 @@
+<?php
+
+namespace iutnc\nrv\programme;
+
+class Spectacle {
+    protected int $id;
+    protected ?string $titre;
+    protected ?string $groupe;
+    protected int $duree;
+    protected int $styleID;
+    protected ?string $nomStyle;
+    protected ?string $description;
+    protected ?string $cheminExtrait;
+
+    public function __construct() {
+
+    }
+}
