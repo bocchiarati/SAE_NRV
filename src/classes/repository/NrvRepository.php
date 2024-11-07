@@ -112,7 +112,7 @@ class NrvRepository
         $resultat = $this->pdo->prepare($query);
         $resultat->execute();
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],'style string',$fetch['description'],$fetch['extrait'],$fetch['image']);
+            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleid']),$fetch['description'],$fetch['extrait'],$fetch['image']);
             $spectacle->setID($fetch['spectacleID']);
             $tab[] = $spectacle;
         }
@@ -158,5 +158,17 @@ class NrvRepository
         }
         $fetch = $resultat -> fetch();
         return $fetch['nomstyle'];
+    }
+
+    /**
+     * @throws RepoException
+     */
+    public function saveSoiree(?string $date, int $lieuID): Soiree {
+        $query = "insert into Soiree (date, lieuID) values (:soireeID,:date,:lieuid)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['date' => $date,'lieuid' => $lieuID]);
+        $soiree = new Soiree($date,$lieuID, $this->nomLieuByID($lieuID),$this->adresseLieuByID($lieuID));
+        $soiree->setID($this->pdo->lastInsertId());
+        return $soiree;
     }
 }
