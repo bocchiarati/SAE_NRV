@@ -11,7 +11,7 @@ class ActionRegister extends Action
     function executeGet(): string
     {
         return <<<END
-        <h2>Creer un compte Deefy</h2>
+        <h2>Creer un compte NRV</h2>
         <form method="post" action="?action=register">
             <input type="email" name="login" placeholder="Adresse email" required autocomplete="true" autofocus>
             <input type="password" name="mdp" placeholder="Mot de passe" required>
