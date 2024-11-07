@@ -80,8 +80,6 @@ class NrvRepository
         return new User($this->pdo->lastInsertId(),$mdpHash,User::STANDARD_USER);
     }
 
-    public function programmeByDate(?string $date): array{
-        $tab = [];
     // retourne la liste des soirees par date
     public function SoireeByDate(?string $date): array{
         $listSoiree = [];
