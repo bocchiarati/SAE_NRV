@@ -46,41 +46,52 @@ class Dispatcher
         <header>
         <title>NRV</title>
         <meta charset="utf-8">
-        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
         <style>
-            body {
-                font-family: 'JetBrains Mono', monospace;
-                background-color: #f4f4f4;
+            * {
                 margin: 0;
+                padding: 0;
             }
-            h1 {
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f4f4f4;
+                display: flex;
+                flex-direction: column;
+            }
+            .titre {
                 background-color: white;
                 color: #333;
                 text-align: center;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
-            ul{
+            .nav ul{
                 margin: 0;
             }
             li {
                 list-style-type: none;
             }
-            .nav li{
-                padding: 5px 0;
+            .nav{
+                height: 10%;
+                display: flex;
+                justify-content: center;
             }
-            a {
+            .nav li{
+                margin: auto;
+            }
+            .nav a {
                 text-decoration: none;
-                color: #007BFF;
+                color: #FF0000; /* Rouge éclatant pour plus de vivacité */
                 font-weight: bold;
-                background-color: #e2e6ea;
+                padding: 0.5rem 1rem;
+                background-color: #ffe6e6;
                 border-radius: 5px;
+                transition: background-color 0.3s ease;
             }
             a:hover {
-                background-color: #d1d5d9;
+                background-color: #ffcccc;            
             }
-            div {
-                margin: 0 20px;
-                padding: 15px;
+            .resultat {
+                padding: 1%;
                 background-color: #ffffff;
                 border: 1px solid #ddd;
                 border-radius: 5px;
@@ -89,7 +100,7 @@ class Dispatcher
         </style>
         </header>
         <body>
-        <h1>FESTIVAL NRV</h1>
+        <h1 class="titre">FESTIVAL NRV</h1>
         <ul class="nav">
             <li><a href="?">Accueil</a></li>
             <li><a href="?action=signin">Se connecter</a></li>
@@ -99,8 +110,7 @@ class Dispatcher
             <li><a href="?action=filterByStyle">Filtrer par style</a></li>
             <li><a href="?action=filterByLocation">Filtrer par lieu</a></li>
         </ul>
-        <br>
-        <div>$resultat</div>
+        <div class="resultat">$resultat</div>
         </body>
         </html>
         END;
