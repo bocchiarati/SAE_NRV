@@ -98,10 +98,11 @@ class NrvRepository
             $tab[] = $spectacle;
             $soiree = new Soiree($fetch['date'],$fetch['lieuID'],$this->nomLieuByID($fetch['lieuID']),$this->adresseLieuByID($fetch['lieuID']));
             $soiree->setID($fetch['soireeID']);
+            $soiree->setSpectacles($tab);
             $listSoiree[] = $soiree;
         }
 
-        return $tab;
+        return $listSoiree;
     }
 
     public function saveSpectaclePreferences(Spectacle $s): Spectacle {
