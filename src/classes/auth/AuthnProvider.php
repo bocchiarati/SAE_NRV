@@ -3,7 +3,7 @@
 namespace iutnc\nrv\auth;
 
 use iutnc\nrv\exception\AuthException;
-use iutnc\nrv\repository\DeefyRepository;
+use iutnc\nrv\repository\NrvRepository;
 
 class AuthnProvider
 {
@@ -15,11 +15,12 @@ class AuthnProvider
      */
     public static function signin(string $email, string $passwd2check): void {
 
-        $pdo = DeefyRepository::getInstance();
+        $pdo = NrvRepository::getInstance();
         $user = $pdo->getUser($email);
 
-        if (!password_verify($passwd2check, $user->pass))
+        if (!password_verify($passwd2check, $user->pass)) {
             throw new AuthException("Auth error : invalid credentials");
+        }
 
         $_SESSION['user'] = serialize($user);
     }
@@ -35,7 +36,7 @@ class AuthnProvider
             throw new AuthException(" error : invalid user email");
 
         $hash = password_hash($pass, PASSWORD_DEFAULT, ['cost'=>12]);
-        $pdo = DeefyRepository::getInstance();
+        $pdo = NrvRepository::getInstance();
         $user = $pdo->saveUser($email,$hash);
 
         $_SESSION['user'] = serialize($user);
