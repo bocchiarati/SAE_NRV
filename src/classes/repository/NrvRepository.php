@@ -299,4 +299,18 @@ class NrvRepository
 
         return $result['date'];
     }
+
+    // retourne le nom du lieu du spectacle
+    public function getLieuNomForSpectacle(int $spectacleID): string {
+        $query = "SELECT l.nom 
+                  FROM Lieu l
+                  INNER JOIN Soiree s ON l.lieuID = s.lieuID
+                  INNER JOIN SoireeToSpectacle sts ON s.soireeID = sts.soireeID
+                  WHERE sts.spectacleID = :spectacleID";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['spectacleID' => $spectacleID]);
+        $result = $stmt->fetch();
+
+        return $result['nom'];
+    }
 }

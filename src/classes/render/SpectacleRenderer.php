@@ -32,8 +32,9 @@ class SpectacleRenderer implements Renderer {
 
     private function renderCompact(): string
     {
+        // recuperer la date du spectacle
         $repository = NrvRepository::getInstance();
-        $date = $repository->getDateForSpectacle($this->spec->getID()) ?? 'Date inconnue';
+        $date = $repository->getDateForSpectacle($this->spec->getID());
 
         return <<<HTML
             <div class="image-container-compact-render">
@@ -50,10 +51,17 @@ class SpectacleRenderer implements Renderer {
 
     private function renderLong(): string
     {
+        // recuperer la date et le lieu du spectacle
+        $repository = NrvRepository::getInstance();
+        $date = $repository->getDateForSpectacle($this->spec->getID());
+        $location = $repository->getLieuNomForSpectacle($this->spec->getID());
+
         return <<<HTML
         <div style="margin: 10px;">
             <h3>{$this->spec->getTitre()}</h3>
             <strong>Groupe:</strong> {$this->spec->getGroupe()}<br>
+            <strong>Date:</strong> {$date}<br>
+            <strong>Lieu:</strong> {$location}<br>
             <strong>Duree:</strong> {$this->spec->getDuree()} min<br>
             <strong>Description:</strong> {$this->spec->getDescription()}<br>
             <strong>Style:</strong> {$this->spec->getNomStyle()}<br>
