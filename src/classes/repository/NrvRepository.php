@@ -268,4 +268,19 @@ class NrvRepository
 
         return $listSoiree;
     }
+
+    // retourne le spectacle par son id
+    public function SpectacleByID(int $id): Spectacle
+    {
+        $query = "SELECT * FROM spectacle WHERE spectacleID = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $id]);
+        $fetch = $stmt->fetch();
+        if($fetch === false){
+            throw new RepoException("Spectacle introuvable");
+        }
+        $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image']);
+        $spectacle->setID($fetch['spectacleID']);
+        return $spectacle;
+    }
 }

@@ -24,7 +24,9 @@ class ActionShowProgram extends Action
         if(count($spectacles) !== 0){
             foreach ($spectacles as $spec) {
                 $renderer = new SpectacleRenderer($spec);
-                $affichage .= $renderer->render(Renderer::COMPACT) . "<br>";
+                $affichage .= "<a href='?action=showSpectacleDetails&id={$spec->getID()}'>" .
+                    $renderer->render(Renderer::COMPACT) .
+                    "</a><br>";
             }
         }
         else {

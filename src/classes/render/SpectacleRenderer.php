@@ -83,6 +83,10 @@ class SpectacleRenderer implements Renderer {
             <strong>Style:</strong> {$this->spec->getNomStyle()}<br>
             <div class="image-container">
             <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="150">
+            <audio controls>
+                    <source src="{$this->spec->getCheminExtrait()}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+            </audio>
             </div>
         </div>
         HTML;
