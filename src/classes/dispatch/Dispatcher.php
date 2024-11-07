@@ -34,6 +34,11 @@ class Dispatcher
             "filterByDate" => new act\ActionFilterByDate(),
             "filterByLocation" => new act\ActionFilterByLocation(),
             "filterByStyle" => new act\ActionFilterByStyle(),
+            "cancelSpectacle" => new act\ActionCancelSpectacle(),
+            "createSoiree" => new act\ActionCreateSoiree(),
+            "createSpectacle" => new act\ActionCreateSpectacle(),
+            "editSoiree" => new act\ActionEditSoiree(),
+            "editSpectacle" => new act\ActionEditSpectacle(),
             default => new act\ActionDefaut(),
         };
         $this->renderPage($action->execute());
@@ -54,11 +59,11 @@ class Dispatcher
         if($check->checkRole(USER::ORGANISATOR_USER))
             $superAdmin = <<<END
         <ul class="nav">
-            <li><a href="?action=showProgram">Creer Une Soirée</a></li>
-            <li><a href="?action=filterByDate">Creer Un Spectacle</a></li>
-            <li><a href="?action=filterByStyle">Annuler un spectacle</a></li>
-            <li><a href="?action=filterByLocation">Modifier Un Spectacle</a></li> 
-            <li><a href="?action=filterByLocation">Modifier Une Soirée</a></li>         
+            <li><a href="?action=createSoiree">Creer Une Soirée</a></li>
+            <li><a href="?action=createSpectacle">Creer Un Spectacle</a></li>
+            <li><a href="?action=cancelSpectacle">Annuler un spectacle</a></li>
+            <li><a href="?action=editSpectacle">Modifier Un Spectacle</a></li> 
+            <li><a href="?action=editSoiree">Modifier Une Soirée</a></li>         
         </ul>
 END;
 
