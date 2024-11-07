@@ -58,7 +58,7 @@ class NrvRepository
         if(!isset($donnee[0])){
             throw new AuthException("Utilisateur introuvable");
         }
-        return new User($donnee[0],$donnee[1],$donnee[2]);
+        return new User($donnee[0], $email,$donnee[1],$donnee[2]);
     }
 
     /**

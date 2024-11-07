@@ -4,6 +4,9 @@ namespace iutnc\nrv\dispatch;
 
 use iutnc\nrv\action as act;
 use iutnc\nrv\auth\AuthnProvider;
+use iutnc\nrv\auth\Authz;
+use iutnc\nrv\auth\User;
+use iutnc\nrv\exception\AuthException;
 
 class Dispatcher
 {
@@ -41,6 +44,28 @@ class Dispatcher
      */
     public function renderPage(string $resultat): void
     {
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthException $e) {
+            $user = new User(-1,"Non connecté","mdp",User::STANDARD_USER);
+        }
+
+        $check = new Authz($user);
+        if($check->checkRole(USER::ORGANISATOR_USER))
+            $superAdmin = <<<END
+        <ul class="nav">
+            <li><a href="?action=showProgram">Creer Une Soirée</a></li>
+            <li><a href="?action=filterByDate">Creer Un Spectacle</a></li>
+            <li><a href="?action=filterByStyle">Annuler un spectacle</a></li>
+            <li><a href="?action=filterByLocation">Modifier Un Spectacle</a></li> 
+            <li><a href="?action=filterByLocation">Modifier Une Soirée</a></li>         
+        </ul>
+END;
+
+        else
+            $superAdmin = "";
+
+
         $pageHtml = <<<END
         <html lang="fr">
         <header>
@@ -63,6 +88,7 @@ class Dispatcher
                 color: #333;
                 text-align: center;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                padding-bottom: 20px;
             }
             .nav ul{
                 margin: 0;
@@ -97,10 +123,20 @@ class Dispatcher
                 border-radius: 5px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
+            
+            #user {
+                text-align: right;
+                margin-right: 100px;
+                margin-top:5px;
+            }
+            
         </style>
         </header>
         <body>
-        <h1 class="titre">FESTIVAL NRV</h1>
+        <div class="titre">
+        <p id="user">{$user->email}</p>
+        <h1>FESTIVAL NRV</h1>
+        </div>
         <ul class="nav">
             <li><a href="?">Accueil</a></li>
             <li><a href="?action=signin">Se connecter</a></li>
@@ -108,8 +144,11 @@ class Dispatcher
             <li><a href="?action=showProgram">Afficher le programme</a></li>
             <li><a href="?action=filterByDate">Filtrer par date</a></li>
             <li><a href="?action=filterByStyle">Filtrer par style</a></li>
-            <li><a href="?action=filterByLocation">Filtrer par lieu</a></li>
+            <li><a href="?action=filterByLocation">Filtrer par lieu</a></li>         
         </ul>
+        {$superAdmin}
+        
+        
         <div class="resultat">$resultat</div>
         </body>
         </html>

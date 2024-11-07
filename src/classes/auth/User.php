@@ -10,6 +10,8 @@ class User
     const ORGANISATOR_USER = 99;
 
     private int $id;
+    private ?string $email;
+
     private string $pass;
     private int $role;
 
@@ -17,9 +19,10 @@ class User
      * @param int $id
      * @param string $pass
      */
-    public function __construct(int $id, string $pass, int $role)
+    public function __construct(int $id,string $email, string $pass, int $role)
     {
         $this->id = $id;
+        $this->email = $email;
         $this->pass = $pass;
         $this->role = $role;
     }
