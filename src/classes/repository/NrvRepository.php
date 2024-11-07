@@ -87,8 +87,8 @@ class NrvRepository
         $resultat = $this->pdo->prepare($query);
         $resultat->execute();
         while ($fetch = $resultat->fetch()){
-            $soiree = new Soiree();
-            $soiree->setID($fetch['id']);
+            $soiree = new Soiree($fetch['date'],$fetch['lieuID'],$this->nomLieuByID($fetch['soireeID']),$this->adresseLieuByID($fetch['soireeID']));
+            $soiree->setID($fetch['soireeID']);
             $listSoiree[] = $soiree;
         }
 
@@ -100,7 +100,7 @@ class NrvRepository
         $user = AuthnProvider::getSignedInUser();
         $stmt->execute(['userid' => $user->id,'spectacleid' => $s->id]);
         return $s;
-    } //////////////////////////////////
+    }
 
     public function programmeSpectacleBySoiree(int $soireeid): array {
         $tab = [];
@@ -112,8 +112,8 @@ class NrvRepository
         $resultat = $this->pdo->prepare($query);
         $resultat->execute();
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['nom']);
-            $spectacle->setID($fetch['id']);
+            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],'style string',$fetch['description'],$fetch['extrait'],$fetch['image']);
+            $spectacle->setID($fetch['spectacleID']);
             $tab[] = $spectacle;
         }
         return $tab;
