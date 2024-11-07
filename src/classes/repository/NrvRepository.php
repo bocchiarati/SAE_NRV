@@ -77,7 +77,7 @@ class NrvRepository
         $query = "insert into User (email,mdp,roleid) values (:email,:mdp,:roleid)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email,'mdp' => $mdpHash,'roleid' => User::STANDARD_USER]);
-        return new User($this->pdo->lastInsertId(),$mdpHash,User::STANDARD_USER);
+        return new User($this->pdo->lastInsertId(), $email ,$mdpHash,User::STANDARD_USER);
     }
 
     // retourne la liste des spectacles par date
@@ -197,7 +197,14 @@ class NrvRepository
     /**
      * @throws RepoException
      */
-    public function saveSoiree(?string $date, int $lieuID): Soiree {
+    public function saveSoiree(?string $date, ?int $lieuID, ?string $nomLieu, ?string $adresse): Soiree {
+        if($lieuID === null){
+            $query = "insert into Lieu (nom, adresse) values (:nom, :adresse)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['nom' => $nomLieu,'adresse' => $adresse]);
+            $lieuID = $this->pdo->lastInsertId();
+        }
+
         $query = "insert into Soiree (date, lieuID) values (:date,:lieuid)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['date' => $date,'lieuid' => $lieuID]);
