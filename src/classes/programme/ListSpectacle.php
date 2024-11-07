@@ -9,9 +9,9 @@ abstract class ListSpectacle implements \Iterator{
     protected ?int $id;
     private int $position = 0;
 
-    public function current() {
+    public function current(): Spectacle {
         return $this->spectacles[$this->position];
-        }
+    }
 
     public function next(): void {
         ++$this->position;
@@ -21,7 +21,7 @@ abstract class ListSpectacle implements \Iterator{
         return $this->position;
     }
 
-    public function valid() {
+    public function valid(): bool {
         return isset($this->spectacles[$this->position]);
     }
 

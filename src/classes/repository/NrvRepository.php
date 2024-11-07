@@ -23,53 +23,6 @@ class NrvRepository
             [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     }
 
-    public function programmeByDate(?string $date): array{
-        $listSoiree = [];
-
-        $query = "SELECT * FROM soiree WHERE date = ".$date.";";
-        $resultat = $this->pdo->prepare($query);
-        $resultat->execute();
-        while ($fetch = $resultat->fetch()){
-            $soiree = new Soiree();
-            $soiree->setID($fetch['id']);
-            $listSoiree[] = $soiree;
-        }
-
-        return $listSoiree;
-    }
-    public function saveSpectaclePreferences(Spectacle $s): Spectacle {
-        $query = "INSERT INTO userpreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
-        $stmt = $this->pdo->prepare($query);
-        $user = AuthnProvider::getSignedInUser();
-        $stmt->execute(['userid' => $user->id,'spectacleid' => $s->id]);
-        return $s;
-    } //////////////////////////////////
-
-    public function programmeSpectacleBySoiree(int $soireeid): array {
-        $tab = [];
-        $query = 'Select * from spectacle s 
-         inner join spectacletosoiree sts on s.spectacleid = sts.spectacleid 
-         where soireeid = '.$soireeid.'
-         order by spectacleid';
-
-        $resultat = $this->pdo->prepare($query);
-        $resultat->execute();
-        while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['nom']);
-            $spectacle->setID($fetch['id']);
-            $tab[] = $spectacle;
-        }
-        return $tab;
-    }
-
-    public function findPreferences(int $userid): int
-    {
-        $query = 'Select * from userspreferences where userid = '.$userid.';';
-        $resultat = $this->pdo->query($query);
-        $fetch = $resultat->fetch();
-        return $fetch['spetacleid'];
-    }
-
     public static function getInstance(): NrvRepository
     {
         if (is_null(self::$instance)) {
@@ -125,6 +78,53 @@ class NrvRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email,'mdp' => $mdpHash,'roleid' => User::STANDARD_USER]);
         return new User($this->pdo->lastInsertId(),$mdpHash,User::STANDARD_USER);
+    }
+
+    public function programmeByDate(?string $date): array{
+        $listSoiree = [];
+
+        $query = "SELECT * FROM soiree WHERE date = ".$date.";";
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute();
+        while ($fetch = $resultat->fetch()){
+            $soiree = new Soiree();
+            $soiree->setID($fetch['id']);
+            $listSoiree[] = $soiree;
+        }
+
+        return $listSoiree;
+    }
+    public function saveSpectaclePreferences(Spectacle $s): Spectacle {
+        $query = "INSERT INTO userpreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
+        $stmt = $this->pdo->prepare($query);
+        $user = AuthnProvider::getSignedInUser();
+        $stmt->execute(['userid' => $user->id,'spectacleid' => $s->id]);
+        return $s;
+    } //////////////////////////////////
+
+    public function programmeSpectacleBySoiree(int $soireeid): array {
+        $tab = [];
+        $query = 'Select * from spectacle s 
+         inner join spectacletosoiree sts on s.spectacleid = sts.spectacleid 
+         where soireeid = '.$soireeid.'
+         order by spectacleid';
+
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute();
+        while ($fetch = $resultat->fetch()){
+            $spectacle = new Spectacle($fetch['nom']);
+            $spectacle->setID($fetch['id']);
+            $tab[] = $spectacle;
+        }
+        return $tab;
+    }
+
+    public function findPreferences(int $userid): int
+    {
+        $query = 'Select * from userspreferences where userid = '.$userid.';';
+        $resultat = $this->pdo->query($query);
+        $fetch = $resultat->fetch();
+        return $fetch['spetacleid'];
     }
 
     public function nomLieuByID(int $id):?string{
