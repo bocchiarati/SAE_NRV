@@ -3,6 +3,9 @@
 namespace iutnc\nrv\action;
 
 use iutnc\nrv\action\Action;
+use iutnc\nrv\render\ListSpectacleRenderer;
+use iutnc\nrv\render\Renderer;
+use iutnc\nrv\render\SpectacleRenderer;
 use iutnc\nrv\repository\NrvRepository;
 
 class ActionFilterByDate extends Action
@@ -42,20 +45,9 @@ class ActionFilterByDate extends Action
 
             $spectacles = $repository->programmeSpectacleBySoiree($soiree->getID());
 
-            foreach ($spectacles as $spectacle) {
-                // info sur le spectacle
-                $output .= "<li><strong>Titre:</strong> {$spectacle->titre}</li>";
-                $output .= "<div style='margin-left: 20px;'>
-                                <strong>Groupe:</strong> {$spectacle->groupe}<br>
-                                <strong>Duree:</strong> {$spectacle->duree} min<br>
-                                <strong>Description:</strong> {$spectacle->description}<br>
-                                <strong>Style:</strong> {$spectacle->nomStyle}<br>
-                                <img src='{$spectacle->image}' alt='{$spectacle->titre}' width='100'><br>
-                            </div>";
+            $renderer = new ListSpectacleRenderer($spectacles);
 
-                // info sur la soiree du spectacle
-                $output .= "<p style='margin-left: 20px;'><strong>Soiree:</strong> {$soiree->nomLieu} - <strong>Adresse:</strong>  {$soiree->adresseLieu}</p>";
-            }
+            $output.= $renderer->render(Renderer::LONG);
         }
         $output .= "</ul>";
         return $output;

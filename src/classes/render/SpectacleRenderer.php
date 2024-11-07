@@ -61,7 +61,7 @@ class SpectacleRenderer implements Renderer {
         }
         </style>
             <div class="image-container">
-                <img src="../image/{$this->spec->getImage()}" alt="Main Image" class="image" width="400">
+                <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="400">
                 <img src="../image/triangle.png" alt="Corner Image" class="corner-image">
                 <div class="corner-text">
                     <p>{$this->spec->getTitre()}</p>
@@ -75,14 +75,16 @@ class SpectacleRenderer implements Renderer {
     private function renderLong(): string
     {
         return <<<HTML
-            <div style="margin: 10px;">
-                <h3>{$this->spec->getTitre()}</h3>
-                <strong>Groupe:</strong> {$this->spec->getGroupe()}<br>
-                <strong>Duree:</strong> {$this->spec->getDuree()} min<br>
-                <strong>Description:</strong> {$this->spec->getDescription()}<br>
-                <strong>Style:</strong> {$this->spec->getNomStyle()}<br>
-                <img src=../image/"{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" width="150">
+        <div style="margin: 10px;">
+            <h3>{$this->spec->getTitre()}</h3>
+            <strong>Groupe:</strong> {$this->spec->getGroupe()}<br>
+            <strong>Duree:</strong> {$this->spec->getDuree()} min<br>
+            <strong>Description:</strong> {$this->spec->getDescription()}<br>
+            <strong>Style:</strong> {$this->spec->getNomStyle()}<br>
+            <div class="image-container">
+            <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="150">
             </div>
+        </div>
         HTML;
     }
 
