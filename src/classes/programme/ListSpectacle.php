@@ -33,6 +33,11 @@ abstract class ListSpectacle implements \Iterator{
         $this->id = $idListSpectacle;
     }
 
+    public function setSpectacles(array $spectacles): void
+    {
+        $this->spectacles = $spectacles;
+    }
+
     public function __get(string $attribut): mixed {
         if (property_exists($this, $attribut))
             return $this->$attribut;

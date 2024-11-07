@@ -88,7 +88,6 @@ class NrvRepository
         inner join soireetospectacle st on st.spectacleID = sp.spectacleID
         inner join soiree s on s.soireeID = sp.soireeID
          WHERE s.date = ".$date.";";
-        $query = "SELECT * FROM soiree WHERE date = :date";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['date' => $date]);
 
@@ -98,10 +97,11 @@ class NrvRepository
             $tab[] = $spectacle;
             $soiree = new Soiree($fetch['date'],$fetch['lieuID'],$this->nomLieuByID($fetch['lieuID']),$this->adresseLieuByID($fetch['lieuID']));
             $soiree->setID($fetch['soireeID']);
+            $soiree->setSpectacles($tab);
             $listSoiree[] = $soiree;
         }
 
-        return $tab;
+        return $listSoiree;
     }
 
     public function saveSpectaclePreferences(Spectacle $s): Spectacle {
