@@ -283,4 +283,17 @@ class NrvRepository
         $spectacle->setID($fetch['spectacleID']);
         return $spectacle;
     }
+
+    //  retourne le nom du spectacle par son id
+    public function DateForSpectacle(int $spectacleID): ?string {
+        $query = "SELECT s.date 
+                  FROM Soiree s
+                  INNER JOIN SoireeToSpectacle sts ON s.soireeID = sts.soireeID
+                  WHERE sts.spectacleID = :spectacleID";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['spectacleID' => $spectacleID]);
+        $result = $stmt->fetch();
+
+        return $result ? $result['date'] : null;
+    }
 }

@@ -35,3 +35,32 @@
     padding: 10px;
     text-align: center;
 }
+
+/* SpectacleRenderer */
+
+.image-container-compact-render {
+    position: relative;
+    display: inline-block;
+}
+.image-compact {
+    display: block;
+    width: 350px;
+    height: 437px;
+}
+.corner-image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+}
+.corner-text {
+    position: absolute;
+    bottom: 10px;
+    left: 5px;
+    color: white;
+    font-size: 15px;
+    text-align: left;
+    line-height: 1.2;
+    font-weight: bold;
+}

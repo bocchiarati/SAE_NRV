@@ -3,6 +3,7 @@
 namespace iutnc\nrv\render;
 
 use iutnc\nrv\programme\Spectacle;
+use iutnc\nrv\repository\NrvRepository;
 
 class SpectacleRenderer implements Renderer {
 
@@ -31,42 +32,17 @@ class SpectacleRenderer implements Renderer {
 
     private function renderCompact(): string
     {
+        $repository = NrvRepository::getInstance();
+        $date = $repository->DateForSpectacle($this->spec->getID()) ?? 'Date inconnue';
+
         return <<<HTML
-         <style>
-        .image-container {
-            position: relative;
-            display: inline-block;
-        }
-        .image {
-            display: block;
-            width: 350px; 
-            height: 437px; 
-        }
-        .corner-image {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 200px; 
-            height: 200px; 
-        }
-        .corner-text {
-            position: absolute;
-            bottom: 10px;
-            left: 5px;
-            color: white;
-            font-size: 15px;
-            text-align: left;
-            line-height: 1.2;
-            font-weight: bold;
-        }
-        </style>
-            <div class="image-container">
-                <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="400">
+            <div class="image-container-compact-render">
+                <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact" width="400">
                 <img src="../image/triangle.png" alt="Corner Image" class="corner-image">
                 <div class="corner-text">
                     <p>{$this->spec->getTitre()}</p>
-                    <p>{$this->spec->getGroupe()}</p>    
-                    <p>{$this->spec->getNomStyle()}</p>
+                    <p>{$date}</p>   
+                    <p>{$this->spec->getDurationHoursEtMin()}</p>
                 </div>
             </div>
         HTML;

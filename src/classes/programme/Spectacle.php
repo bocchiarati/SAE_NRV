@@ -73,4 +73,22 @@ class Spectacle {
     public function getImage(): ?string {
         return $this->image;
     }
+
+    // convertir duree en heures et minutes
+    public function getDurationHoursEtMin(): string {
+        if ($this->duree === null) {
+            return "Unknown duration";
+        }
+
+        $hours = intdiv($this->duree, 60);
+        $minutes = $this->duree % 60;
+
+        if ($hours > 0 && $minutes > 0) {
+            return "{$hours} h {$minutes} m";
+        } elseif ($hours > 0) {
+            return "{$hours} h";
+        } else {
+            return "{$minutes} m";
+        }
+    }
 }
