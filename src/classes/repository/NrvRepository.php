@@ -202,4 +202,26 @@ class NrvRepository
         }
         return $spectacles;
     }
+
+    public function getAllStyle(): array{
+        $tab = [];
+        $query = "Select * from stylemusic ;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        while($fetch = $stmt->fetch()){
+            $tab[$fetch['styleid']] = $fetch['nomstyle'];
+        }
+        return $tab;
+    }
+
+    public function getAllLieu(): array{
+        $tab = [];
+        $query = "Select * from lieu ;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        while($fetch = $stmt->fetch()){
+            $tab[$fetch['lieuid']] = $fetch['nom'];
+        }
+        return $tab;
+    }
 }
