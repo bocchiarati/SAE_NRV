@@ -44,8 +44,8 @@ CREATE TABLE SoireeToSpectacle(
 -- creation de la table user
 CREATE TABLE User(
     userid INT(3) AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(30) UNIQUE NOT NULL,
-    mdp VARCHAR(30) NOT NULL,
+    email VARCHAR(256) UNIQUE NOT NULL,
+    mdp VARCHAR(256) NOT NULL,
     roleid INT(2) NOT NULL
 );
 
