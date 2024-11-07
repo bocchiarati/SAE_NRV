@@ -40,7 +40,6 @@ class ActionFiltre extends Action {
             $affichage .= <<<HTML
             <h2>Filtrer par date</h2>
             <form method="post" action="?action=filterByDate">
-                <label for="date">Selectionnez une date :</label>
                 <input type="date" id="date" name="date" required>
                 <button type="submit">Filtrer</button>
             </form>
