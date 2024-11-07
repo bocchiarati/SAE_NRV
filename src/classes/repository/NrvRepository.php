@@ -10,7 +10,6 @@ use iutnc\nrv\exception\RepoException;
 use iutnc\nrv\programme\ListSpectacle;
 use iutnc\nrv\programme\Soiree;
 use iutnc\nrv\programme\Spectacle;
-use PDO;
 
 class NrvRepository
 {
@@ -81,21 +80,52 @@ class NrvRepository
         return new User($this->pdo->lastInsertId(),$mdpHash,User::STANDARD_USER);
     }
 
-    // retourne la liste des soirees par date
-    public function SoireeByDate(?string $date): array{
-        $listSoiree = [];
+    // retourne la liste des spectacles par date
+    public function SpectaclesByDate(?string $date): ListSpectacle {
+        $list = [];
+        $listSpectacles = new ListSpectacle();
 
-        $query = "SELECT * FROM soiree WHERE date = :date";
+        $query = "SELECT * FROM spectacle sp 
+        inner join soireetospectacle st on st.spectacleID = sp.spectacleID
+        inner join soiree s on s.soireeID = st.soireeID
+        WHERE s.date = :date;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['date' => $date]);
 
         while ($fetch = $resultat->fetch()){
-            $soiree = new Soiree($fetch['date'],$fetch['lieuID'],$this->nomLieuByID($fetch['lieuID']),$this->adresseLieuByID($fetch['lieuID']));
-            $soiree->setID($fetch['soireeID']);
-            $listSoiree[] = $soiree;
+            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleid']),$fetch['description'],$fetch['extrait'],$fetch['image']);
+            $spectacle->setID($fetch['spectacleID']);
+            $list[] = $spectacle;
         }
 
-        return $listSoiree;
+        $listSpectacles->setSpectacles($list);
+
+        return $listSpectacles;
+    }
+
+
+    public function SpectaclesByStyle(int $style): ListSpectacle
+    {
+        $list = [];
+        $listSpectacles = new ListSpectacle();
+
+        $query = "SELECT * FROM spectacle sp 
+        inner join soireetospectacle st on st.spectacleID = sp.spectacleID
+        inner join soiree s on s.soireeID = st.soireeID
+        inner join stylemusic sty on sty.styleID = sp.styleID
+         WHERE sty.styleID = :style;";
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute(['style' => $style]);
+
+        while ($fetch = $resultat->fetch()){
+            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleid']),$fetch['description'],$fetch['extrait'],$fetch['image']);
+            $spectacle->setID($fetch['spectacleID']);
+            $list[] = $spectacle;
+        }
+
+        $listSpectacles->setSpectacles($list);
+
+        return $listSpectacles;
     }
 
     public function saveSpectaclePreferences(Spectacle $s): Spectacle {
@@ -207,7 +237,7 @@ class NrvRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         while($fetch = $stmt->fetch()){
-            $tab[$fetch['styleid']] = $fetch['nomstyle'];
+            $tab[$fetch['styleID']] = $fetch['nomstyle'];
         }
         return $tab;
     }
