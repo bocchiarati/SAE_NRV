@@ -246,4 +246,22 @@ class NrvRepository
         }
         return $tab;
     }
+
+    // retourne la liste des soirees par lieu
+    public function SoireeByLocation(int $lieuID): array
+    {
+        $listSoiree = [];
+
+        $query = "SELECT * FROM Soiree WHERE lieuID = :lieuID";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['lieuID' => $lieuID]);
+
+        while ($fetch = $stmt->fetch()) {
+            $soiree = new Soiree($fetch['date'], $fetch['lieuID'], $this->nomLieuByID($fetch['lieuID']), $this->adresseLieuByID($fetch['lieuID']));
+            $soiree->setID($fetch['soireeID']);
+            $listSoiree[] = $soiree;
+        }
+
+        return $listSoiree;
+    }
 }
