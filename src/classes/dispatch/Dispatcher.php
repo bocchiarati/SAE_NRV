@@ -2,9 +2,7 @@
 
 namespace iutnc\nrv\dispatch;
 
-use iutnc\nrv\action\ActionDefaut;
-use iutnc\nrv\action\ActionRegister;
-use iutnc\nrv\action\ActionSignin;
+use iutnc\nrv\action as act;
 use iutnc\nrv\auth\AuthnProvider;
 
 class Dispatcher
@@ -27,9 +25,13 @@ class Dispatcher
 
         //Les autres actions sur le site
         $action = match ($this->action) {
-            "signin" => new ActionSignin(),
-            "register" => new ActionRegister(),
-            default => new ActionDefaut(),
+            "signin" => new act\ActionSignin(),
+            "register" => new act\ActionRegister(),
+            "showProgram" => new act\ActionShowProgram(),
+            "filterByDate" => new act\ActionFilterByDate(),
+            "filterByLocation" => new act\ActionFilterByLocation(),
+            "filterByStyle" => new act\ActionFilterByStyle(),
+            default => new act\ActionDefaut(),
         };
         $this->renderPage($action->execute());
     }
@@ -92,6 +94,10 @@ class Dispatcher
             <li><a href="?">Accueil</a></li>
             <li><a href="?action=signin">Se connecter</a></li>
             <li><a href="?action=signout">Se deconnecter</a></li>
+            <li><a href="?action=showProgram">Afficher le programme</a></li>
+            <li><a href="?action=filterByDate">Filtrer par date</a></li>
+            <li><a href="?action=filterByStyle">Filtrer par style</a></li>
+            <li><a href="?action=filterByLocation">Filtrer par lieu</a></li>
         </ul>
         <br>
         <div>$resultat</div>
