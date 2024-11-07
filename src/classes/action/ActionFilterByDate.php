@@ -3,8 +3,6 @@
 namespace iutnc\nrv\action;
 
 use iutnc\nrv\action\Action;
-use iutnc\nrv\render\ListSpectacleRenderer;
-use iutnc\nrv\render\Renderer;
 use iutnc\nrv\repository\NrvRepository;
 
 class ActionFilterByDate extends Action
@@ -33,31 +31,33 @@ class ActionFilterByDate extends Action
         }
 
         $repository = NrvRepository::getInstance();
-        $filteredSpectacles = $repository->SpectaclesByDate($selectedDate);
+        $filteredSoirees = $repository->SoireeByDate($selectedDate);
 
-        if (empty($filteredSpectacles->spectacles)) {
+        if (empty($filteredSoirees)) {
             return "<p>Aucune spectacle n'est prevue pour la date : $selectedDate.</p>";
         }
 
-        $output = "<h2>Spectacles pour la date : $selectedDate</h2>";
-//        foreach ($filteredSoirees as $soiree) {
-//
-//            $spectacles = $repository->programmeSpectacleBySoiree($soiree->getID());
-//
-//            if ($spectacles->valid()) {
-//                $spectacleRenderer = new ListSpectacleRenderer($spectacles);
-//                $output .= "<div style='margin-bottom: 20px;'>";
-//                $output .= "<h3>Soiree: {$soiree->nomLieu}</h3>";
-//                $output .= "<p><strong>Adresse:</strong> {$soiree->adresseLieu}</p>";
-//                $output .= $spectacleRenderer->render(Renderer::LONG);
-//                $output .= "</div>";
-//            } else {
-//                $output .= "<p>Aucun spectacle pour la soirée à {$soiree->nomLieu}.</p>";
-//            }
-//        }
+        $output = "<h2>Spectacles pour la date : $selectedDate</h2><ul>";
+        foreach ($filteredSoirees as $soiree) {
 
-        $render = new ListSpectacleRenderer($filteredSpectacles);
-        $output .= $render->render(Renderer::LONG);
+            $spectacles = $repository->programmeSpectacleBySoiree($soiree->getID());
+
+            foreach ($spectacles as $spectacle) {
+                // info sur le spectacle
+                $output .= "<li><strong>Titre:</strong> {$spectacle->titre}</li>";
+                $output .= "<div style='margin-left: 20px;'>
+                                <strong>Groupe:</strong> {$spectacle->groupe}<br>
+                                <strong>Duree:</strong> {$spectacle->duree} min<br>
+                                <strong>Description:</strong> {$spectacle->description}<br>
+                                <strong>Style:</strong> {$spectacle->nomStyle}<br>
+                                <img src='{$spectacle->image}' alt='{$spectacle->titre}' width='100'><br>
+                            </div>";
+
+                // info sur la soiree du spectacle
+                $output .= "<p style='margin-left: 20px;'><strong>Soiree:</strong> {$soiree->nomLieu} - <strong>Adresse:</strong>  {$soiree->adresseLieu}</p>";
+            }
+        }
+        $output .= "</ul>";
         return $output;
     }
 }

@@ -81,26 +81,20 @@ class NrvRepository
     }
 
     // retourne la liste des spectacles par date
-    public function SpectaclesByDate(?string $date): ListSpectacle {
-        $list = [];
-        $listSpectacles = new ListSpectacle();
+    public function SoireeByDate(?string $date): array{
+        $listSoiree = [];
 
-        $query = "SELECT * FROM spectacle sp 
-        inner join soireetospectacle st on st.spectacleID = sp.spectacleID
-        inner join soiree s on s.soireeID = st.soireeID
-        WHERE s.date = :date;";
+        $query = "SELECT * FROM soiree WHERE date = :date";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['date' => $date]);
 
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image']);
-            $spectacle->setID($fetch['spectacleID']);
-            $list[] = $spectacle;
+            $soiree = new Soiree($fetch['date'],$fetch['lieuID'],$this->nomLieuByID($fetch['lieuID']),$this->adresseLieuByID($fetch['lieuID']));
+            $soiree->setID($fetch['soireeID']);
+            $listSoiree[] = $soiree;
         }
 
-        $listSpectacles->setSpectacles($list);
-
-        return $listSpectacles;
+        return $listSoiree;
     }
 
 
