@@ -186,4 +186,20 @@ class NrvRepository
         $soiree->setID($this->pdo->lastInsertId());
         return $soiree;
     }
+
+    /**
+     * @throws RepoException
+     */
+    public function findAllSpectacle():array {
+        $spectacles = [];
+        $query = 'Select * from spectacle';
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute();
+        while ($fetch = $resultat->fetch()){
+            $spec = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'], $this->nomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image']);
+            $spec->setID($fetch['id']);
+            $spectacles[] = $spec;
+        }
+        return $spectacles;
+    }
 }
