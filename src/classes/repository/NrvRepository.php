@@ -81,18 +81,21 @@ class NrvRepository
     }
 
     public function programmeByDate(?string $date): array{
-        $listSoiree = [];
+        $tab = [];
 
-        $query = "SELECT * FROM soiree WHERE date = ".$date.";";
+        $query = "SELECT * FROM spectacle sp 
+        inner join soireetospectacle st on st.spectacleID = sp.spectacleID
+        inner join soiree s on s.soireeID = sp.soireeID
+         WHERE s.date = ".$date.";";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute();
         while ($fetch = $resultat->fetch()){
-            $soiree = new Soiree($fetch['date'],$fetch['lieuID'],$this->nomLieuByID($fetch['soireeID']),$this->adresseLieuByID($fetch['soireeID']));
-            $soiree->setID($fetch['soireeID']);
-            $listSoiree[] = $soiree;
+            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleid']),$fetch['description'],$fetch['extrait'],$fetch['image']);
+            $spectacle->setID($fetch['spectacleID']);
+            $tab[] = $spectacle;
         }
 
-        return $listSoiree;
+        return $tab;
     }
     public function saveSpectaclePreferences(Spectacle $s): Spectacle {
         $query = "INSERT INTO userpreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
