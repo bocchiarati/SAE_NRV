@@ -31,14 +31,12 @@ class Dispatcher
             "signin" => new act\ActionSignin(),
             "register" => new act\ActionRegister(),
             "showProgram" => new act\ActionShowProgram(),
-            "filterByDate" => new act\ActionFilterByDate(),
-            "filterByLocation" => new act\ActionFilterByLocation(),
-            "filterByStyle" => new act\ActionFilterByStyle(),
             "cancelSpectacle" => new act\ActionCancelSpectacle(),
             "createSoiree" => new act\ActionCreateSoiree(),
             "createSpectacle" => new act\ActionCreateSpectacle(),
             "editSoiree" => new act\ActionEditSoiree(),
             "editSpectacle" => new act\ActionEditSpectacle(),
+            "filtre" => new act\ActionFiltre(),
             default => new act\ActionDefaut(),
         };
         $this->renderPage($action->execute());
@@ -147,9 +145,8 @@ END;
             <li><a href="?action=signin">Se connecter</a></li>
             <li><a href="?action=signout">Se deconnecter</a></li>
             <li><a href="?action=showProgram">Afficher le programme</a></li>
-            <li><a href="?action=filterByDate">Filtrer par date</a></li>
-            <li><a href="?action=filterByStyle">Filtrer par style</a></li>
-            <li><a href="?action=filterByLocation">Filtrer par lieu</a></li>         
+            <li><a href="?action=filtre">Filtrer</a></li>
+                    
         </ul>
         {$superAdmin}
         
