@@ -128,18 +128,35 @@ class NrvRepository
     }
 
     public function nomLieuByID(int $id):?string{
-        $query = "select distinct nom from lieu l, soiree s where l.lieuid = s.lieuid and l.lieuid= :id ;";
+        $query = "select nom from lieu where lieuid = :id ;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['id' => $id]);
+        if($resultat->rowCount() === 0){
+            throw new RepoException("Lieu introuvable");
+        }
         $fetch = $resultat -> fetch();
         return $fetch['nom'];
     }
 
     public function adresseLieuByID(int $id):?string{
-        $query = "select distinct nom from lieu l, soiree s where l.lieuid = s.lieuid and l.lieuid= :id ;";
+        $query = "select nom from lieu where lieuid = :id ;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['id' => $id]);
+        if($resultat->rowCount() === 0){
+            throw new RepoException("Lieu introuvable");
+        }
         $fetch = $resultat -> fetch();
         return $fetch['adresse'];
+    }
+
+    public function nomStyleByID(int $id):?string{
+        $query = "select nomStyle from $id where styleid :id ;";
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute(['id' => $id]);
+        if($resultat->rowCount() === 0){
+            throw new RepoException("Style introuvable");
+        }
+        $fetch = $resultat -> fetch();
+        return $fetch['nomstyle'];
     }
 }
