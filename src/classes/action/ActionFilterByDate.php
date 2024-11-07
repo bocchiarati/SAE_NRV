@@ -9,11 +9,16 @@ class ActionFilterByDate extends Action
 
     function executeGet(): string
     {
-        // TODO: Implement executeGet() method.
+        $res = '
+        <div>
+            
+        </div>
+        ';
+        return $res;
     }
 
     function executePost(): string
     {
-        // TODO: Implement executePost() method.
+        return "";
     }
 }
