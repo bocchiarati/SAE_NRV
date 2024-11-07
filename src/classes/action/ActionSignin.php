@@ -2,10 +2,8 @@
 
 namespace iutnc\nrv\action;
 
-use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\auth\AuthnProvider;
-use iutnc\deefy\exception\AuthException;
-use iutnc\deefy\repository\DeefyRepository;
+use iutnc\nrv\auth\AuthnProvider;
+use iutnc\nrv\exception\AuthException;
 
 class ActionSignin extends Action
 {
