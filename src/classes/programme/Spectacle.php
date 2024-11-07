@@ -15,4 +15,8 @@ class Spectacle {
     public function __construct() {
 
     }
+
+    public function setID(mixed $id){
+        $this->id = $id;
+    }
 }
