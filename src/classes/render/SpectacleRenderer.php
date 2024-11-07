@@ -31,20 +31,26 @@ class SpectacleRenderer implements Renderer {
 
     private function renderCompact(): string
     {
-        return <<<END
-            <div>
-                <img src='$this->spec->getImage()'>
+        return <<<HTML
+            <div style="margin: 10px;">
+                <strong>Titre:</strong> {$this->spec->getTitre()}<br>
+                <img src="{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" width="100">
             </div>
-        END;
+        HTML;
     }
 
     private function renderLong(): string
     {
-        return <<<END
-            <div>
-            
+        return <<<HTML
+            <div style="margin: 10px;">
+                <h3>{$this->spec->getTitre()}</h3>
+                <strong>Groupe:</strong> {$this->spec->getGroupe()}<br>
+                <strong>Duree:</strong> {$this->spec->getDuree()} min<br>
+                <strong>Description:</strong> {$this->spec->getDescription()}<br>
+                <strong>Style:</strong> {$this->spec->getNomStyle()}<br>
+                <img src="{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" width="150">
             </div>
-        END;
+        HTML;
     }
 
 }

@@ -4,7 +4,7 @@ namespace iutnc\nrv\programme;
 
 use iutnc\nrv\exception\InvalidPropertyNameException;
 
-abstract class ListSpectacle implements \Iterator{
+class ListSpectacle implements \Iterator{
     protected array $spectacles = [];
     protected ?int $id;
     private int $position = 0;

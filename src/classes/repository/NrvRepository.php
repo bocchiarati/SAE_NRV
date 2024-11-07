@@ -7,6 +7,7 @@ use iutnc\nrv\auth\AuthnProvider;
 use iutnc\nrv\auth\User;
 use iutnc\nrv\exception\AuthException;
 use iutnc\nrv\exception\RepoException;
+use iutnc\nrv\programme\ListSpectacle;
 use iutnc\nrv\programme\Soiree;
 use iutnc\nrv\programme\Spectacle;
 use PDO;
@@ -105,8 +106,8 @@ class NrvRepository
         return $s;
     }
 
-    public function programmeSpectacleBySoiree(int $soireeID): array {
-        $tab = [];
+    public function programmeSpectacleBySoiree(int $soireeID): ListSpectacle {
+        $spectacles = [];
         $query = 'SELECT s.spectacleID, s.titre, s.groupe, s.duree, s.description, s.extrait, s.image, s.styleID
               FROM Spectacle s
               INNER JOIN SoireeToSpectacle sts ON s.spectacleID = sts.spectacleID
@@ -119,9 +120,13 @@ class NrvRepository
         while ($fetch = $resultat->fetch()){
             $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image']);
             $spectacle->setID($fetch['spectacleID']);
-            $tab[] = $spectacle;
+            $spectacles[] = $spectacle;
         }
-        return $tab;
+
+        $listSpectacle = new ListSpectacle();
+        $listSpectacle->setSpectacles($spectacles);
+
+        return $listSpectacle;
     }
 
     public function findPreferences(int $userid): int

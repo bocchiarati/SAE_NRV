@@ -3,6 +3,8 @@
 namespace iutnc\nrv\action;
 
 use iutnc\nrv\action\Action;
+use iutnc\nrv\render\ListSpectacleRenderer;
+use iutnc\nrv\render\Renderer;
 use iutnc\nrv\repository\NrvRepository;
 
 class ActionFilterByDate extends Action
@@ -42,19 +44,15 @@ class ActionFilterByDate extends Action
 
             $spectacles = $repository->programmeSpectacleBySoiree($soiree->getID());
 
-            foreach ($spectacles as $spectacle) {
-                // info sur le spectacle
-                $output .= "<li><strong>Titre:</strong> {$spectacle->titre}</li>";
-                $output .= "<div style='margin-left: 20px;'>
-                                <strong>Groupe:</strong> {$spectacle->groupe}<br>
-                                <strong>Duree:</strong> {$spectacle->duree} min<br>
-                                <strong>Description:</strong> {$spectacle->description}<br>
-                                <strong>Style:</strong> {$spectacle->nomStyle}<br>
-                                <img src='{$spectacle->image}' alt='{$spectacle->titre}' width='100'><br>
-                            </div>";
-
-                // info sur la soiree du spectacle
-                $output .= "<p style='margin-left: 20px;'><strong>Soiree:</strong> {$soiree->nomLieu} - <strong>Adresse:</strong>  {$soiree->adresseLieu}</p>";
+            if ($spectacles->valid()) {
+                $spectacleRenderer = new ListSpectacleRenderer($spectacles);
+                $output .= "<div style='margin-bottom: 20px;'>";
+                $output .= "<h3>Soiree: {$soiree->nomLieu}</h3>";
+                $output .= "<p><strong>Adresse:</strong> {$soiree->adresseLieu}</p>";
+                $output .= $spectacleRenderer->render(Renderer::LONG);
+                $output .= "</div>";
+            } else {
+                $output .= "<p>Aucun spectacle pour la soirée à {$soiree->nomLieu}.</p>";
             }
         }
         $output .= "</ul>";

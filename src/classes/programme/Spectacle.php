@@ -36,4 +36,41 @@ class Spectacle {
             return $this->$attribut;
         throw new InvalidPropertyNameException(" $attribut : invalide propriete");
     }
+
+    // getters
+    public function getID(): ?int {
+        return $this->id;
+    }
+
+    public function getTitre(): ?string {
+        return $this->titre;
+    }
+
+    public function getGroupe(): ?string {
+        return $this->groupe;
+    }
+
+    public function getDuree(): ?int {
+        return $this->duree;
+    }
+
+    public function getStyleID(): ?int {
+        return $this->styleID;
+    }
+
+    public function getNomStyle(): ?string {
+        return $this->nomStyle;
+    }
+
+    public function getDescription(): ?string {
+        return $this->description;
+    }
+
+    public function getCheminExtrait(): ?string {
+        return $this->cheminExtrait;
+    }
+
+    public function getImage(): ?string {
+        return $this->image;
+    }
 }
