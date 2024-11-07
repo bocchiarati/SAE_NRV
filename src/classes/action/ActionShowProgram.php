@@ -13,13 +13,19 @@ use iutnc\nrv\repository\NrvRepository;
 class ActionShowProgram extends Action
 {
 
+    /**
+     * @throws RepoException
+     */
     function executeGet(): string
     {
         $pdo = NrvRepository::getInstance();
-
-        $spectacle = new Spectacle(null, null, null, null, null, null, null, null);
-        $renderer = new SpectacleRenderer($spectacle);
-        return $renderer->render(Renderer::LONG);
+        $spectacles = $pdo->findAllSpectacle();
+        $affichage = "";
+        foreach ($spectacles as $spec) {
+            $renderer = new SpectacleRenderer($spec);
+            $affichage .= $renderer->render(Renderer::COMPACT)."<br>";
+        }
+        return $affichage;
     }
 
     function executePost(): string

@@ -33,7 +33,7 @@ class SpectacleRenderer implements Renderer {
     {
         return <<<END
             <div>
-            
+                <img src='$this->spec->getImage()'>
             </div>
         END;
     }

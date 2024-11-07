@@ -86,8 +86,8 @@ class NrvRepository
 
         $query = "SELECT * FROM spectacle sp 
         inner join soireetospectacle st on st.spectacleID = sp.spectacleID
-        inner join soiree s on s.soireeID = sp.soireeID
-         WHERE s.date = ".$date.";";
+        inner join soiree s on s.soireeID = st.soireeID
+         WHERE s.date = :date;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['date' => $date]);
 
@@ -186,6 +186,4 @@ class NrvRepository
         $soiree->setID($this->pdo->lastInsertId());
         return $soiree;
     }
-
-
 }
