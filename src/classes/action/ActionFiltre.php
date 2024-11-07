@@ -29,63 +29,6 @@ class ActionFiltre extends Action {
                 $choix .= '<a href="?action=filterByStyle&id=' . $key . '">' . $style . '</a>';
             }
 
-
-            $affichage .= <<<HTML
-            <h2>Filtrer par style</h2>
-            <div class="dropdown">
-                <button class="dropdown-button">Sélectionner un style</button>
-                <div class="dropdown-content">
-                    $choix
-                </div>
-            </div>
-            <style>
-                .dropdown {
-                    position: relative;
-                    display: inline-block;
-                }
-                .dropdown-button {
-                    background-color: #FF0000;
-                    color: white;
-                    padding: 10px;
-                    font-size: 16px;
-                    border: none;
-                    cursor: pointer;
-                }
-                .dropdown-content {
-                    display: none;
-                    position: absolute;
-                    background-color: #f9f9f9;
-                    min-width: 160px;
-                    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                    z-index: 1;
-                }
-                .dropdown-content a {
-                    color: black;
-                    padding: 12px 16px;
-                    text-decoration: none;
-                    display: block;
-                }
-                .dropdown-content a:hover {
-                    background-color: #f1f1f1;
-                }
-                .dropdown:hover .dropdown-content {
-                    display: block;
-                }
-                .dropdown:hover .dropdown-button {
-                    background-color: #ffcccc;
-                    color: red;
-                }
-            </style>
-            HTML;
-
-            $affichage .= <<<HTML
-            <h2>Filtrer par date</h2>
-            <form method="post" action="?action=filterByDate">
-                <input type="date" id="date" name="date" required>
-                <button type="submit">Filtrer</button>
-            </form>
-            HTML;
-
             if (isset($_GET['id'])) {
                 $selectedLocation = $_GET['id'];
 
@@ -125,14 +68,7 @@ class ActionFiltre extends Action {
                 }
 
                 $affichage .= <<<HTML
-                <h2>Filtrer par lieu</h2>
-                <div class="dropdown">
-                    <button class="dropdown-button">Sélectionner un lieu</button>
-                    <div class="dropdown-content">
-                        $options
-                    </div>
-                </div>
-                <style>
+                    <style>
                     .dropdown {
                         position: relative;
                         display: inline-block;
@@ -169,7 +105,71 @@ class ActionFiltre extends Action {
                         background-color: #ffcccc;
                         color: red;
                     }
+                    /* Container for the form */
+                    form {
+                        display: flex;
+                        flex-direction: column;
+                        font-family: Arial, sans-serif;
+                        width: 170px;
+                    }
+                
+                    /* Input date styling */
+                    #date {
+                        width: 100%;
+                        padding: 10px;
+                        margin: 10px 0;
+                        border-radius: 4px;
+                        border: 1px solid #ccc;
+                        font-size: 14px;
+                        box-sizing: border-box;
+                    }
+                
+                    /* Button styling */
+                    button {
+                        background-color: #ff0000;
+                        color: white;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        transition: background-color 0.3s ease;
+                    }
+                
+                    /* Button hover effect */
+                    button:hover {
+                        background-color: #ff0000;
+                    }
+                
+                    /* Focus effect on input */
+                    #date:focus {
+                        border-color: #ff0000;
+                        outline: none;
+                    }
                 </style>
+                <div class="filtres">
+                    <h2>Filtrer par style</h2>
+                    <div class="dropdown">
+                        <button class="dropdown-button">Sélectionner un style</button>
+                        <div class="dropdown-content">
+                            $choix
+                        </div>
+                    </div>
+                    
+                    <h2>Filtrer par date</h2>
+                    <form method="post" action="?action=filterByDate">
+                        <input type="date" id="date" name="date" required>
+                        <button type="submit">Filtrer</button>
+                    </form>
+                    
+                    <h2>Filtrer par lieu</h2>
+                    <div class="dropdown">
+                        <button class="dropdown-button">Sélectionner un lieu</button>
+                        <div class="dropdown-content">
+                            $options
+                        </div>
+                    </div>
+                </div>
                 HTML;
 
                 return $affichage;
