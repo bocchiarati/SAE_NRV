@@ -21,7 +21,7 @@ class ActionShowSpectacleDetails extends Action
 
         $repository = NrvRepository::getInstance();
         try {
-            $spectacle = $repository->SpectacleByID($spectacleID);
+            $spectacle = $repository->getSpectacleByID($spectacleID);
 
             $renderer = new SpectacleRenderer($spectacle);
             return $renderer->render(Renderer::LONG);

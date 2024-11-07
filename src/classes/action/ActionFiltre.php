@@ -18,7 +18,7 @@ class ActionFiltre extends Action {
                 //FILTRE STYLE
 
                 $pdo = NrvRepository::getInstance();
-                $spectacles = $pdo->SpectaclesByStyle($_GET['id']);
+                $spectacles = $pdo->getSpectaclesByStyle($_GET['id']);
 
                 $render = new ListSpectacleRenderer($spectacles);
                 $output = $render->render(Renderer::LONG);
@@ -29,7 +29,7 @@ class ActionFiltre extends Action {
                 $selectedLocation = $_GET['id'];
 
                 $repository = NrvRepository::getInstance();
-                $filteredSoirees = $repository->SoireeByLocation($selectedLocation);
+                $filteredSoirees = $repository->getSoireeByLocation($selectedLocation);
 
                 if (empty($filteredSoirees)) {
                     return "<p>Aucun spectacle n'est prevue pour ce lieu.</p>";
@@ -37,7 +37,7 @@ class ActionFiltre extends Action {
 
                 $output = "<h2>Spectacles pour le lieu selectionne</h2><ul>";
                 foreach ($filteredSoirees as $soiree) {
-                    $spectacles = $repository->programmeSpectacleBySoiree($soiree->getID());
+                    $spectacles = $repository->getSpectacleBySoiree($soiree->getID());
 
                     if (count($spectacles->spectacles) >= 1) {
                         $spectacleRenderer = new ListSpectacleRenderer($spectacles);
@@ -201,7 +201,7 @@ class ActionFiltre extends Action {
         }
 
         $repository = NrvRepository::getInstance();
-        $filteredSoirees = $repository->SoireeByDate($selectedDate);
+        $filteredSoirees = $repository->getSoireeByDate($selectedDate);
 
         if (empty($filteredSoirees)) {
             return "<p>Aucune spectacle n'est prevue pour la date : $selectedDate.</p>";
@@ -210,7 +210,7 @@ class ActionFiltre extends Action {
         $output = "<h2>Spectacles pour la date : $selectedDate</h2><ul>";
         foreach ($filteredSoirees as $soiree) {
 
-            $spectacles = $repository->programmeSpectacleBySoiree($soiree->getID());
+            $spectacles = $repository->getSpectacleBySoiree($soiree->getID());
 
             $renderer = new ListSpectacleRenderer($spectacles);
 

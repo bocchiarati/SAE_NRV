@@ -33,7 +33,7 @@ class SpectacleRenderer implements Renderer {
     private function renderCompact(): string
     {
         $repository = NrvRepository::getInstance();
-        $date = $repository->DateForSpectacle($this->spec->getID()) ?? 'Date inconnue';
+        $date = $repository->getDateForSpectacle($this->spec->getID()) ?? 'Date inconnue';
 
         return <<<HTML
             <div class="image-container-compact-render">
