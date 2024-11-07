@@ -21,9 +21,14 @@ class ActionShowProgram extends Action
         $pdo = NrvRepository::getInstance();
         $spectacles = $pdo->findAllSpectacle();
         $affichage = "";
-        foreach ($spectacles as $spec) {
-            $renderer = new SpectacleRenderer($spec);
-            $affichage .= $renderer->render(Renderer::COMPACT)."<br>";
+        if(count($spectacles) !== 0){
+            foreach ($spectacles as $spec) {
+                $renderer = new SpectacleRenderer($spec);
+                $affichage .= $renderer->render(Renderer::COMPACT) . "<br>";
+            }
+        }
+        else {
+            $affichage .= "<p>Aucun spectacle programmé</p>";
         }
         return $affichage;
     }

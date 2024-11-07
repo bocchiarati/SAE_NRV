@@ -32,9 +32,42 @@ class SpectacleRenderer implements Renderer {
     private function renderCompact(): string
     {
         return <<<HTML
-            <div style="margin: 10px;">
-                <strong>Titre:</strong> {$this->spec->getTitre()}<br>
-                <img src="{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" width="100">
+         <style>
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+        .image {
+            display: block;
+            width: 350px; 
+            height: 437px; 
+        }
+        .corner-image {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200px; 
+            height: 200px; 
+        }
+        .corner-text {
+            position: absolute;
+            bottom: 10px;
+            left: 5px;
+            color: white;
+            font-size: 15px;
+            text-align: left;
+            line-height: 1.2;
+            font-weight: bold;
+        }
+        </style>
+            <div class="image-container">
+                <img src="../image/{$this->spec->getImage()}" alt="Main Image" class="image" width="400">
+                <img src="../image/triangle.png" alt="Corner Image" class="corner-image">
+                <div class="corner-text">
+                    <p>{$this->spec->getTitre()}</p>
+                    <p>{$this->spec->getGroupe()}</p>    
+                    <p>{$this->spec->getNomStyle()}</p>
+                </div>
             </div>
         HTML;
     }
@@ -48,7 +81,7 @@ class SpectacleRenderer implements Renderer {
                 <strong>Duree:</strong> {$this->spec->getDuree()} min<br>
                 <strong>Description:</strong> {$this->spec->getDescription()}<br>
                 <strong>Style:</strong> {$this->spec->getNomStyle()}<br>
-                <img src="{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" width="150">
+                <img src=../image/"{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" width="150">
             </div>
         HTML;
     }

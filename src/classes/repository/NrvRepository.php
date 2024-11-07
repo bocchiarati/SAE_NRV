@@ -93,7 +93,7 @@ class NrvRepository
         $resultat->execute(['date' => $date]);
 
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleid']),$fetch['description'],$fetch['extrait'],$fetch['image']);
+            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image']);
             $spectacle->setID($fetch['spectacleID']);
             $list[] = $spectacle;
         }
@@ -118,7 +118,7 @@ class NrvRepository
         $resultat->execute(['style' => $style]);
 
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleid']),$fetch['description'],$fetch['extrait'],$fetch['image']);
+            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image']);
             $spectacle->setID($fetch['spectacleID']);
             $list[] = $spectacle;
         }
@@ -225,7 +225,7 @@ class NrvRepository
         $resultat->execute();
         while ($fetch = $resultat->fetch()){
             $spec = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'], $this->nomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image']);
-            $spec->setID($fetch['id']);
+            $spec->setID($fetch['spectacleID']);
             $spectacles[] = $spec;
         }
         return $spectacles;
@@ -248,7 +248,7 @@ class NrvRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         while($fetch = $stmt->fetch()){
-            $tab[$fetch['lieuid']] = $fetch['nom'];
+            $tab[$fetch['lieuID']] = $fetch['nom'];
         }
         return $tab;
     }
