@@ -2,8 +2,8 @@
 
 namespace iutnc\nrv\action;
 
-use iutnc\deefy\auth\AuthnProvider;
-use iutnc\deefy\exception\AuthException;
+use iutnc\nrv\auth\AuthnProvider;
+use iutnc\nrv\exception\AuthException;
 
 class ActionRegister extends Action
 {

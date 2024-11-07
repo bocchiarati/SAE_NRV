@@ -6,7 +6,6 @@ use iutnc\nrv\action\ActionDefaut;
 use iutnc\nrv\action\ActionRegister;
 use iutnc\nrv\action\ActionSignin;
 use iutnc\nrv\auth\AuthnProvider;
-use iutnc\nrv\exception\AuthException;
 
 class Dispatcher
 {

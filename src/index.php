@@ -24,18 +24,3 @@ $dispatcher->run();
 
 
 //////////////// TESTS //////////////////
-
-//$playlists = $repo->findAllPlaylists();
-//foreach ($playlists as $pl) {
-//    print "playlist  : " . $pl->nom . ":". $pl->id . "\n";
-//}
-//
-//
-//$pl = new PlayList('test');
-//$pl = $repo->saveEmptyPlaylist($pl);
-//print "playlist  : " . $pl->nom . ":". $pl->id . "\n";
-
-//$track = new PodcastTrack('test', 'test.mp3', 'auteur', '2021-01-01', 10, AudioTrack::CLASSIC_ROCK);
-//$track = $repo->savePodcastTrack($track);
-//print "track 2 : " . $track->titre . ":". get_class($track). "\n";
-//$repo->addTrackToPlaylist($pl->id, $track->id);

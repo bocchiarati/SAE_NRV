@@ -7,7 +7,7 @@ use iutnc\nrv\exception\InvalidPropertyNameException;
 class User
 {
     const STANDARD_USER = 1;
-    const ADMIN_USER = 100;
+    const ORGANISATOR_USER = 100;
 
     private int $id;
     private string $pass;

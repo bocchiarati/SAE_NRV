@@ -12,6 +12,6 @@ class ActionDefaut extends Action
 
     public function executePost(): string
     {
-        return "Aucune action selectionnee ou action invalide";
+        return "Aucune action selectionnée ou action invalide";
     }
 }
