@@ -21,9 +21,7 @@ class ActionFilterByStyle extends Action
             return $render->render(Renderer::LONG);
         }else {
 
-            $choix = '
-        <h2>Filtrer par style</h2>
-        <div>';
+            $choix = '';
 
             $pdo = NrvRepository::getInstance();
             $listStyle = $pdo->getAllStyle();
@@ -32,9 +30,13 @@ class ActionFilterByStyle extends Action
                 $choix .= '<a href="?action=filterByStyle&id=' . $key . '">' . $style . '</a>';
             }
 
-            $choix .= '</div>';
 
-            return $choix;
+            return <<<HTML
+            <h2>Filtrer par style</h2>
+            <div class="options">
+                $choix
+            </div>
+            HTML;
         }
     }
 
