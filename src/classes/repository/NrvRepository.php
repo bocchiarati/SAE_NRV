@@ -82,21 +82,30 @@ class NrvRepository
 
     public function programmeByDate(?string $date): array{
         $tab = [];
+    // retourne la liste des soirees par date
+    public function SoireeByDate(?string $date): array{
+        $listSoiree = [];
 
         $query = "SELECT * FROM spectacle sp 
         inner join soireetospectacle st on st.spectacleID = sp.spectacleID
         inner join soiree s on s.soireeID = sp.soireeID
          WHERE s.date = ".$date.";";
+        $query = "SELECT * FROM soiree WHERE date = :date";
         $resultat = $this->pdo->prepare($query);
-        $resultat->execute();
+        $resultat->execute(['date' => $date]);
+
         while ($fetch = $resultat->fetch()){
             $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleid']),$fetch['description'],$fetch['extrait'],$fetch['image']);
             $spectacle->setID($fetch['spectacleID']);
             $tab[] = $spectacle;
+            $soiree = new Soiree($fetch['date'],$fetch['lieuID'],$this->nomLieuByID($fetch['lieuID']),$this->adresseLieuByID($fetch['lieuID']));
+            $soiree->setID($fetch['soireeID']);
+            $listSoiree[] = $soiree;
         }
 
         return $tab;
     }
+
     public function saveSpectaclePreferences(Spectacle $s): Spectacle {
         $query = "INSERT INTO userpreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
         $stmt = $this->pdo->prepare($query);
@@ -105,17 +114,19 @@ class NrvRepository
         return $s;
     }
 
-    public function programmeSpectacleBySoiree(int $soireeid): array {
+    public function programmeSpectacleBySoiree(int $soireeID): array {
         $tab = [];
-        $query = 'Select * from spectacle s 
-         inner join spectacletosoiree sts on s.spectacleid = sts.spectacleid 
-         where soireeid = '.$soireeid.'
-         order by spectacleid';
+        $query = 'SELECT s.spectacleID, s.titre, s.groupe, s.duree, s.description, s.extrait, s.image, s.styleID
+              FROM Spectacle s
+              INNER JOIN SoireeToSpectacle sts ON s.spectacleID = sts.spectacleID
+              WHERE sts.soireeID = :soireeID
+              ORDER BY s.spectacleID';
 
         $resultat = $this->pdo->prepare($query);
-        $resultat->execute();
+        $resultat->execute(['soireeID' => $soireeID]);
+
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleid']),$fetch['description'],$fetch['extrait'],$fetch['image']);
+            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->nomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image']);
             $spectacle->setID($fetch['spectacleID']);
             $tab[] = $spectacle;
         }
@@ -130,6 +141,7 @@ class NrvRepository
         return $fetch['spetacleid'];
     }
 
+    // retourne le nom du lieu par son id
     public function nomLieuByID(int $id):?string{
         $query = "select nom from lieu where lieuid = :id ;";
         $resultat = $this->pdo->prepare($query);
@@ -141,19 +153,21 @@ class NrvRepository
         return $fetch['nom'];
     }
 
+    // retourne l'adresse du lieu par son id
     public function adresseLieuByID(int $id):?string{
-        $query = "select nom from lieu where lieuid = :id ;";
+        $query = "select adresse from lieu where lieuid = :id ;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['id' => $id]);
         if($resultat->rowCount() === 0){
-            throw new RepoException("Lieu introuvable");
+            throw new RepoException("Adresse introuvable");
         }
         $fetch = $resultat -> fetch();
         return $fetch['adresse'];
     }
 
+    // retourne le nom du style par son id
     public function nomStyleByID(int $id):?string{
-        $query = "select nomStyle from $id where styleid :id ;";
+        $query = "select nomstyle from stylemusic where styleid = :id ;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['id' => $id]);
         if($resultat->rowCount() === 0){
@@ -175,19 +189,5 @@ class NrvRepository
         return $soiree;
     }
 
-    /**
-     * @throws RepoException
-     */
-    public function findAllSpectacle():array {
-        $spectacles = [];
-        $query = 'Select * from spectacles';
-        $resultat = $this->pdo->prepare($query);
-        $resultat->execute();
-        while ($fetch = $resultat->fetch()){
-            $spec = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'], $this->nomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image']);
-            $spec->setID($fetch['id']);
-            $spectacles[] = $spec;
-        }
-        return $spectacles;
-    }
+
 }
