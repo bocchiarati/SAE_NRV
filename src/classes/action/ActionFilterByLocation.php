@@ -14,7 +14,7 @@ class ActionFilterByLocation extends Action
     {
 
         if(isset($_GET['id'])){
-            $selectedLocation = $_POST['id'];
+            $selectedLocation = $_GET['id'];
 
             $repository = NrvRepository::getInstance();
             $filteredSoirees = $repository->SoireeByLocation($selectedLocation);
