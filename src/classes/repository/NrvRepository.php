@@ -23,15 +23,29 @@ class NrvRepository
             [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     }
 
-    public function saveSoireePreferences(Soiree $s): Soiree {
-        $query = "INSERT INTO userpreferences (userid,soireeid) VALUES (:userid,:soireeid)";
+    public function programmeByDate(?string $date): array{
+        $listSoiree = [];
+
+        $query = "SELECT * FROM soiree WHERE date = ".$date.";";
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute();
+        while ($fetch = $resultat->fetch()){
+            $soiree = new Soiree();
+            $soiree->setID($fetch['id']);
+            $listSoiree[] = $soiree;
+        }
+
+        return $listSoiree;
+    }
+    public function saveSpectaclePreferences(Spectacle $s): Spectacle {
+        $query = "INSERT INTO userpreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
         $stmt = $this->pdo->prepare($query);
         $user = AuthnProvider::getSignedInUser();
-        $stmt->execute(['userid' => $user->id,'soireeid' => $s->id]);
+        $stmt->execute(['userid' => $user->id,'spectacleid' => $s->id]);
         return $s;
     } //////////////////////////////////
 
-    public function findAllSpectableBySoiree(int $soireeid): array {
+    public function programmeSpectacleBySoiree(int $soireeid): array {
         $tab = [];
         $query = 'Select * from spectacle s 
          inner join spectacletosoiree sts on s.spectacleid = sts.spectacleid 
@@ -41,12 +55,20 @@ class NrvRepository
         $resultat = $this->pdo->prepare($query);
         $resultat->execute();
         while ($fetch = $resultat->fetch()){
-            $playlist = new Spectacle($fetch['nom']);
-            $playlist->setID($fetch['id']);
-            $tab[] = $playlist;
+            $spectacle = new Spectacle($fetch['nom']);
+            $spectacle->setID($fetch['id']);
+            $tab[] = $spectacle;
         }
         return $tab;
-    } ///////////////////////////////
+    }
+
+    public function findPreferences(int $userid): int
+    {
+        $query = 'Select * from userspreferences where userid = '.$userid.';';
+        $resultat = $this->pdo->query($query);
+        $fetch = $resultat->fetch();
+        return $fetch['spetacleid'];
+    }
 
     public static function getInstance(): NrvRepository
     {
@@ -103,5 +125,21 @@ class NrvRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email,'mdp' => $mdpHash,'roleid' => User::STANDARD_USER]);
         return new User($this->pdo->lastInsertId(),$mdpHash,User::STANDARD_USER);
+    }
+
+    public function nomLieuByID(int $id):?string{
+        $query = "select distinct nom from lieu l, soiree s where l.lieuid = s.lieuid and l.lieuid= :id ;";
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute(['id' => $id]);
+        $fetch = $resultat -> fetch();
+        return $fetch['nom'];
+    }
+
+    public function adresseLieuByID(int $id):?string{
+        $query = "select distinct nom from lieu l, soiree s where l.lieuid = s.lieuid and l.lieuid= :id ;";
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute(['id' => $id]);
+        $fetch = $resultat -> fetch();
+        return $fetch['adresse'];
     }
 }

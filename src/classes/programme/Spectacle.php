@@ -3,7 +3,7 @@
 namespace iutnc\nrv\programme;
 
 class Spectacle {
-    protected int $id;
+    public int $id;
     protected ?string $titre;
     protected ?string $groupe;
     protected int $duree;
