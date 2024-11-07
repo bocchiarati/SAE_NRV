@@ -104,10 +104,7 @@ class NrvRepository
         $listSpectacles = new ListSpectacle();
 
         $query = "SELECT * FROM spectacle sp 
-        inner join soireetospectacle st on st.spectacleID = sp.spectacleID
-        inner join soiree s on s.soireeID = st.soireeID
-        inner join stylemusic sty on sty.styleID = sp.styleID
-         WHERE sty.styleID = :style;";
+        WHERE sp.styleID = :style;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['style' => $style]);
 
