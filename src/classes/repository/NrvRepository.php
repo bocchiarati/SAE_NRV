@@ -179,7 +179,7 @@ class NrvRepository
      * @throws RepoException
      */
     public function saveSoiree(?string $date, int $lieuID): Soiree {
-        $query = "insert into Soiree (date, lieuID) values (:soireeID,:date,:lieuid)";
+        $query = "insert into Soiree (date, lieuID) values (:date,:lieuid)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['date' => $date,'lieuid' => $lieuID]);
         $soiree = new Soiree($date,$lieuID, $this->nomLieuByID($lieuID),$this->adresseLieuByID($lieuID));
