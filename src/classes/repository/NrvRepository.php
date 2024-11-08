@@ -349,8 +349,8 @@ class NrvRepository
               FROM Spectacle s
               JOIN SoireeToSpectacle sts ON s.spectacleID = sts.spectacleID
               JOIN Soiree so ON sts.soireeID = so.soireeID
-              WHERE so.lieuID = (
-                  SELECT so2.lieuID
+              WHERE so.lieuID IN (
+                  SELECT DISTINCT so2.lieuID
                   FROM Soiree so2
                   JOIN SoireeToSpectacle sts2 ON so2.soireeID = sts2.soireeID
                   WHERE sts2.spectacleID = :currentSpectacleID
