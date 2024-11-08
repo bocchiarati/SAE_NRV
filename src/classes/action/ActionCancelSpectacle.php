@@ -3,17 +3,38 @@
 namespace iutnc\nrv\action;
 
 use iutnc\nrv\action\Action;
+use iutnc\nrv\auth\AuthnProvider;
+use iutnc\nrv\auth\Authz;
+use iutnc\nrv\exception\AuthException;
 
 class ActionCancelSpectacle extends Action
 {
 
     function executeGet(): string
     {
-        // TODO: Implement executeGet() method.
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthException $e) {
+            return "Aucun utilisateur connecté";
+        }
+
+        $droit = new Authz($user);
+        if(!$droit->checkIsOrga()){
+            return "Vous n'avez pas le droit d'être ici";
+        }
     }
 
     function executePost(): string
     {
-        // TODO: Implement executePost() method.
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthException $e) {
+            return "Aucun utilisateur connecté";
+        }
+
+        $droit = new Authz($user);
+        if(!$droit->checkIsOrga()){
+            return "Vous n'avez pas le droit d'être ici";
+        }
     }
 }
