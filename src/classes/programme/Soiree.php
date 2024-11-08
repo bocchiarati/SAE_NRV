@@ -9,15 +9,21 @@ class Soiree extends ListSpectacle {
 
     protected ?int $id;
     protected ?string $date;
+    protected ?string $nom;
+    protected ?string $thematique;
+    protected int $tarif;
     protected ?int $lieuID;
     protected ?string $nomLieu;
     protected ?string $adresseLieu;
 
-    public function __construct($date, $lieuID, $nomLieu, $adresseLieu) {
+    public function __construct($date, $lieuID, $nomLieu, $adresseLieu, $nom, $thematique, $tarif) {
         $this->date = $date;
         $this->lieuID = $lieuID;
         $this->nomLieu = $nomLieu;
         $this->adresseLieu = $adresseLieu;
+        $this->nom = $nom;
+        $this->thematique = $thematique;
+        $this->tarif = $tarif;
     }
     public function setId(?int $id): void
     {

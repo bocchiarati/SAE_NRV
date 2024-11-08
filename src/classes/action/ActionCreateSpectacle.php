@@ -6,6 +6,7 @@ use iutnc\nrv\auth\AuthnProvider;
 use iutnc\nrv\auth\Authz;
 use iutnc\nrv\exception\AuthException;
 use iutnc\nrv\exception\RepoException;
+use iutnc\nrv\render\Renderer;
 use iutnc\nrv\repository\NrvRepository;
 
 class ActionCreateSpectacle extends Action
@@ -24,6 +25,22 @@ class ActionCreateSpectacle extends Action
             return "Vous n'avez pas le droit d'être ici";
         }
 
+        $upload_dir_extrait = Renderer::REPERTOIRE_EXTRAITS;
+        $upload_dir_image = Renderer::REPERTOIRE_IMAGE;
+
+        $filename = uniqid();
+        $tmp = $_FILES['inputfile']['tmp_name'];
+        if (($_FILES['inputfile']['error'] === UPLOAD_ERR_OK) && ($_FILES['inputfile']['type'] === 'audio/mpeg') ) {
+
+            $dest = $upload_dir_extrait.$filename.'.mp3';
+            move_uploaded_file($tmp, $dest );
+            $fichier = $filename.'.mp3';
+
+        } else {
+            return "fichier invalide";
+        }
+
+
         $repository = NrvRepository::getInstance();
         $styles = $repository->getAllStyle();
         $soirees = $repository->getAllSoiree();
@@ -35,13 +52,13 @@ class ActionCreateSpectacle extends Action
         }
 
         $optionsSoiree = '';
-        foreach ($soirees as $soireeID => [$nomLieu, $date]) {
-            $optionsSoiree .= "<option value='{$soireeID}'>{[0]." - ".[1}</option>";
+        foreach ($soirees as $soireeID => [$nom, $thematique, $nomLieu]) {
+            $optionsSoiree .= "<option value='{$soireeID}'>{$nom} - {$thematique} - {$nomLieu}</option>";
         }
         return <<< END
     
-    <h1 style="text-align: center; font-size:60px">Creation D'une soirée</h1>
-    <form method="post" action="?action=createSoiree">
+    <h1 style="text-align: center; font-size:60px">Creation D'un Spectacle</h1>
+    <form method="post" action="?action=createSpectacle">
     <p>Selectoinner une soirée</p>
     <select id="soiree" name="soiree">
         <option value="" disabled selected>Choisir une soiree</option>
@@ -51,7 +68,11 @@ class ActionCreateSpectacle extends Action
     <input type="text" id="titre" name="titre" placeholder="Titre">
     <input type="text" id="groupe" name="groupe" placeholder="Groupe">
     <input type="text" id="duree" name="duree" placeholder="Duree">
-    
+    <input type="text" id="description" name="description" placeholder="Description">
+    <p>Choisir un extrait audio ou video</p>
+    <input type="file" id="extrait" name="extrait" required>
+    <p>Choisir une image</p>
+    <input type="file" id="image" name="image" required>    
     <select id="style" name="style">
         <option value="" disabled selected>Choisir un style</option>
         $optionsStyle
@@ -97,12 +118,12 @@ END;
         }
 
         $pdo = NrvRepository::getInstance();
-        if($_POST['location'] === "Autre"){
-            $pdo->saveSoiree($_POST['date'], null, $_POST['new-location'], $_POST['address']);
+        if($_POST['style'] === "Autre"){
+            $pdo->saveSpectacle($_POST['titre'], $_POST['groupe'], $_POST['duree'], $_POST['description'], $_POST['extrait'], $_POST['image'], null, $_POST['nomStyle']);
             $message =  "<p>Soirée et Lieu créée avec succes</p>";
         }
         else{
-            $pdo->saveSoiree($_POST['date'], $_POST['location'],null, null);
+            $pdo->saveSpectacle($_POST['titre'], $_POST['groupe'], $_POST['duree'], $_POST['description'], $_POST['extrait'], $_POST['image'], $_POST['style'], null);
             $message = "Soirée créée avec succes";
         }
         return $message;
