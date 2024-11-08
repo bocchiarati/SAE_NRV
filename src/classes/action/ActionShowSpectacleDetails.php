@@ -26,26 +26,24 @@ class ActionShowSpectacleDetails extends Action
 
             $renderer = new SpectacleRenderer($spectacle);
 
-            // affichage des spectacles du meme style et lieu sans le spectacle actuel
+            // affichage des spectacles du meme style et lieu et date sans le spectacle actuel
             $spectaclesMemeStyle = $repository->getSpectaclesByStyleSansActuel($spectacle->getStyleID(), $spectacleID);
             $spectaclesMemeLieu = $repository->getSpectaclesByLieuSansActuel($spectacleID);
+            $spectaclesMemeDate = $repository->getSpectaclesByDateSansActuel($spectacleID);
 
             $rendererStyle = new ListSpectacleRenderer($spectaclesMemeStyle);
             $rendererLieu = new ListSpectacleRenderer($spectaclesMemeLieu);
+            $rendererDate = new ListSpectacleRenderer($spectaclesMemeDate);
 
-            $affichageSimilaires = "<h2>VOUS AIMEREZ AUSSI</h2>";
-
-            $affichageSimilaires .= "<h3>Spectacles du même style:</h3>";
-            $affichageSimilaires .= $rendererStyle->render( Renderer::COMPACT);
-
-            $affichageSimilaires .= "<h3>Spectacles du même lieu:</h3>";
-            $affichageSimilaires .= $rendererLieu->render(Renderer::COMPACT);
-
-            // affichage des spectacles du meme date sans le spectacle actuel
-            // TO DO
+            $affichageSimilaires = "<h2>VOUS AIMEREZ AUSSI</h2>"
+                . "<h3>Spectacles du même style:</h3>"
+                . $rendererStyle->render(Renderer::COMPACT)
+                . "<h3>Spectacles du même lieu:</h3>"
+                . $rendererLieu->render(Renderer::COMPACT)
+                . "<h3>Spectacles à la même date:</h3>"
+                . $rendererDate->render(Renderer::COMPACT);
 
             return $renderer->render(Renderer::LONG) . $affichageSimilaires;
-
         } catch (RepoException $e) {
             return "<p>Erreur lors de la recuperation du spectacle : {$e->getMessage()}</p>";
         }
