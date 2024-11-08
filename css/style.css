@@ -2,13 +2,14 @@
 
 .spectacle-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));
     gap: 20px;
     padding: 20px;
     justify-items: center;
 }
 
 .spectacle-item {
+    max-width: 100%;
     display: block;
     text-decoration: none;
     color: inherit;
@@ -26,7 +27,7 @@
 }
 
 .spectacle-item .image-compact {
-    width: 100%;
+    max-width: 100%;
     height: auto;
     display: block;
 }

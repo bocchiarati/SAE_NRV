@@ -40,7 +40,7 @@ class SpectacleRenderer implements Renderer {
         <div class='spectacle-grid'>
             <a href='?action=showSpectacleDetails&id={$this->spec->getID()}' class='spectacle-item'>
                 <div class="image-container-compact-render">
-                    <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact" width="400">
+                    <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact">
                     <img src="../image/triangle-rouge.png" alt="Corner Image" class="corner-image">
                     <div class="corner-text">
                         <p>{$this->spec->getTitre()}</p>
@@ -50,7 +50,6 @@ class SpectacleRenderer implements Renderer {
                 </div>
             </a>
         </div>
-        <br>
         HTML;
     }
 
