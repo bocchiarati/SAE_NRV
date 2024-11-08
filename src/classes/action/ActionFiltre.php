@@ -13,13 +13,13 @@ class ActionFiltre extends Action {
     function executeGet(): string
     {
         $affichage = "";
+        $pdo = NrvRepository::getInstance();
 
         if(isset($_GET['filter']) && isset($_GET['id'])){
 
             if($_GET['filter'] === "style") {
                 //FILTRE STYLE
 
-                $pdo = NrvRepository::getInstance();
                 $spectacles = $pdo->getSpectaclesByStyle($_GET['id']);
 
                 $render = new ListSpectacleRenderer($spectacles);
@@ -30,8 +30,7 @@ class ActionFiltre extends Action {
                 //FILTRE LOCATION
                 $selectedLocation = $_GET['id'];
 
-                $repository = NrvRepository::getInstance();
-                $filteredSoirees = $repository->getSoireeByLocation($selectedLocation);
+                $filteredSoirees = $pdo->getSoireeByLocation($selectedLocation);
 
                 if (empty($filteredSoirees)) {
                     return "<p>Aucun spectacle n'est prevue pour ce lieu.</p>";
@@ -40,7 +39,7 @@ class ActionFiltre extends Action {
                 $this->output = "<h2>Spectacles pour le lieu selectionne</h2><ul>";
                 $this->output .= "";
                 foreach ($filteredSoirees as $soiree) {
-                    $spectacles = $repository->getSpectacleBySoiree($soiree->getID());
+                    $spectacles = $pdo->getSpectacleBySoiree($soiree->getID());
 
                     if (count($spectacles->spectacles) >= 1) {
                         $spectacleRenderer = new ListSpectacleRenderer($spectacles);
@@ -54,6 +53,16 @@ class ActionFiltre extends Action {
                     }
                 }
                 $this->output .= "</div>";
+            }
+        }else{
+            $spectacles = $pdo->findAllSpectacle();
+            $this->output = "";
+            if(count($spectacles->spectacles) > 0){
+                $renderer = new ListSpectacleRenderer($spectacles);
+                $this->output .= $renderer->render(Renderer::COMPACT);
+            }
+            else {
+                $this->output = "<p>Aucun spectacle programmé</p>";
             }
         }
 

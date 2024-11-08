@@ -30,7 +30,6 @@ class Dispatcher
         $action = match ($this->action) {
             "signin" => new act\ActionSignin(),
             "register" => new act\ActionRegister(),
-            "showProgram" => new act\ActionShowProgram(),
             "showSpectacleDetails" => new act\ActionShowSpectacleDetails(),
             "cancelSpectacle" => new act\ActionCancelSpectacle(),
             "createSoiree" => new act\ActionCreateSoiree(),
@@ -87,8 +86,7 @@ class Dispatcher
             <li><a href="?">Accueil</a></li>
             <li><a href="?action=signin">Se connecter</a></li>
             <li><a href="?action=signout">Se deconnecter</a></li>
-            <li><a href="?action=showProgram">Afficher le programme</a></li>
-            <li><a href="?action=filtre">Filtrer</a></li>       
+            <li><a href="?action=filtre">Afficher le programme</a></li>       
         </ul>
         {$superAdmin}
         

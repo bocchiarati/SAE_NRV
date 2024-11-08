@@ -270,7 +270,7 @@ class NrvRepository
         $stmt->execute(['lieuID' => $lieuID]);
 
         while ($fetch = $stmt->fetch()) {
-            $soiree = new Soiree($fetch['date'], $fetch['time'], $fetch['lieuID'], $this->getNomLieuByID($fetch['lieuID']), $this->adresseLieuByID($fetch['lieuID']));
+            $soiree = new Soiree($fetch['date'], $fetch['lieuID'], $this->getNomLieuByID($fetch['lieuID']), $this->adresseLieuByID($fetch['lieuID']));
             $soiree->setID($fetch['soireeID']);
             $listSoiree[] = $soiree;
         }

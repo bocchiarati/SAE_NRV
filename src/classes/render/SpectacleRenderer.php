@@ -36,15 +36,18 @@ class SpectacleRenderer implements Renderer {
         $repository = NrvRepository::getInstance();
         $date = $repository->getDateForSpectacle($this->spec->getID());
 
+        $deuxDate = explode(' ',$date);
+
         return <<<HTML
             <a href='?action=showSpectacleDetails&id={$this->spec->getID()}' class='spectacle-item'>
                 <div class="image-container-compact-render">
                     <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact">
                     <img src="../image/triangle-rouge.png" alt="Corner Image" class="corner-image">
                     <div class="corner-text">
-                        <p>{$this->spec->getTitre()}</p>
-                        <p>{$date}</p>   
-                        <p>{$this->spec->getDurationHoursEtMin()}</p>
+                        <p class="titrespect">{$this->spec->getTitre()}</p>
+                        <p>{$deuxDate[0]}</p>  
+                        <p>À {$deuxDate[1]}</p> 
+                        <p>Durée : {$this->spec->getDurationHoursEtMin()}</p>
                     </div>
                 </div>
             </a>
