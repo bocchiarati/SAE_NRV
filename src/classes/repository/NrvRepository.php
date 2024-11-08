@@ -326,8 +326,27 @@ class NrvRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         while($fetch = $stmt->fetch()){
-            $tab[$fetch['styleID']] = $fetch['nomstyle'];
+            $tab[$fetch['soireeID']] = [$fetch['nom'], $fetch['thematique'], $this->getNomLieuByID($fetch['lieuID'])];
         }
         return $tab;
     }
+
+    public function saveSpectacle(string $titre, string $groupe, int $duree, string $description, ?string $extrait, string $image, ?int $styleID, ?string $nomStyle): Spectacle {
+        if($styleID === null){
+            $query = "insert into stylemusic (nomstyle) values (:nomStyle)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['nomStyle' => $nomStyle]);
+            $styleID = $this->pdo->lastInsertId();
+        }
+
+        $query = "insert into Spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) values (:titre, :groupe, :duree, :desc, :extrait, :image, :styleid, false)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['titre' => $titre, 'groupe' => $groupe, 'duree' => $duree, 'desc' => $description, 'extrait' => $extrait, 'image' => $image, 'styleid' => $styleID]);
+        $spectacle = new Spectacle($titre, $groupe, $duree, $description, $extrait, $image, $styleID, $nomStyle, false);
+        $spectacle->setID($this->pdo->lastInsertId());
+        return $spectacle;
+    }
 }
+
+
+
