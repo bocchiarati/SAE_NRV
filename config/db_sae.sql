@@ -11,7 +11,7 @@ CREATE TABLE Soiree(
     nom VARCHAR(255) NOT NULL,
     thematique VARCHAR(255),
     tarif FLOAT,
-    date DATE NOT NULL,
+    date DATETIME NOT NULL,
     lieuID INT,
     FOREIGN KEY (lieuID) REFERENCES Lieu(lieuID)
 );
@@ -75,9 +75,9 @@ INSERT INTO StyleMusic (nomstyle) VALUES
 ('Reggae');
 
 INSERT INTO Soiree (nom, thematique, tarif, date, lieuID) VALUES
-('Soiree blues','Concert de blues',5.99,'2023-11-25 20:00:00', 1),
-('Soiree Rock','Concert de rock',5.99,'2023-11-26 21:00:00', 2),
-('Reggae night','Démo de reggae',5.99,'2023-11-27 22:00:00', 3);
+('Soiree blues','Concert de blues',5.99,'2023-11-25 20:00', 1),
+('Soiree Rock','Concert de rock',5.99,'2023-11-26 21:00', 2),
+('Reggae night','Démo de reggae',5.99,'2023-11-27 22:00', 3);
 
 INSERT INTO Spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) VALUES
 ('Blues Night', 'The Blue Cats', 120, 'A night full of deep blues music.', NULL, 'bluesnight.jpg', 1, FALSE),
