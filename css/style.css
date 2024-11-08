@@ -1,5 +1,4 @@
-/* classe ActionShowProgram */
-
+/* Classe ActionShowProgram */
 .spectacle-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -47,7 +46,6 @@
 }
 
 /* SpectacleRenderer */
-
 .image-container-compact-render {
     position: relative;
     display: inline-block;
@@ -68,12 +66,14 @@
     margin: 0;
     padding: 0;
 }
+
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f4f4f4;
     display: flex;
     flex-direction: column;
 }
+
 .titre {
     background-color: white;
     color: #333;
@@ -81,20 +81,25 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: relative;
 }
-.nav ul{
+
+.nav ul {
     margin: 0;
 }
+
 li {
     list-style-type: none;
 }
-.nav{
+
+.nav {
     height: 10%;
     display: flex;
     justify-content: center;
 }
-.nav li{
+
+.nav li {
     margin: auto;
 }
+
 .nav a {
     text-decoration: none;
     color: #FF0000; /* Rouge éclatant pour plus de vivacité */
@@ -104,9 +109,11 @@ li {
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
+
 a:hover {
     background-color: #ffcccc;
 }
+
 .resultat {
     padding: 1%;
     background-color: #ffffff;
@@ -128,7 +135,6 @@ form {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 20px;
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     padding: 20px;
@@ -138,66 +144,18 @@ form {
     margin: 0 auto;
 }
 
-/* Input and select styling */
-#date, #location, #new-location, #address {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-/* Button styling */
-button {
-    background-color: #ff0000;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-/* Button hover effect */
-button:hover {
-    background-color: #ff0000;
-}
-
-/* Focus effect on input and select */
-#date:focus, #location:focus, #new-location:focus, #address:focus {
-    border-color: #ff0000;
-    outline: none;
-}
-
-
-form {
+#filtre {
+    margin: 0;
+    background-color: white;
+    padding: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    margin-top: 20px;
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    margin: 0 auto;
+    width: 170px;
+    box-shadow: none;
+
 }
 
-/* Input and select styling */
-#date, #location, #new-location, #address, #soiree, #style {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    box-sizing: border-box;
-}
 
 /* Button styling */
 button {
@@ -213,11 +171,60 @@ button {
 
 /* Button hover effect */
 button:hover {
-    background-color: #ff0000;
+    background-color: #cc0000;
 }
 
 /* Focus effect on input and select */
-#date:focus, #location:focus, #new-location:focus, #address:focus, #soiree:focus, #style:focus{
+
+
+form > input , form > select{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+
+form > input:focus, form > select:focus, form > #date:focus{
     border-color: #ff0000;
     outline: none;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-button {
+    background-color: #FF0000;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
 }
