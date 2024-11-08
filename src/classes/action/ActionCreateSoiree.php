@@ -2,6 +2,9 @@
 
 namespace iutnc\nrv\action;
 
+use iutnc\nrv\auth\AuthnProvider;
+use iutnc\nrv\auth\Authz;
+use iutnc\nrv\exception\AuthException;
 use iutnc\nrv\exception\RepoException;
 use iutnc\nrv\repository\NrvRepository;
 
@@ -9,6 +12,18 @@ class ActionCreateSoiree extends Action
 {
 
     function executeGet(): string {
+
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthException $e) {
+            return "Aucun utilisateur connecté";
+        }
+
+        $droit = new Authz($user);
+        if(!$droit->checkIsOrga()){
+            return "Vous n'avez pas le droit d'être ici";
+        }
+
         $repository = NrvRepository::getInstance();
         $locations = $repository->getAllLieu();
 
@@ -18,39 +33,39 @@ class ActionCreateSoiree extends Action
             $options .= "<option value='{$lieuID}'>{$nom}</option>";
         }
         return <<< END
+                
+        <h1 style="text-align: center; font-size:60px">Creation D'une soirée</h1>
+        <form method="post" action="?action=createSoiree">
+        <p>Inserer une date</p>
+            <input type="date" id="date" name="date" required>
+            <p>Selectionner un lieu</p>
+            <select id="location" name="location">
+                <option value="" disabled selected>Choisir un lieu</option>
+                $options
+                <option value="Autre">Ou insérer un nouveau lieu</option>
+            </select>
+            
+            <input type="text" id="new-location" name="new-location" placeholder="Nouveau lieu" style="display: none;">
+            <input type="text" id="address" name="address" placeholder="Adresse" style="display: none;">
         
-<h1 style="text-align: center; font-size:60px">Creation D'une soirée</h1>
-<form method="post" action="?action=createSoiree">
-<p>Inserer une date</p>
-    <input type="date" id="date" name="date" required>
-    <p>Selectionner un lieu</p>
-    <select id="location" name="location">
-        <option value="" disabled selected>Choisir un lieu</option>
-        $options
-        <option value="Autre">Ou insérer un nouveau lieu</option>
-    </select>
-    
-    <input type="text" id="new-location" name="new-location" placeholder="Nouveau lieu" style="display: none;">
-    <input type="text" id="address" name="address" placeholder="Adresse" style="display: none;">
-
-    <button type="submit">Créer</button>
-</form>
-<script>
-    // Script to show/hide the new location and address inputs based on the selection
-    document.getElementById('location').addEventListener('change', function() {
-        var newLocationInput = document.getElementById('new-location');
-        var addressInput = document.getElementById('address');
-        
-        if (this.value === 'Autre') {
-            newLocationInput.style.display = 'block';
-            addressInput.style.display = 'block';
-        } else {
-            newLocationInput.style.display = 'none';
-            addressInput.style.display = 'none';
-        }
-    });
-</script>
-END;
+            <button type="submit">Créer</button>
+        </form>
+        <script>
+            // Script to show/hide the new location and address inputs based on the selection
+            document.getElementById('location').addEventListener('change', function() {
+                var newLocationInput = document.getElementById('new-location');
+                var addressInput = document.getElementById('address');
+                
+                if (this.value === 'Autre') {
+                    newLocationInput.style.display = 'block';
+                    addressInput.style.display = 'block';
+                } else {
+                    newLocationInput.style.display = 'none';
+                    addressInput.style.display = 'none';
+                }
+            });
+        </script>
+        END;
 
     }
 
@@ -59,6 +74,18 @@ END;
      */
     function executePost(): string
     {
+
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthException $e) {
+            return "Aucun utilisateur connecté";
+        }
+
+        $droit = new Authz($user);
+        if(!$droit->checkIsOrga()){
+            return "Vous n'avez pas le droit d'être ici";
+        }
+
         $pdo = NrvRepository::getInstance();
         if($_POST['location'] === "Autre"){
             $pdo->saveSoiree($_POST['date'], null, $_POST['new-location'], $_POST['address']);

@@ -2,6 +2,9 @@
 
 namespace iutnc\nrv\action;
 
+use iutnc\nrv\auth\AuthnProvider;
+use iutnc\nrv\auth\Authz;
+use iutnc\nrv\exception\AuthException;
 use iutnc\nrv\exception\RepoException;
 use iutnc\nrv\repository\NrvRepository;
 
@@ -9,6 +12,18 @@ class ActionCreateSpectacle extends Action
 {
 
     function executeGet(): string {
+
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthException $e) {
+            return "Aucun utilisateur connecté";
+        }
+
+        $droit = new Authz($user);
+        if(!$droit->checkIsOrga()){
+            return "Vous n'avez pas le droit d'être ici";
+        }
+
         $repository = NrvRepository::getInstance();
         $locations = $repository->getAllLieu();
 
@@ -109,6 +124,18 @@ END;
      */
     function executePost(): string
     {
+
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthException $e) {
+            return "Aucun utilisateur connecté";
+        }
+
+        $droit = new Authz($user);
+        if(!$droit->checkIsOrga()){
+            return "Vous n'avez pas le droit d'être ici";
+        }
+
         $pdo = NrvRepository::getInstance();
         if($_POST['location'] === "Autre"){
             $pdo->saveSoiree($_POST['date'], null, $_POST['new-location'], $_POST['address']);
