@@ -95,6 +95,23 @@ END;
             return "Vous n'avez pas le droit d'être ici";
         }
 
+
+        // Vérifie que le format est bien "YYYY-MM-DD"
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['date'])) {
+            $_POST['date'] = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
+        } else {
+            return "Date invalide";
+        }
+
+        // Valide le temps au format "HH:MM:SS"
+        if (preg_match('/^\d{2}:\d{2}:\d{2}$/', $_POST['time'])) {
+            $_POST['time'] = filter_var($_POST['time'], FILTER_SANITIZE_STRING);
+        } else {
+            return "Heure invalide";
+        }
+
+        //TODO vérifier tous les parametres envoyé par le client
+
         $pdo = NrvRepository::getInstance();
         if($_POST['location'] === "Autre"){
             $pdo->saveSoiree($_POST['date'], $_POST['time'], null, $_POST['new-location'], $_POST['address'], $_POST['tarif'], $_POST['nom'], $_POST['thematique']);
