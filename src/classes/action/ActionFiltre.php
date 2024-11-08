@@ -36,6 +36,7 @@ class ActionFiltre extends Action {
                 }
 
                 $output = "<h2>Spectacles pour le lieu selectionne</h2><ul>";
+                $output .= "";
                 foreach ($filteredSoirees as $soiree) {
                     $spectacles = $repository->getSpectacleBySoiree($soiree->getID());
 
@@ -50,7 +51,7 @@ class ActionFiltre extends Action {
                         $output .= "<p>Aucun spectacle pour la soiree a {$soiree->nomLieu}.</p>";
                     }
                 }
-                $output .= "</ul>";
+                $output .= "</div>";
             }
         } else {
             //FILTRE PAR DEFAUT
