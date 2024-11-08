@@ -8,7 +8,7 @@ use iutnc\nrv\repository\NrvRepository;
 
 class ActionFiltre extends Action {
 
-    private string $output = "<h2>Veuillez selectionner un filtre</h2>";
+    private string $output = "";
 
     function executeGet(): string
     {
@@ -39,12 +39,15 @@ class ActionFiltre extends Action {
                 $this->output = "<h2>Spectacles pour le lieu selectionne</h2><ul>";
                 $this->output .= "";
                 foreach ($filteredSoirees as $soiree) {
-                    $spectacles = $pdo->getSpectacleBySoiree($soiree->getID());
+                    $spectacles = $pdo->getSpectacleBySoiree($soiree->id);
+                    $deuxDate = explode(' ', $soiree->date);
 
                     if (count($spectacles->spectacles) >= 1) {
                         $spectacleRenderer = new ListSpectacleRenderer($spectacles);
                         $this->output .= "<div style='margin-bottom: 20px;'>";
-                        $this->output .= "<h3>Soiree: {$soiree->nomLieu}</h3>";
+                        $this->output .= "<h3>Soiree : {$soiree->nom}</h3>";
+                        $this->output .= "<h3>-> {$soiree->nomLieu}</h3>";
+                        $this->output .= "<p><strong>Le:</strong> {$deuxDate[0]} <strong>à</strong> {$deuxDate[1]}</p>";
                         $this->output .= "<p><strong>Adresse:</strong> {$soiree->adresseLieu}</p>";
                         $this->output .= $spectacleRenderer->render(Renderer::LONG);
                         $this->output .= "</div>";
@@ -55,14 +58,15 @@ class ActionFiltre extends Action {
                 $this->output .= "</div>";
             }
         }else{
-            $spectacles = $pdo->findAllSpectacle();
-            $this->output = "";
-            if(count($spectacles->spectacles) > 0){
-                $renderer = new ListSpectacleRenderer($spectacles);
-                $this->output .= $renderer->render(Renderer::COMPACT);
-            }
-            else {
-                $this->output = "<p>Aucun spectacle programmé</p>";
+            if(!isset($_POST['date'])) {
+                $spectacles = $pdo->findAllSpectacle();
+                $this->output = "";
+                if (count($spectacles->spectacles) > 0) {
+                    $renderer = new ListSpectacleRenderer($spectacles);
+                    $this->output .= $renderer->render(Renderer::COMPACT);
+                } else {
+                    $this->output = "<p>Aucun spectacle programmé</p>";
+                }
             }
         }
 
@@ -120,20 +124,22 @@ class ActionFiltre extends Action {
 
     function executePost(): string
     {
-        if(filter_var($_POST['date'],FILTER_VALIDATE_URL)) {
-            $selectedDate = $_POST['date'];
-        }else
-            $selectedDate = false;
+        $date = $_POST['date'];
 
-        if (!$selectedDate) {
-            return "<p>Erreur avec la date envoyée</p>";
+        // Vérifie que le format est bien "YYYY-MM-DD"
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+            $selectedDate = filter_var($date, FILTER_SANITIZE_STRING);
+        } else {
+            $this->output = "<p>Erreur avec la date envoyée</p>";
+            return $this->executeGet();
         }
 
         $repository = NrvRepository::getInstance();
         $filteredSoirees = $repository->getSoireeByDate($selectedDate);
 
         if (empty($filteredSoirees)) {
-            return "<p>Aucune spectacle n'est prevue pour la date : $selectedDate.</p>";
+            $this->output = "<p>Aucun spectacle n'est prevu pour la date : $selectedDate.</p>";
+            return $this->executeGet();
         }
 
         $this->output = "<h2>Spectacles pour la date : $selectedDate</h2><ul>";

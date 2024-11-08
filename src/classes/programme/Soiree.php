@@ -30,11 +30,6 @@ class Soiree extends ListSpectacle {
         $this->id = $id;
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function __get(string $attribut): mixed {
         if (property_exists($this, $attribut))
             return $this->$attribut;

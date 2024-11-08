@@ -36,7 +36,12 @@ class SpectacleRenderer implements Renderer {
         $repository = NrvRepository::getInstance();
         $date = $repository->getDateForSpectacle($this->spec->getID());
 
-        $deuxDate = explode(' ',$date);
+        //cas où le spectacle n'est pas programmé à une soirée
+        if(!$date){
+            $deuxDate = [0 => 'Indéfini', 1 => 'Indéfini'];
+        }else {
+            $deuxDate = explode(' ', $date);
+        }
 
         return <<<HTML
             <a href='?action=showSpectacleDetails&id={$this->spec->getID()}' class='spectacle-item'>
