@@ -35,13 +35,26 @@ class ActionShowSpectacleDetails extends Action
             $rendererLieu = new ListSpectacleRenderer($spectaclesMemeLieu);
             $rendererDate = new ListSpectacleRenderer($spectaclesMemeDate);
 
-            $affichageSimilaires = "<h2>VOUS AIMEREZ AUSSI</h2>"
-                . "<h3>Spectacles du même style:</h3>"
-                . $rendererStyle->render(Renderer::COMPACT)
-                . "<h3>Spectacles du même lieu:</h3>"
-                . $rendererLieu->render(Renderer::COMPACT)
-                . "<h3>Spectacles à la même date:</h3>"
-                . $rendererDate->render(Renderer::COMPACT);
+            // si il y a des spectacles similaires on les affiche
+            $affichageSimilaires = "";
+            if ($spectaclesMemeStyle->getSpectacles() || $spectaclesMemeLieu->getSpectacles() || $spectaclesMemeDate->getSpectacles()) {
+                $affichageSimilaires .= "<h2>VOUS AIMEREZ AUSSI</h2>";
+
+                if ($spectaclesMemeStyle->getSpectacles()) {
+                    $affichageSimilaires .= "<h3>Spectacles du même style:</h3>"
+                        . $rendererStyle->render(Renderer::COMPACT);
+                }
+
+                if ($spectaclesMemeLieu->getSpectacles()) {
+                    $affichageSimilaires .= "<h3>Spectacles du même lieu:</h3>"
+                        . $rendererLieu->render(Renderer::COMPACT);
+                }
+
+                if ($spectaclesMemeDate->getSpectacles()) {
+                    $affichageSimilaires .= "<h3>Spectacles à la même date:</h3>"
+                        . $rendererDate->render(Renderer::COMPACT);
+                }
+            }
 
             return $renderer->render(Renderer::LONG) . $affichageSimilaires;
         } catch (RepoException $e) {

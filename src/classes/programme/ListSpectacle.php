@@ -43,4 +43,8 @@ class ListSpectacle implements \Iterator{
             return $this->$attribut;
         throw new InvalidPropertyNameException(" $attribut : invalide propriete");
     }
+
+    public function getSpectacles(): array {
+        return $this->spectacles;
+    }
 }
