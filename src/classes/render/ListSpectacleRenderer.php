@@ -15,8 +15,7 @@ class ListSpectacleRenderer implements Renderer
 
     public function render(int $selector): string
     {
-        $output = "<h2>Liste des Spectacles</h2>
-        <div class='spectacle-grid'>";
+        $output = "<div class='spectacle-grid'>";
         foreach ($this->list as $spec) {
             $renderer = new SpectacleRenderer($spec);
             $output .= $renderer->render(Renderer::COMPACT);

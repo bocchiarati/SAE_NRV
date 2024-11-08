@@ -315,4 +315,60 @@ class NrvRepository
 
         return $result['nom'];
     }
+
+    // retourne la liste des spectacles par style sans le spectacle actuel pour la page ActionShowSpectacleDetails
+    public function getSpectaclesByStyleSansActuel(int $style, int $currentSpectacleID): ListSpectacle
+    {
+        $list = [];
+        $listSpectacles = new ListSpectacle();
+
+        $query = "SELECT * FROM spectacle sp 
+              WHERE sp.styleID = :style AND sp.spectacleID != :currentSpectacleID;";
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute(['style' => $style, 'currentSpectacleID' => $currentSpectacleID]);
+
+        while ($fetch = $resultat->fetch()){
+            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'],
+                $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'],
+                $fetch['image'], $fetch['annuler']);
+            $spectacle->setID($fetch['spectacleID']);
+            $list[] = $spectacle;
+        }
+
+        $listSpectacles->setSpectacles($list);
+
+        return $listSpectacles;
+    }
+
+    // retourne la liste des spectacles par lieu sans le spectacle actuel pour la page ActionShowSpectacleDetails
+    public function getSpectaclesByLieuSansActuel(int $currentSpectacleID): ListSpectacle {
+        $list = [];
+        $listSpectacles = new ListSpectacle();
+
+        $query = "SELECT s.*
+              FROM Spectacle s
+              JOIN SoireeToSpectacle sts ON s.spectacleID = sts.spectacleID
+              JOIN Soiree so ON sts.soireeID = so.soireeID
+              WHERE so.lieuID = (
+                  SELECT so2.lieuID
+                  FROM Soiree so2
+                  JOIN SoireeToSpectacle sts2 ON so2.soireeID = sts2.soireeID
+                  WHERE sts2.spectacleID = :currentSpectacleID
+              ) AND s.spectacleID != :currentSpectacleID;";
+
+        $resultat = $this->pdo->prepare($query);
+        $resultat->execute(['currentSpectacleID' => $currentSpectacleID]);
+
+        while ($fetch = $resultat->fetch()){
+            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'],
+                $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'],
+                $fetch['image'], $fetch['annuler']
+            );
+            $spectacle->setID($fetch['spectacleID']);
+            $list[] = $spectacle;
+        }
+
+        $listSpectacles->setSpectacles($list);
+        return $listSpectacles;
+    }
 }
