@@ -111,10 +111,13 @@ class ActionFiltre extends Action {
 
     function executePost(): string
     {
-        $selectedDate = $_POST['date'] ?? null;
+        if(filter_var($_POST['date'],FILTER_VALIDATE_URL)) {
+            $selectedDate = $_POST['date'];
+        }else
+            $selectedDate = false;
 
         if (!$selectedDate) {
-            return "<p>Aucune date selectionnee. Veuillez choisir une date pour filtrer les spectacles.</p>";
+            return "<p>Erreur avec la date envoyée</p>";
         }
 
         $repository = NrvRepository::getInstance();

@@ -155,6 +155,7 @@ FILTRES
 
 .filtres {
     width: 15%;
+    padding-right: 10px;
 }
 
 .affichage {
@@ -225,8 +226,10 @@ form > input:focus, form > select:focus, form > #date:focus{
 .dropdown {
     position: relative;
     display: inline-block;
+    width: 100%;
 }
 .dropdown-button {
+    width: 100%;
     background-color: #FF0000;
     color: white;
     padding: 10px;
@@ -238,7 +241,7 @@ form > input:focus, form > select:focus, form > #date:focus{
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
+    width: 100%;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
