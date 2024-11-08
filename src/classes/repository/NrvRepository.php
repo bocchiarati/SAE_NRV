@@ -219,7 +219,7 @@ class NrvRepository
     /**
      * @throws RepoException
      */
-    public function findAllSpectacle():array {
+    public function findAllSpectacle(): ListSpectacle {
         $spectacles = [];
         $query = 'Select * from spectacle';
         $resultat = $this->pdo->prepare($query);
@@ -229,7 +229,9 @@ class NrvRepository
             $spec->setID($fetch['spectacleID']);
             $spectacles[] = $spec;
         }
-        return $spectacles;
+        $list = new ListSpectacle();
+        $list->setSpectacles($spectacles);
+        return $list;
     }
 
     public function getAllStyle(): array{

@@ -37,7 +37,6 @@ class SpectacleRenderer implements Renderer {
         $date = $repository->getDateForSpectacle($this->spec->getID());
 
         return <<<HTML
-        <div class='spectacle-grid'>
             <a href='?action=showSpectacleDetails&id={$this->spec->getID()}' class='spectacle-item'>
                 <div class="image-container-compact-render">
                     <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact">
@@ -49,7 +48,6 @@ class SpectacleRenderer implements Renderer {
                     </div>
                 </div>
             </a>
-        </div>
         HTML;
     }
 
