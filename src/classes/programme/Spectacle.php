@@ -15,7 +15,9 @@ class Spectacle {
     protected ?string $cheminExtrait;
     protected ?string $image;
 
-    public function __construct(?string $titre, ?string $groupe, ?int $duree, ?int $styleID, ?string $nomStyle, ?string $description, ?string $cheminExtrait, ?string $image)
+    protected bool $cancel;
+
+    public function __construct(?string $titre, ?string $groupe, ?int $duree, ?int $styleID, ?string $nomStyle, ?string $description, ?string $cheminExtrait, ?string $image, bool $cancel)
     {
         $this->titre = $titre;
         $this->groupe = $groupe;
@@ -25,6 +27,7 @@ class Spectacle {
         $this->description = $description;
         $this->cheminExtrait = $cheminExtrait;
         $this->image = $image;
+        $this->cancel = $cancel;
     }
 
     public function setID(mixed $id){

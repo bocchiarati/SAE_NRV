@@ -20,7 +20,7 @@ class ActionShowProgram extends Action
     {
         $pdo = NrvRepository::getInstance();
         $spectacles = $pdo->findAllSpectacle();
-        $affichage = "<div class='spectacle-grid'>";
+        $affichage = "";
         if(count($spectacles) !== 0){
             foreach ($spectacles as $spec) {
                 $renderer = new SpectacleRenderer($spec);
@@ -30,9 +30,6 @@ class ActionShowProgram extends Action
         else {
             $affichage .= "<p>Aucun spectacle programmé</p>";
         }
-
-        $affichage .= "</div>";
-
         return $affichage;
     }
 
