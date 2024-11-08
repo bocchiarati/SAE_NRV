@@ -83,6 +83,10 @@ class NrvRepository
     }
 
     // retourne la liste des spectacles par date
+
+    /**
+     * @throws RepoException
+     */
     public function getSoireeByDate(?string $date): array{
         $listSoiree = [];
 
@@ -91,7 +95,7 @@ class NrvRepository
         $resultat->execute(['date' => $date]);
 
         while ($fetch = $resultat->fetch()){
-            $soiree = new Soiree($fetch['date'],$fetch['lieuID'],$this->getNomLieuByID($fetch['lieuID']),$this->adresseLieuByID($fetch['lieuID']));
+            $soiree = new Soiree($fetch['date'], $fetch['time'],$fetch['lieuID'],$this->getNomLieuByID($fetch['lieuID']),$this->adresseLieuByID($fetch['lieuID']));
             $soiree->setID($fetch['soireeID']);
             $listSoiree[] = $soiree;
         }
@@ -200,7 +204,7 @@ class NrvRepository
     /**
      * @throws RepoException
      */
-    public function saveSoiree(?string $date, ?int $lieuID, ?string $nomLieu, ?string $adresse): Soiree {
+    public function saveSoiree(?string $date, ?string $time, ?int $lieuID, ?string $nomLieu, ?string $adresse, float $tarif, ?string $nom, ?string $thematique): Soiree {
         if($lieuID === null){
             $query = "insert into Lieu (nom, adresse) values (:nom, :adresse)";
             $stmt = $this->pdo->prepare($query);
@@ -208,9 +212,9 @@ class NrvRepository
             $lieuID = $this->pdo->lastInsertId();
         }
 
-        $query = "insert into Soiree (date, lieuID) values (:date,:lieuid)";
+        $query = "insert into Soiree (tarif, nom, thematique, date, lieuID) values (:tarif, :nom, :thematique, :date,:lieuid)";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['date' => $date,'lieuid' => $lieuID]);
+        $stmt->execute(['tarif' => $tarif, 'nom' => $nom, 'thematique' => $thematique,'date' => $date.' '.$time,'lieuid' => $lieuID]);
         $soiree = new Soiree($date,$lieuID, $this->getNomLieuByID($lieuID),$this->adresseLieuByID($lieuID));
         $soiree->setID($this->pdo->lastInsertId());
         return $soiree;
@@ -266,7 +270,7 @@ class NrvRepository
         $stmt->execute(['lieuID' => $lieuID]);
 
         while ($fetch = $stmt->fetch()) {
-            $soiree = new Soiree($fetch['date'], $fetch['lieuID'], $this->getNomLieuByID($fetch['lieuID']), $this->adresseLieuByID($fetch['lieuID']));
+            $soiree = new Soiree($fetch['date'], $fetch['time'], $fetch['lieuID'], $this->getNomLieuByID($fetch['lieuID']), $this->adresseLieuByID($fetch['lieuID']));
             $soiree->setID($fetch['soireeID']);
             $listSoiree[] = $soiree;
         }
@@ -314,5 +318,16 @@ class NrvRepository
         $result = $stmt->fetch();
 
         return $result['nom'];
+    }
+
+    public function getAllSoiree(): array{
+        $tab = [];
+        $query = "Select * from soiree;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        while($fetch = $stmt->fetch()){
+            $tab[$fetch['styleID']] = $fetch['nomstyle'];
+        }
+        return $tab;
     }
 }

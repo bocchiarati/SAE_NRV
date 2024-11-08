@@ -33,24 +33,30 @@ class ActionCreateSoiree extends Action
             $options .= "<option value='{$lieuID}'>{$nom}</option>";
         }
         return <<< END
-    <style>
-    /* Container for the form */
     
-</style>
 <h1 style="text-align: center; font-size:60px">Creation D'une soirée</h1>
 <form method="post" action="?action=createSoiree">
-<p>Inserer une date</p>
+    <p>Insérer une date de début</p>
     <input type="date" id="date" name="date" required>
-    <p>Selectionner un lieu</p>
+    
+    <p>Horaire de début</p>
+    <input type="time" id="time" name="time" required>
+
+
+    <p>Sélectionner un lieu</p>
     <select id="location" name="location">
         <option value="" disabled selected>Choisir un lieu</option>
         $options
         <option value="Autre">Ou insérer un nouveau lieu</option>
     </select>
-    
+
     <input type="text" id="new-location" name="new-location" placeholder="Nouveau lieu" style="display: none;">
     <input type="text" id="address" name="address" placeholder="Adresse" style="display: none;">
-
+    
+    <input type="number" id="tarif" name="tarif" placeholder="Tarif" required>
+    <input type="text" id="nom" name="nom" placeholder="Nom" required>
+    <input type="text" id="thematique" name="thematique" placeholder="Thematique", required>
+    
     <button type="submit">Créer</button>
 </form>
 <script>
@@ -91,11 +97,11 @@ END;
 
         $pdo = NrvRepository::getInstance();
         if($_POST['location'] === "Autre"){
-            $pdo->saveSoiree($_POST['date'], null, $_POST['new-location'], $_POST['address']);
+            $pdo->saveSoiree($_POST['date'], $_POST['time'], null, $_POST['new-location'], $_POST['address'], $_POST['tarif'], $_POST['nom'], $_POST['thematique']);
             $message =  "<p>Soirée et Lieu créée avec succes</p>";
         }
         else{
-            $pdo->saveSoiree($_POST['date'], $_POST['location'],null, null);
+            $pdo->saveSoiree($_POST['date'], $_POST['time'], $_POST['location'],null, null, $_POST['tarif'], $_POST['nom'], $_POST['thematique']);
             $message = "Soirée créée avec succes";
         }
         return $message;
