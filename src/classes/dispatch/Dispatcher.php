@@ -76,66 +76,7 @@ END;
         <title>NRV</title>
         <meta charset="utf-8">
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/css/style.css">
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-            }
-            body {
-                font-family: 'Roboto', sans-serif;
-                background-color: #f4f4f4;
-                display: flex;
-                flex-direction: column;
-            }
-            .titre {
-                background-color: white;
-                color: #333;
-                text-align: center;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                padding-bottom: 20px;
-            }
-            .nav ul{
-                margin: 0;
-            }
-            li {
-                list-style-type: none;
-            }
-            .nav{
-                height: 10%;
-                display: flex;
-                justify-content: center;
-            }
-            .nav li{
-                margin: auto;
-            }
-            .nav a {
-                text-decoration: none;
-                color: #FF0000; /* Rouge éclatant pour plus de vivacité */
-                font-weight: bold;
-                padding: 0.5rem 1rem;
-                background-color: #ffe6e6;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
-            }
-            a:hover {
-                background-color: #ffcccc;            
-            }
-            .resultat {
-                padding: 1%;
-                background-color: #ffffff;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
-            
-            #user {
-                text-align: right;
-                margin-right: 100px;
-                margin-top:5px;
-            }
-            
-        </style>
+        <link rel="stylesheet" href="../css/style.css">
         </header>
         <body>
         <div class="titre">

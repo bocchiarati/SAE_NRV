@@ -18,57 +18,7 @@ class ActionCreateSoiree extends Action
             $options .= "<option value='{$lieuID}'>{$nom}</option>";
         }
         return <<< END
-    <style>
-    /* Container for the form */
-    form {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        margin-top: 20px;
-        font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 300px;
-        margin: 0 auto;
-    }
-
-    /* Input and select styling */
-    #date, #location, #new-location, #address {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-        box-sizing: border-box;
-    }
-
-    /* Button styling */
-    button {
-        background-color: #ff0000;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-    }
-
-    /* Button hover effect */
-    button:hover {
-        background-color: #ff0000;
-    }
-
-    /* Focus effect on input and select */
-    #date:focus, #location:focus, #new-location:focus, #address:focus {
-        border-color: #ff0000;
-        outline: none;
-    }
-</style>
+        
 <h1 style="text-align: center; font-size:60px">Creation D'une soirée</h1>
 <form method="post" action="?action=createSoiree">
 <p>Inserer une date</p>

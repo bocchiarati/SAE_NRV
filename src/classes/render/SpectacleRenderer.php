@@ -37,15 +37,17 @@ class SpectacleRenderer implements Renderer {
         $date = $repository->getDateForSpectacle($this->spec->getID());
 
         return <<<HTML
-            <div class="image-container-compact-render">
-                <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact" width="400">
-                <img src="../image/triangle.png" alt="Corner Image" class="corner-image">
-                <div class="corner-text">
-                    <p>{$this->spec->getTitre()}</p>
-                    <p>{$date}</p>   
-                    <p>{$this->spec->getDurationHoursEtMin()}</p>
-                </div>
+        <a href='?action=showSpectacleDetails&id={$this->spec->getID()}' class='spectacle-item'>
+        <div class="image-container-compact-render">
+            <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact" width="400">
+            <img src="../image/triangle.png" alt="Corner Image" class="corner-image">
+            <div class="corner-text">
+                <p>{$this->spec->getTitre()}</p>
+                <p>{$date}</p>   
+                <p>{$this->spec->getDurationHoursEtMin()}</p>
             </div>
+        </div>
+        </a><br>
         HTML;
     }
 
