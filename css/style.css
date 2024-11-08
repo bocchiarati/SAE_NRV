@@ -145,18 +145,31 @@ form {
     margin: 0 auto;
 }
 
+/*
+FILTRES
+ */
+
+.container {
+    display: flex;
+}
+
+.filtres {
+    width: 15%;
+}
+
+.affichage {
+    width: 80%;
+}
+
 #filtre {
-    margin: 0;
-    background-color: white;
     padding: 0;
+    background-color: white;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
-    width: 170px;
+    width: 100%;
     box-shadow: none;
-
 }
-
 
 /* Button styling */
 button {

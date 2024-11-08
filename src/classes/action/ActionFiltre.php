@@ -8,6 +8,8 @@ use iutnc\nrv\repository\NrvRepository;
 
 class ActionFiltre extends Action {
 
+    private string $output = "<h2>Veuillez selectionner un filtre</h2>";
+
     function executeGet(): string
     {
         $affichage = "";
@@ -21,7 +23,7 @@ class ActionFiltre extends Action {
                 $spectacles = $pdo->getSpectaclesByStyle($_GET['id']);
 
                 $render = new ListSpectacleRenderer($spectacles);
-                $output = $render->render(Renderer::LONG);
+                $this->output = $render->render(Renderer::LONG);
             }
 
             if($_GET['filter'] === "location") {
@@ -35,27 +37,24 @@ class ActionFiltre extends Action {
                     return "<p>Aucun spectacle n'est prevue pour ce lieu.</p>";
                 }
 
-                $output = "<h2>Spectacles pour le lieu selectionne</h2><ul>";
-                $output .= "";
+                $this->output = "<h2>Spectacles pour le lieu selectionne</h2><ul>";
+                $this->output .= "";
                 foreach ($filteredSoirees as $soiree) {
                     $spectacles = $repository->getSpectacleBySoiree($soiree->getID());
 
                     if (count($spectacles->spectacles) >= 1) {
                         $spectacleRenderer = new ListSpectacleRenderer($spectacles);
-                        $output .= "<div style='margin-bottom: 20px;'>";
-                        $output .= "<h3>Soiree: {$soiree->nomLieu}</h3>";
-                        $output .= "<p><strong>Adresse:</strong> {$soiree->adresseLieu}</p>";
-                        $output .= $spectacleRenderer->render(Renderer::LONG);
-                        $output .= "</div>";
+                        $this->output .= "<div style='margin-bottom: 20px;'>";
+                        $this->output .= "<h3>Soiree: {$soiree->nomLieu}</h3>";
+                        $this->output .= "<p><strong>Adresse:</strong> {$soiree->adresseLieu}</p>";
+                        $this->output .= $spectacleRenderer->render(Renderer::LONG);
+                        $this->output .= "</div>";
                     } else {
-                        $output .= "<p>Aucun spectacle pour la soiree a {$soiree->nomLieu}.</p>";
+                        $this->output .= "<p>Aucun spectacle pour la soiree a {$soiree->nomLieu}.</p>";
                     }
                 }
-                $output .= "</div>";
+                $this->output .= "</div>";
             }
-        } else {
-            //FILTRE PAR DEFAUT
-            $output = "Filtre par défaut";
         }
 
         $choix = '';
@@ -101,9 +100,9 @@ class ActionFiltre extends Action {
                     </div>
                 </div>
             </div>
-        </div>
-         <div class="affichage">
-            {$output}
+            <div class="affichage">
+            {$this->output}
+            </div>
         </div>
         HTML;
 
@@ -125,17 +124,17 @@ class ActionFiltre extends Action {
             return "<p>Aucune spectacle n'est prevue pour la date : $selectedDate.</p>";
         }
 
-        $output = "<h2>Spectacles pour la date : $selectedDate</h2><ul>";
+        $this->output = "<h2>Spectacles pour la date : $selectedDate</h2><ul>";
         foreach ($filteredSoirees as $soiree) {
 
             $spectacles = $repository->getSpectacleBySoiree($soiree->getID());
 
             $renderer = new ListSpectacleRenderer($spectacles);
 
-            $output.= $renderer->render(Renderer::LONG);
+            $this->output.= $renderer->render(Renderer::LONG);
         }
-        $output .= "</ul>";
-        return $output;
+        $this->output .= "</ul>";
+        return $this->executeGet();
     }
 
 }
