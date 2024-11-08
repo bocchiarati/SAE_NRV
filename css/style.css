@@ -35,10 +35,10 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 65%;
-    height: auto;
+    width: 100%;
+    height: 40%;
     display: block;
-    opacity: 70%;
+    opacity: 80%;
 }
 
 .spectacle-item-content {
@@ -145,18 +145,32 @@ form {
     margin: 0 auto;
 }
 
+/*
+FILTRES
+ */
+
+.container {
+    display: flex;
+}
+
+.filtres {
+    width: 15%;
+    padding-right: 10px;
+}
+
+.affichage {
+    width: 80%;
+}
+
 #filtre {
-    margin: 0;
-    background-color: white;
     padding: 0;
+    background-color: white;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
-    width: 170px;
+    width: 100%;
     box-shadow: none;
-
 }
-
 
 /* Button styling */
 button {
@@ -212,8 +226,10 @@ form > input:focus, form > select:focus, form > #date:focus{
 .dropdown {
     position: relative;
     display: inline-block;
+    width: 100%;
 }
 .dropdown-button {
+    width: 100%;
     background-color: #FF0000;
     color: white;
     padding: 10px;
@@ -225,7 +241,7 @@ form > input:focus, form > select:focus, form > #date:focus{
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
+    width: 100%;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }

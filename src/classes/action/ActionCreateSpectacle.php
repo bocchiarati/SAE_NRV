@@ -25,12 +25,18 @@ class ActionCreateSpectacle extends Action
         }
 
         $repository = NrvRepository::getInstance();
-        $locations = $repository->getAllLieu();
+        $styles = $repository->getAllStyle();
+        $soirees = $repository->getAllSoiree();
 
         // creation des options pour le select du lieu
-        $options = '';
-        foreach ($locations as $lieuID => $nom) {
-            $options .= "<option value='{$lieuID}'>{$nom}</option>";
+        $optionsStyle = '';
+        foreach ($styles as $styleID => $nom) {
+            $optionsStyle .= "<option value='{$styleID}'>{$nom}</option>";
+        }
+
+        $optionsSoiree = '';
+        foreach ($soirees as $soireeID => [$nomLieu, $date]) {
+            $optionsSoiree .= "<option value='{$soireeID}'>{[0]." - ".[1}</option>";
         }
         return <<< END
     
@@ -39,19 +45,36 @@ class ActionCreateSpectacle extends Action
     <p>Selectoinner une soirée</p>
     <select id="soiree" name="soiree">
         <option value="" disabled selected>Choisir une soiree</option>
-        $options
+        $optionsSoiree
     </select>
-    <p>Selectionner un lieu</p>
+    <p>Selectionner un Titre</p>
+    <input type="text" id="titre" name="titre" placeholder="Titre">
+    <input type="text" id="groupe" name="groupe" placeholder="Groupe">
+    <input type="text" id="duree" name="duree" placeholder="Duree">
+    
     <select id="style" name="style">
-        <option value="" disabled selected>Choisir un lieu</option>
-        $options
+        <option value="" disabled selected>Choisir un style</option>
+        $optionsStyle
+        <option value="Autre">Nouveau style</option>
     </select>
     
-    <input type="text" id="new-location" name="new-location" placeholder="Nouveau lieu">
-    <input type="text" id="address" name="address" placeholder="Adresse"">
+    <input type="text" id="nomStyle" name="nomStyle" placeholder="Nom du nouveau Style" style="display: none;">
 
     <button type="submit">Créer</button>
 </form>
+
+<script>
+    // Script to show/hide the new location and address inputs based on the selection
+    document.getElementById('style').addEventListener('change', function() {
+        var nomStyleInput = document.getElementById('nomStyle');
+        
+        if (this.value === 'Autre') {
+            nomStyleInput.style.display = 'block';
+        } else {
+            nomStyleInput.style.display = 'none';
+        }
+    });
+</script>
 END;
 
     }
