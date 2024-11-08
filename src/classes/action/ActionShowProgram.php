@@ -6,6 +6,7 @@ use iutnc\nrv\auth\AuthnProvider;
 use iutnc\nrv\exception\AuthException;
 use iutnc\nrv\exception\RepoException;
 use iutnc\nrv\programme\Spectacle;
+use iutnc\nrv\render\ListSpectacleRenderer;
 use iutnc\nrv\render\Renderer;
 use iutnc\nrv\render\SpectacleRenderer;
 use iutnc\nrv\repository\NrvRepository;
@@ -21,11 +22,9 @@ class ActionShowProgram extends Action
         $pdo = NrvRepository::getInstance();
         $spectacles = $pdo->findAllSpectacle();
         $affichage = "";
-        if(count($spectacles) !== 0){
-            foreach ($spectacles as $spec) {
-                $renderer = new SpectacleRenderer($spec);
-                $affichage .= $renderer->render(Renderer::COMPACT);
-            }
+        if(count($spectacles->spectacles) > 0){
+            $renderer = new ListSpectacleRenderer($spectacles);
+            $affichage .= $renderer->render(Renderer::COMPACT);
         }
         else {
             $affichage .= "<p>Aucun spectacle programmé</p>";

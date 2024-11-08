@@ -8,6 +8,9 @@ CREATE TABLE Lieu(
 -- creation de la table soiree
 CREATE TABLE Soiree(
 	soireeID INT(3) AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    thematique VARCHAR(255),
+    tarif FLOAT,
     date DATE NOT NULL,
     lieuID INT,
     FOREIGN KEY (lieuID) REFERENCES Lieu(lieuID)
@@ -29,6 +32,7 @@ CREATE TABLE Spectacle(
     extrait VARCHAR(255) DEFAULT NULL,
     image VARCHAR(255) DEFAULT NULL,
     styleID INT,
+    annuler BOOLEAN,
     FOREIGN KEY (styleID) REFERENCES StyleMusic(styleID)
 );
 
@@ -46,7 +50,7 @@ CREATE TABLE User(
     userid INT(3) AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(256) UNIQUE NOT NULL,
     mdp VARCHAR(256) NOT NULL,
-    roleid INT(2) NOT NULL
+    roleid INT(3) NOT NULL
 );
 
 -- creation de la table userspreferences
@@ -70,15 +74,15 @@ INSERT INTO StyleMusic (nomstyle) VALUES
 ('Rock'),
 ('Reggae');
 
-INSERT INTO Soiree (date, lieuID) VALUES
-('2023-11-25', 1),
-('2023-11-26', 2),
-('2023-11-27', 3);
+INSERT INTO Soiree (nom, thematique, tarif, date, lieuID) VALUES
+('Soiree blues','Concert de blues',5.99,'2023-11-25 20:00:00', 1),
+('Soiree Rock','Concert de rock',5.99,'2023-11-26 21:00:00', 2),
+('Reggae night','Démo de reggae',5.99,'2023-11-27 22:00:00', 3);
 
-INSERT INTO Spectacle (titre, groupe, duree, description, extrait, image, styleID) VALUES
-('Blues Night', 'The Blue Cats', 120, 'A night full of deep blues music.', NULL, 'images/bluesnight.jpg', 1),
-('Rock Fest', 'The Rocking Stones', 150, 'Experience the ultimate rock and roll showdown.', NULL, 'images/rockfest.jpg', 2),
-('Reggae Rhythms', 'The Reggae Beats', 130, 'Chill to the soothing sounds of reggae.', NULL, 'images/reggaerythms.jpg', 3);
+INSERT INTO Spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) VALUES
+('Blues Night', 'The Blue Cats', 120, 'A night full of deep blues music.', NULL, 'bluesnight.jpg', 1, FALSE),
+('Rock Fest', 'The Rocking Stones', 150, 'Experience the ultimate rock and roll showdown.', NULL, 'rockfest.jpg', 2, FALSE),
+('Reggae Rhythms', 'The Reggae Beats', 130, 'Chill to the soothing sounds of reggae.', NULL, 'reggaerythms.jpg', 3, TRUE);
 
 INSERT INTO SoireeToSpectacle (soireeID, spectacleID) VALUES
 (1, 1),
@@ -86,7 +90,7 @@ INSERT INTO SoireeToSpectacle (soireeID, spectacleID) VALUES
 (3, 3);
 
 INSERT INTO User (userid, email, mdp, roleid) VALUES
-(1, 'user1@mail.com', '$2y$12$ap6NX0Ps8QgsgFUg.W5R0Ow', 1);
+(1, 'user1@mail.com', '$2y$12$1DNY3EAleSmszEDaIc1Wde08ZWct.yL9zrC7miePmNV/2TMIiu/SG', 1);
 
 INSERT INTO UsersPreferences (userID, spectacleID) VALUES
 (1, 1),
