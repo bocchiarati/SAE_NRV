@@ -75,80 +75,12 @@
     padding: 0;
 }
 
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    flex-direction: column;
-}
-
 .titre {
     background-color: white;
     color: #333;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: relative;
-}
-
-.resultat {
-    min-height: 70%;
-}
-
-.nav ul {
-    margin: 0;
-}
-
-li {
-    list-style-type: none;
-}
-
-.nav {
-    height: 10%;
-    display: flex;
-    justify-content: center;
-    font-size: 1.3vw;
-}
-
-.nav li {
-    display: flex;
-    width: 100%;
-    margin: 1%;
-    align-items: center;
-    justify-content: center;
-}
-
-.nav a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #FF0000;
-    font-weight: bold;
-    width: 100%;
-    height: 100%;
-    background-color: #ffe6e6;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-a:hover {
-    background-color: #ffcccc;
-}
-
-.resultat {
-    padding: 1%;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#user {
-    position: absolute;
-    text-align: center;
-    right: 0;
-    bottom: 0;
-    padding: 1%;
 }
 
 form {
@@ -168,10 +100,6 @@ form {
 /*
 FILTRES
  */
-
-.container {
-    display: flex;
-}
 
 .filtres {
     width: 15%;
@@ -264,4 +192,55 @@ form > input:focus, form > select:focus, form > #date:focus{
     width: 100%;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+}
+
+/* Dispatcher */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #f1f1f1;
+    margin: 0;
+}
+
+.jumbotron {
+    background: url('../image/background.png') center center / cover no-repeat;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem 1rem;
+}
+.jumbotron h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #ff8c00;
+}
+.jumbotron p {
+    font-size: 1.25rem;
+    color: #ffffff;
+}
+
+.branding #user {
+    margin: 0;
+    color: #f1f1f1;
+}
+
+.branding h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #ff8c00;
+}
+
+.nav-links a {
+    color: #f1f1f1;
+    margin-left: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-links a:hover {
+    color: #ff8c00;
+}
+
+.container {
+    margin-top: 3px;
+    padding: 1rem;
 }
