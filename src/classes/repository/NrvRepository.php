@@ -419,7 +419,7 @@ class NrvRepository
         return $tab;
     }
 
-    public function saveSpectacle(string $titre, string $groupe, int $duree, string $description, ?string $extrait, string $image, ?int $styleID, ?string $nomStyle): Spectacle {
+    public function saveSpectacle(string $titre, string $groupe, int $duree, string $description, ?string $extrait, string $image, ?int $styleID, ?string $nomStyle, ?int $soireeID): Spectacle {
         if($styleID === null){
             $query = "insert into stylemusic (nomstyle) values (:nomStyle)";
             $stmt = $this->pdo->prepare($query);
@@ -430,9 +430,19 @@ class NrvRepository
         $query = "insert into Spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) values (:titre, :groupe, :duree, :desc, :extrait, :image, :styleid, false)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['titre' => $titre, 'groupe' => $groupe, 'duree' => $duree, 'desc' => $description, 'extrait' => $extrait, 'image' => $image, 'styleid' => $styleID]);
-        $spectacle = new Spectacle($titre, $groupe, $duree, $description, $extrait, $image, $styleID, $nomStyle, false);
+        $spectacle = new Spectacle($titre, $groupe, $duree, $styleID, $nomStyle, $description, $extrait, $image, false);
         $spectacle->setID($this->pdo->lastInsertId());
+
+        if($soireeID !== null) {
+            $this->saveSoireeToSpectacle($spectacle->getID(), $soireeID);
+        }
         return $spectacle;
+    }
+
+    public function saveSoireeToSpectacle(int $spectacleID, int $soireeID): void {
+        $query = "insert into SoireeToSpectacle (spectacleid, soireeid) values (:spectacleid, :soireeid)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['spectacleid' => $spectacleID, 'soireeid' => $soireeID]);
     }
 }
 

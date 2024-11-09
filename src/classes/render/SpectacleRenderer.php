@@ -66,21 +66,43 @@ class SpectacleRenderer implements Renderer {
         $date = $repository->getDateForSpectacle($this->spec->getID());
         $location = $repository->getLieuNomForSpectacle($this->spec->getID());
 
-        return <<<HTML
-        <div style="margin: 10px;">
-            <h3>{$this->spec->getTitre()}</h3>
-            <strong>Groupe:</strong> {$this->spec->getGroupe()}<br>
-            <strong>Date:</strong> {$date}<br>
-            <strong>Lieu:</strong> {$location}<br>
-            <strong>Duree:</strong> {$this->spec->getDuree()} min<br>
-            <strong>Description:</strong> {$this->spec->getDescription()}<br>
-            <strong>Style:</strong> {$this->spec->getNomStyle()}<br>
-            <div class="image-container">
-            <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="150">
+        if(str_ends_with($this->spec->getCheminExtrait(), "mp3")) {
+            $extrait = <<<END
             <audio controls>
-                    <source src="{$this->spec->getCheminExtrait()}" type="audio/mpeg">
-                    Your browser does not support the audio element.
+                <source src="../extrait/{$this->spec->getCheminExtrait()}" type="audio/mpeg">
+                Your browser does not support the audio element.
             </audio>
+            END;
+        }
+        else if (str_ends_with($this->spec->getCheminExtrait(), "mp4")) {
+            $extrait = <<<END
+            <video controls>
+                <source src="../extraits/{$this->spec->getCheminExtrait()}" type="video/mp4">
+                Your browser does not support the video element.
+            </video>
+            END;
+
+        }
+        else {
+            $extrait = "";
+
+        }
+
+        return <<<HTML
+        <div style="margin: 10px; display:flex">
+            <div>
+                <h3>{$this->spec->getTitre()}</h3>
+                <strong>Groupe:</strong> {$this->spec->getGroupe()}<br>
+                <strong>Date:</strong> {$date}<br>
+                <strong>Lieu:</strong> {$location}<br>
+                <strong>Duree:</strong> {$this->spec->getDuree()} min<br>
+                <strong>Description:</strong> {$this->spec->getDescription()}<br>
+                <strong>Style:</strong> {$this->spec->getNomStyle()}<br>
+                
+            </div>
+            $extrait
+            <div class="image-container" style="margin-left: 10px">
+                <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="290">
             </div>
         </div>
         HTML;

@@ -25,20 +25,7 @@ class ActionCreateSpectacle extends Action
             return "Vous n'avez pas le droit d'être ici";
         }
 
-        $upload_dir_extrait = Renderer::REPERTOIRE_EXTRAITS;
-        $upload_dir_image = Renderer::REPERTOIRE_IMAGE;
 
-        $filename = uniqid();
-        $tmp = $_FILES['inputfile']['tmp_name'];
-        if (($_FILES['inputfile']['error'] === UPLOAD_ERR_OK) && ($_FILES['inputfile']['type'] === 'audio/mpeg') ) {
-
-            $dest = $upload_dir_extrait.$filename.'.mp3';
-            move_uploaded_file($tmp, $dest );
-            $fichier = $filename.'.mp3';
-
-        } else {
-            return "fichier invalide";
-        }
 
 
         $repository = NrvRepository::getInstance();
@@ -58,7 +45,7 @@ class ActionCreateSpectacle extends Action
         return <<< END
     
     <h1 style="text-align: center; font-size:60px">Creation D'un Spectacle</h1>
-    <form method="post" action="?action=createSpectacle">
+    <form method="post" action="?action=createSpectacle" enctype="multipart/form-data">
     <p>Selectoinner une soirée</p>
     <select id="soiree" name="soiree">
         <option value="" disabled selected>Choisir une soiree</option>
@@ -67,7 +54,7 @@ class ActionCreateSpectacle extends Action
     <p>Selectionner un Titre</p>
     <input type="text" id="titre" name="titre" placeholder="Titre">
     <input type="text" id="groupe" name="groupe" placeholder="Groupe">
-    <input type="text" id="duree" name="duree" placeholder="Duree">
+    <input type="number" id="duree" name="duree" placeholder="Duree">
     <input type="text" id="description" name="description" placeholder="Description">
     <p>Choisir un extrait audio ou video</p>
     <input type="file" id="extrait" name="extrait" required>
@@ -105,7 +92,6 @@ END;
      */
     function executePost(): string
     {
-
         try {
             $user = AuthnProvider::getSignedInUser();
         } catch (AuthException $e) {
@@ -118,14 +104,55 @@ END;
         }
 
         $pdo = NrvRepository::getInstance();
-        if($_POST['style'] === "Autre"){
-            $pdo->saveSpectacle($_POST['titre'], $_POST['groupe'], $_POST['duree'], $_POST['description'], $_POST['extrait'], $_POST['image'], null, $_POST['nomStyle']);
-            $message =  "<p>Soirée et Lieu créée avec succes</p>";
+        $upload_dir_image = Renderer::REPERTOIRE_IMAGE;
+        $imagename = uniqid();
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $tmp = $_FILES['image']['tmp_name'];
+            if ($_FILES['image']['type'] === 'image/jpeg') {
+                $dest = $upload_dir_image . $imagename . '.jpeg';
+                move_uploaded_file($tmp, $dest);
+                $image = $imagename . '.jpeg';
+            } else {
+                return "image invalide";
+            }
+        } else {
+            return "image non trouvée ou erreur de téléchargement";
         }
-        else{
-            $pdo->saveSpectacle($_POST['titre'], $_POST['groupe'], $_POST['duree'], $_POST['description'], $_POST['extrait'], $_POST['image'], $_POST['style'], null);
-            $message = "Soirée créée avec succes";
+
+
+
+        $upload_dir_extrait = Renderer::REPERTOIRE_EXTRAITS;
+        $extraitname = uniqid();
+
+        if (isset($_FILES['extrait']) && $_FILES['extrait']['error'] === UPLOAD_ERR_OK) {
+            $tmp = $_FILES['extrait']['tmp_name'];
+            if ($_FILES['extrait']['type'] === 'video/mp4' || $_FILES['extrait']['type'] === 'audio/mpeg') {
+                $dest = $upload_dir_extrait . $extraitname . '.mp4';
+                move_uploaded_file($tmp, $dest);
+                $extrait = $extraitname . '.mp4';
+            } else {
+                return "extrait invalide";
+            }
+        } else {
+            return "extrait non trouvée ou erreur de téléchargement";
         }
-        return $message;
+
+        if ($_POST['style'] === "Autre") {
+            $styleID = null; // Cas où un nouveau style doit être créé
+            $nomStyle = $_POST['nomStyle'];
+
+        } else {
+            $styleID = intval($_POST['style']); // Conversion en entier
+            var_dump($styleID);
+            $nomStyle = null;
+        }
+
+        if (!is_int($styleID) && !is_null($styleID)) {
+            return "Erreur : styleID doit être de type ?int";
+        }
+
+        $pdo->saveSpectacle($_POST['titre'], $_POST['groupe'], $_POST['duree'], $_POST['description'], $extrait, $image, $styleID, $nomStyle, $_POST['soiree']);
+        return "Spectacle créer avec succes";
     }
 }

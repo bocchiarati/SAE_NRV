@@ -12,7 +12,6 @@
     display: block;
     text-decoration: none;
     color: inherit;
-    background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
@@ -89,11 +88,10 @@ form {
     align-items: center;
     flex-direction: column;
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 70%;
     margin: 0 auto;
 }
 
@@ -112,7 +110,6 @@ FILTRES
 
 #filtre {
     padding: 0;
-    background-color: white;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
@@ -122,7 +119,7 @@ FILTRES
 
 /* Button styling */
 button {
-    background-color: #ff0000;
+    background-color: #f1590a;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -134,14 +131,14 @@ button {
 
 /* Button hover effect */
 button:hover {
-    background-color: #cc0000;
+    background-color: #f1590a;
 }
 
 /* Focus effect on input and select */
 
 
 form > input , form > select{
-    width: 100%;
+    width: 90%;
     padding: 10px;
     margin: 10px 0;
     border-radius: 4px;
@@ -152,7 +149,7 @@ form > input , form > select{
 
 
 form > input:focus, form > select:focus, form > #date:focus{
-    border-color: #ff0000;
+    border-color: #f1590a;
     outline: none;
 }
 
@@ -178,7 +175,7 @@ form > input:focus, form > select:focus, form > #date:focus{
 }
 .dropdown-button {
     width: 100%;
-    background-color: #FF0000;
+    background-color: #f1590a;
     color: white;
     padding: 10px;
     font-size: 16px;

@@ -36,14 +36,14 @@ class ActionCreateSoiree extends Action
     
 <h1 style="text-align: center; font-size:60px">Creation D'une soirée</h1>
 <form method="post" action="?action=createSoiree">
-    <p>Insérer une date de début</p>
+    <h3>Insérer une date de début</h3>
     <input type="date" id="date" name="date" required>
     
-    <p>Horaire de début</p>
+    <h3>Horaire de début</h3>
     <input type="time" id="time" name="time" required>
 
 
-    <p>Sélectionner un lieu</p>
+    <h3>Sélectionner un lieu</h3>
     <select id="location" name="location">
         <option value="" disabled selected>Choisir un lieu</option>
         $options
@@ -55,7 +55,7 @@ class ActionCreateSoiree extends Action
     
     <input type="number" id="tarif" name="tarif" placeholder="Tarif" required>
     <input type="text" id="nom" name="nom" placeholder="Nom" required>
-    <input type="text" id="thematique" name="thematique" placeholder="Thematique", required>
+    <input type="text" id="thematique" name="thematique" placeholder="Thematique" required>
     
     <button type="submit">Créer</button>
 </form>

@@ -56,13 +56,13 @@ class Dispatcher
         $check = new Authz($user);
         if($check->checkIsOrga()) {
             $superAdmin = <<<END
-            <ul class="nav">
-                <li><a href="?action=createSoiree">Creer Une Soirée</a></li>
-                <li><a href="?action=createSpectacle">Creer Un Spectacle</a></li>
-                <li><a href="?action=cancelSpectacle">Annuler un spectacle</a></li>
-                <li><a href="?action=editSpectacle">Modifier Un Spectacle</a></li> 
-                <li><a href="?action=editSoiree">Modifier Une Soirée</a></li>         
-            </ul>
+            <div class="nav-links">
+                <a href="?action=createSoiree">Creer Une Soirée</a>
+                <a href="?action=createSpectacle">Creer Un Spectacle</a>
+                <a href="?action=cancelSpectacle">Annuler un spectacle</a>
+                <a href="?action=editSpectacle">Modifier Un Spectacle</a> 
+                <a href="?action=editSoiree">Modifier Une Soirée</a>         
+            </div>
             END;
         } else {
             $superAdmin = "";
