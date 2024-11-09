@@ -3,7 +3,7 @@
         'name' => 's3/nrv',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '9afa3177b36e603629f21a155b35a297136cb349',
+        'reference' => '62bf9b4d315c9429fcf3120070c5249bf76a17c5',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         's3/nrv' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '9afa3177b36e603629f21a155b35a297136cb349',
+            'reference' => '62bf9b4d315c9429fcf3120070c5249bf76a17c5',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
