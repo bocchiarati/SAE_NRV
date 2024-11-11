@@ -60,12 +60,12 @@ class Dispatcher
                 <button class="nav-links bg-transparent border-0" type="button" id="dropdownMenuButton" aria-expanded="false" onclick="toggleDropdown()">
                     Menu Orga
                 </button>
-                <ul class="nav-links dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownMenu">
-                    <li><a class="dropdown-item" href="?action=createSoiree">Créer Une Soirée</a></li>
-                    <li><a class="dropdown-item" href="?action=createSpectacle">Créer Un Spectacle</a></li>
-                    <li><a class="dropdown-item" href="?action=cancelSpectacle">Annuler un spectacle</a></li>
-                    <li><a class="dropdown-item" href="?action=editSpectacle">Modifier Un Spectacle</a></li>
-                    <li><a class="dropdown-item" href="?action=editSoiree">Modifier Une Soirée</a></li>
+                <ul class="nav-links dropdown-menu bg-secondary bg-opacity-25 border-0"" aria-labelledby="dropdownMenuButton" id="dropdownMenu">
+                    <li><a class="dropdown-item bg-transparent" href="?action=createSoiree">Créer Une Soirée</a></li>
+                    <li><a class="dropdown-item bg-transparent" href="?action=createSpectacle">Créer Un Spectacle</a></li>
+                    <li><a class="dropdown-item bg-transparent" href="?action=cancelSpectacle">Annuler un spectacle</a></li>
+                    <li><a class="dropdown-item bg-transparent" href="?action=editSpectacle">Modifier Un Spectacle</a></li>
+                    <li><a class="dropdown-item bg-transparent" href="?action=editSoiree">Modifier Une Soirée</a></li>
                 </ul>       
             </div>
             

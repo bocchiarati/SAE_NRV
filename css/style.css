@@ -252,15 +252,10 @@ body {
 }
 
 .dropdown-menu {
-    background-color: black;
     position: absolute;
     right: 0;
 }
 
 .dropdown-item {
     padding-left: 5%;
-}
-
-.dropdown-item:hover {
-    background-color: black;
 }
