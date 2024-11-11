@@ -55,17 +55,37 @@ class Dispatcher
 
         $check = new Authz($user);
         if($check->checkIsOrga()) {
-            $superAdmin = <<<END
-            <div class="nav-links">
-                <a href="?action=createSoiree">Creer Une Soirée</a>
-                <a href="?action=createSpectacle">Creer Un Spectacle</a>
-                <a href="?action=cancelSpectacle">Annuler un spectacle</a>
-                <a href="?action=editSpectacle">Modifier Un Spectacle</a> 
-                <a href="?action=editSoiree">Modifier Une Soirée</a>         
+            $menuOrga = <<<END
+            <div class="dropdown" onmouseleave="hideDropdown()">
+                <button class="nav-links bg-transparent border-0" type="button" id="dropdownMenuButton" aria-expanded="false" onclick="toggleDropdown()">
+                    Menu Orga
+                </button>
+                <ul class="nav-links dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownMenu">
+                    <li><a class="dropdown-item" href="?action=createSoiree">Créer Une Soirée</a></li>
+                    <li><a class="dropdown-item" href="?action=createSpectacle">Créer Un Spectacle</a></li>
+                    <li><a class="dropdown-item" href="?action=cancelSpectacle">Annuler un spectacle</a></li>
+                    <li><a class="dropdown-item" href="?action=editSpectacle">Modifier Un Spectacle</a></li>
+                    <li><a class="dropdown-item" href="?action=editSoiree">Modifier Une Soirée</a></li>
+                </ul>       
             </div>
+            
+            <script>           
+                // Fonction pour cacher le menu lorsqu'on quitte
+                function hideDropdown() {
+                    var dropdownMenu = document.getElementById("dropdownMenu");
+                    dropdownMenu.classList.remove('show');  // Cacher le menu
+                }
+                
+                // Fonction pour basculer l'état du menu (afficher ou masquer) au clic
+                function toggleDropdown() {
+                    var dropdownMenu = document.getElementById("dropdownMenu");
+                    dropdownMenu.classList.toggle('show');  // Bascule entre afficher et masquer
+                }
+            </script>
+
             END;
         } else {
-            $superAdmin = "";
+            $menuOrga = "";
         }
 
 
@@ -80,18 +100,18 @@ class Dispatcher
         </head>
         <body>
             <header class="jumbotron">
-                <div class="navbar d-flex align-items-center justify-content-between mb-5 p-4">
+                <div class="navbar d-flex align-items-center justify-content-between mb-5 p-3">
                         <div class="branding d-flex align-items-center">
                             <p id="user" class="me-5">{$user->email}</p>
                             <h1 class="ms-3">NRV.net</h1>
                         </div>
-                        <div class="nav-links">
+                        <div class="nav-links d-flex align-items-center gap-3">
                             <a href="?">Accueil</a>
                             <a href="?action=signin">Se connecter</a>
                             <a href="?action=signout">Se deconnecter</a>
                             <a href="?action=filtre">Programme</a> 
+                            {$menuOrga} 
                         </div>
-                        {$superAdmin} 
                 </div>
                  <div class="container">
                     <h1>Nancy Rock Vibration Festival 2025</h1>
