@@ -206,10 +206,7 @@ class NrvRepository
      */
     public function saveSoiree(?string $date, ?string $time, ?int $lieuID, ?string $nomLieu, ?string $adresse, float $tarif, ?string $nom, ?string $thematique): Soiree {
         if($lieuID === null){
-            $query = "insert into Lieu (nom, adresse) values (:nom, :adresse)";
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute(['nom' => $nomLieu,'adresse' => $adresse]);
-            $lieuID = $this->pdo->lastInsertId();
+            $lieuID = $this->saveLieu($nomLieu, $adresse);
         }
 
         $query = "insert into Soiree (tarif, nom, thematique, date, lieuID) values (:tarif, :nom, :thematique, :date,:lieuid)";
@@ -218,6 +215,13 @@ class NrvRepository
         $soiree = new Soiree($date,$lieuID, $this->getNomLieuByID($lieuID),$this->adresseLieuByID($lieuID), $nom, $thematique, $tarif);
         $soiree->setID($this->pdo->lastInsertId());
         return $soiree;
+    }
+
+    public function saveLieu($nomLieu, $adress) : int {
+        $query = "insert into Lieu (nom, adresse) values (:nom, :adresse)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['nom' => $nomLieu,'adresse' => $adress]);
+        return $this->pdo->lastInsertId();
     }
 
     /**
@@ -452,10 +456,48 @@ class NrvRepository
         return $stmt->fetch()['annuler'];
     }
 
-    public function setSpectacleAnnuler(int $spectacleID, bool $annuler): void{
+    public function setSpectacleAnnuler(int $spectacleID, bool $annuler): void {
         $query = "update spectacle set annuler = :annuler where spectacleid = :idspectacle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['idspectacle' => $spectacleID, 'annuler' => $annuler]);
+    }
+
+    public function modifierNom(int $soiree, string $nouveauNom) : string {
+        $query = "update Soiree set nom = :nom where soireeid = :soiree;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['nom' => $nouveauNom, 'soiree' => $soiree]);
+        return "<p>Nom de la soiree modifier</p>";
+    }
+
+    public function modifierThematique(int $soiree, string $nouvelleThematique) : string {
+        $query = "update Soiree set thematique = :thematique where soireeid = :soiree;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['thematique' => $nouvelleThematique, 'soiree' => $soiree]);
+        return "<p>Thematique de la soiree modifier</p>";
+    }
+
+    public function modifierTarif(int $soiree, int $nouveauTarif) : string {
+        $query = "update Soiree set tarif = :tarif where soireeid = :soiree;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['tarif' => $nouveauTarif, 'soiree' => $soiree]);
+        return "<p>Nom de la soiree modifier</p>";
+    }
+
+    public function modifierDate(int $soiree, string $nouvelleDate) : string {
+        $query = "update Soiree set date = :date where soireeid = :soiree;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['date' => $nouvelleDate, 'soiree' => $soiree]);
+        return "<p>Nom de la soiree modifier</p>";
+    }
+
+    public function modifierLieuSoiree(int $soiree, ?int $nouveauLieu, ?string $nomLieu, ?string $address) : string {
+        if($nouveauLieu === null){
+            $nouveauLieu = $this->saveLieu($nomLieu, $address);
+        }
+        $query = "update Soiree set lieuID = :lieu where soireeid = :soiree;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['lieu' => $nouveauLieu, 'soiree' => $soiree]);
+        return "<p>Lieu de la soiree modifier</p>";
     }
 }
 
