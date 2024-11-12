@@ -43,11 +43,17 @@ class SpectacleRenderer implements Renderer {
             $deuxDate = explode(' ', $date);
         }
 
+        $annuler = '';
+        if($repository->getSpectacleAnnuler($this->spec->getID())){
+            $annuler = '<img src="../image/annuler.png" alt="Cancel Image" class="position-absolute top-0 start-0 h-30 w-100 mt-3">';
+        }
+
         return <<<HTML
             <a href='?action=showSpectacleDetails&id={$this->spec->getID()}' class='spectacle-item'>
                 <div class="image-container-compact-render">
                     <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact">
                     <img src="../image/triangle-rouge.png" alt="Corner Image" class="corner-image">
+                    {$annuler}
                     <div class="position-absolute bottom-0 start-0 h-25 fs-6 lh-1 mb-1 ms-1">
                         <p class="m-0 w-75">{$this->spec->getTitre()}</p>
                         <p class="m-0">{$deuxDate[0]}</p>
