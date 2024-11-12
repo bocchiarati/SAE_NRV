@@ -71,7 +71,14 @@ class SpectacleRenderer implements Renderer {
         // recuperer la date et le lieu du spectacle
         $repository = NrvRepository::getInstance();
         $date = $repository->getDateForSpectacle($this->spec->getID());
+        //cas où le spectacle n'est pas programmé à une soirée
+        if($date === "NULL"){
+            $date = 'Non programmé';
+        }
         $location = $repository->getLieuNomForSpectacle($this->spec->getID());
+        if($location === "NULL"){
+            $location = 'Non programmé';
+        }
 
         if(str_ends_with($this->spec->getCheminExtrait(), "mp3")) {
             $extrait = <<<END

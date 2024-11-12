@@ -325,7 +325,11 @@ class NrvRepository
         $stmt->execute(['spectacleID' => $spectacleID]);
         $result = $stmt->fetch();
 
-        return $result['nom'];
+        if(isset($result['nom'])){
+            return $result['nom'];
+        }else{
+            return "NULL";
+        }
     }
 
     // retourne la liste des spectacles par style sans le spectacle actuel pour la page ActionShowSpectacleDetails
