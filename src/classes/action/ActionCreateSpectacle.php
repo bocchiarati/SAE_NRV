@@ -48,7 +48,7 @@ class ActionCreateSpectacle extends Action
     <form method="post" action="?action=createSpectacle" enctype="multipart/form-data">
     <p>Selectoinner une soirée</p>
     <select id="soiree" name="soiree">
-        <option value="" disabled selected>Choisir une soiree</option>
+        <option value="">Choisir une soiree (optionnel)</option>
         $optionsSoiree
     </select>
     <p>Selectionner un Titre</p>
@@ -151,7 +151,8 @@ END;
         if (!is_int($styleID) && !is_null($styleID)) {
             return "Erreur : styleID doit être de type ?int";
         }
-
+        if($_POST['soiree'] == "")
+            $_POST['soiree'] = null;
         $pdo->saveSpectacle($_POST['titre'], $_POST['groupe'], $_POST['duree'], $_POST['description'], $extrait, $image, $styleID, $nomStyle, $_POST['soiree']);
         return "Spectacle créer avec succes";
     }
