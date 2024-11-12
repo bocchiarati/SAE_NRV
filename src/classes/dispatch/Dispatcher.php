@@ -121,7 +121,7 @@ class Dispatcher
                 </div>
             </header>
             
-            <div class="container p-5">
+            <div class="container p-2">
                 <div class="resultat">$resultat</div>
             </div>
             
