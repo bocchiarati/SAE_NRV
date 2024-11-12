@@ -444,10 +444,7 @@ class NrvRepository
 
     public function saveSpectacle(string $titre, string $groupe, int $duree, string $description, ?string $extrait, string $image, ?int $styleID, ?string $nomStyle, ?int $soireeID): Spectacle {
         if($styleID === null){
-            $query = "insert into stylemusic (nomstyle) values (:nomStyle)";
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute(['nomStyle' => $nomStyle]);
-            $styleID = $this->pdo->lastInsertId();
+            $styleID = $this->saveStyle($nomStyle);
         }
 
         $query = "insert into Spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) values (:titre, :groupe, :duree, :desc, :extrait, :image, :styleid, false)";
@@ -460,6 +457,13 @@ class NrvRepository
             $this->saveSoireeToSpectacle($spectacle->getID(), $soireeID);
         }
         return $spectacle;
+    }
+
+    public function saveStyle(string $nomStyle) : int {
+        $query = "insert into stylemusic (nomstyle) values (:nomStyle)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['nomStyle' => $nomStyle]);
+        return $this->pdo->lastInsertId();
     }
 
     public function saveSoireeToSpectacle(int $spectacleID, int $soireeID) {
@@ -518,6 +522,58 @@ class NrvRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['lieu' => $nouveauLieu, 'soiree' => $soiree]);
         return "<p>Lieu de la soiree modifier</p>";
+    }
+
+    public function modifierTitre(mixed $spectacle, mixed $nouveauTitre) : string {
+        $query = "update Spectacle set titre = :titre where spectacleid = :spectacle;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['titre' => $nouveauTitre, 'spectacle' => $spectacle]);
+        return "<p>Titre du spectacle modifier</p>";
+    }
+
+    public function modifierGroupe(mixed $spectacle, mixed $nouveauGroupe) : string {
+        $query = "update Spectacle set groupe = :groupe where spectacleid = :spectacle;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['groupe' => $nouveauGroupe, 'spectacle' => $spectacle]);
+        return "<p>Groupe du spectacle modifier</p>";
+    }
+
+    public function modifierDuree(mixed $spectacle, mixed $nouvelleDuree) : string {
+        $query = "update Spectacle set duree = :duree where spectacleid = :spectacle;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['duree' => $nouvelleDuree, 'spectacle' => $spectacle]);
+        return "<p>Duree du spectacle modifier</p>";
+    }
+
+    public function modifierDescription(mixed $spectacle, mixed $nouvelleDescription) : string {
+        $query = "update Spectacle set description = :description where spectacleid = :spectacle;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['description' => $nouvelleDescription, 'spectacle' => $spectacle]);
+        return "<p>Description du spectacle modifier</p>";
+    }
+
+    public function modifierStyle(int $spectacle, ?int $nouveauStyle, ?string $nomStyle) : string {
+        if($nouveauStyle == null){
+            $this->saveStyle($nomStyle);
+        }
+        $query = "update Spectacle set styleid = :style where spectacleid = :spectacle;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['style' => $nouveauStyle, 'spectacle' => $spectacle]);
+        return "<p>Style du spectacle modifier</p>";
+    }
+
+    public function modifierExtrait(mixed $spectacle, mixed $nouvelExtrait) : string {
+        $query = "update Spectacle set extrait = :extrait where spectacleid = :spectacle;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['extrait' => $nouvelExtrait, 'spectacle' => $spectacle]);
+        return "<p>Extrait du spectacle modifier</p>";
+    }
+
+    public function modifierImage(mixed $spectacle, mixed $nouvelleImage) : string {
+        $query = "update Spectacle set image = :image where spectacleid = :spectacle;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['image' => $nouvelleImage, 'spectacle' => $spectacle]);
+        return "<p>Image du spectacle modifier</p>";
     }
 }
 
