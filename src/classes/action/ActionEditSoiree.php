@@ -47,7 +47,7 @@ class ActionEditSoiree extends Action
         <h1>Modification d'une soiree :</h1>
         <form method="post" style="padding-bottom: 300px">
             <p>Soirée modifier</p>
-            <select name="soiree">
+            <select name="soiree" required>
                 <option value="" disabled selected>Choisir une soiree</option>
                 $optionsSoiree
             </select>
