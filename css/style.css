@@ -1,7 +1,13 @@
+@media (max-width: 600px) {
+    .spectacle-grid {
+        grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+    }
+}
+
 /* Classe ActionShowProgram */
 .spectacle-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(16%, 1fr));
     gap: 20px;
     padding: 20px;
     justify-items: center;
@@ -49,24 +55,6 @@
 .image-container-compact-render {
     position: relative;
     display: inline-block;
-}
-
-.corner-text {
-    width: 60%;
-    color: white;
-    text-align: left;
-    line-height: 1.1;
-    font-weight: bold;
-
-    padding: 0 0 2% 3%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    font-size: 1vw;
-}
-
-.titrespect {
-    width: 70%;
 }
 
 * {
