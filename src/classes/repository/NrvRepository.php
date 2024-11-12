@@ -90,7 +90,7 @@ class NrvRepository
     public function getSoireeByDate(?string $date): array{
         $listSoiree = [];
 
-        $query = "SELECT * FROM soiree WHERE date = :date";
+        $query = "SELECT * FROM soiree WHERE Date(date) = :date";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['date' => $date]);
 
