@@ -2,7 +2,6 @@
 
 namespace iutnc\nrv\action;
 
-use iutnc\nrv\action\Action;
 use iutnc\nrv\auth\AuthnProvider;
 use iutnc\nrv\auth\Authz;
 use iutnc\nrv\exception\AuthException;
@@ -38,6 +37,12 @@ class ActionEditSoiree extends Action
         foreach ($locations as $lieuID => $nom) {
             $options .= "<option value='{$lieuID}'>{$nom}</option>";
         }
+
+        $spectacles = $repository->getAllSpectacle();
+        $optionsSpectacle = '';
+        foreach ($spectacles as $spectacleID => [$titre, $groupe]) {
+            $optionsSpectacle .= "<option value='{$spectacleID}'>{$titre} - {$groupe}</option>";
+        }
         return <<< END
         <h1>Modification d'une soiree :</h1>
         <form method="post" style="padding-bottom: 300px">
@@ -54,6 +59,7 @@ class ActionEditSoiree extends Action
                 <option value="tarif">Tarif</option>
                 <option value="date">Date</option>
                 <option value="lieu">Lieu</option>
+                <option value="addSpectacle">Ajouter un Spectacle</option>
             </select>
             
             <input type="text" name="nouvelleThematique" id="nouvelleThematique" style="display: none;" placeholder="Nouvelle Thematique">
@@ -62,10 +68,13 @@ class ActionEditSoiree extends Action
             <input type="text" name="nouveauNom" id="nouveauNom" style="display: none;" placeholder="Nouveau Nom">
             <select id="nouveauLieu" name="nouveauLieu" style="display: none;">
                 <option value="" disabled selected>Choisir un lieu</option>
-                    $options
+                $options
                 <option value="Autre">Ou insérer un nouveau lieu</option>
             </select>
-            
+            <select id="nouveauSpectacle" name="nouveauSpectacle" style="display: none;">
+                <option value="" disabled selected>Choisir un spectacle</option>
+                $optionsSpectacle
+            </select>
             <input type="text" name="new-location" id="new-location" style="display: none;" placeholder="Nom Nouveau Lieu">
             <input type="text" name="address" id="address" style="display: none;" placeholder="Adresse Nouveau Lieu">
             <button type="submit">Enregistrer</button>
@@ -81,12 +90,14 @@ class ActionEditSoiree extends Action
                 var lieuInput = document.getElementById('nouveauLieu');
                 var newLocationInput = document.getElementById('new-location');
                 var addressInput = document.getElementById('address');
+                var spectacleInput = document.getElementById('nouveauSpectacle');
                 
                 nomInput.style.display = 'none';
                 thematiqueInput.style.display = 'none';
                 tarifInput.style.display = 'none';
                 dateInput.style.display = 'none';
                 lieuInput.style.display = 'none';
+                spectacleInput.style.display = 'none';
                 
                 
                 switch(this.value){
@@ -104,6 +115,9 @@ class ActionEditSoiree extends Action
                         break;
                     case 'lieu':
                         lieuInput.style.display = 'block';
+                        break;
+                    case 'addSpectacle':
+                        spectacleInput.style.display = 'block';
                         break;
                 }
                 
@@ -158,6 +172,8 @@ END;
                     return $pdo->modifierLieuSoiree($_POST['soiree'], $_POST['nouveauLieu'], null, null);
                 else
                     return $pdo->modifierLieuSoiree($_POST['soiree'], null, $_POST['new-location'], $_POST['address']);
+            case 'addSpectacle':
+                return $pdo->saveSoireeToSpectacle($_POST['soiree'], $_POST['nouveauSpectacle']);
             default :
                 return "<p>aucune modification</p>";
         }

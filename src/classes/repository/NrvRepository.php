@@ -431,6 +431,17 @@ class NrvRepository
         return $tab;
     }
 
+    public function getAllSpectacle(): array{
+        $tab = [];
+        $query = "Select * from spectacle;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        while($fetch = $stmt->fetch()){
+            $tab[$fetch['spectacleID']] = [$fetch['titre'], $fetch['groupe']];
+        }
+        return $tab;
+    }
+
     public function saveSpectacle(string $titre, string $groupe, int $duree, string $description, ?string $extrait, string $image, ?int $styleID, ?string $nomStyle, ?int $soireeID): Spectacle {
         if($styleID === null){
             $query = "insert into stylemusic (nomstyle) values (:nomStyle)";
@@ -451,10 +462,11 @@ class NrvRepository
         return $spectacle;
     }
 
-    public function saveSoireeToSpectacle(int $spectacleID, int $soireeID): void {
+    public function saveSoireeToSpectacle(int $spectacleID, int $soireeID) {
         $query = "insert into SoireeToSpectacle (spectacleid, soireeid) values (:spectacleid, :soireeid)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['spectacleid' => $spectacleID, 'soireeid' => $soireeID]);
+        return "spectacle ajouter à la soirée";
     }
 
     public function getSpectacleAnnuler(int $spectacleID): bool {
