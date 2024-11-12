@@ -444,6 +444,19 @@ class NrvRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['spectacleid' => $spectacleID, 'soireeid' => $soireeID]);
     }
+
+    public function getSpectacleAnnuler(int $spectacleID): bool {
+        $query = "select annuler from spectacle where spectacleid = :idspectacle ;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idspectacle' => $spectacleID]);
+        return $stmt->fetch()['annuler'];
+    }
+
+    public function setSpectacleAnnuler(int $spectacleID, bool $annuler): void{
+        $query = "alter table spectacle set annuler = :annuler where spectacleid = :idspectacle;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idspectacle' => $spectacleID, 'annuler' => $annuler]);
+    }
 }
 
 

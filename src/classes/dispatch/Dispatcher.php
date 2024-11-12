@@ -36,6 +36,7 @@ class Dispatcher
             "createSpectacle" => new act\ActionCreateSpectacle(),
             "editSoiree" => new act\ActionEditSoiree(),
             "editSpectacle" => new act\ActionEditSpectacle(),
+            "cancel" => new act\ActionToggleCancelSpectacle(),
             "filtre" => new act\ActionFiltre(),
             default => new act\ActionDefaut(),
         };
