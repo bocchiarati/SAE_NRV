@@ -36,7 +36,7 @@ class Dispatcher
             "createSpectacle" => new act\ActionCreateSpectacle(),
             "editSoiree" => new act\ActionEditSoiree(),
             "editSpectacle" => new act\ActionEditSpectacle(),
-            "cancel" => new act\ActionToggleCancelSpectacle(),
+            "cancel" => new act\ActionCancelSpectacle(),
             "filtre" => new act\ActionFiltre(),
             default => new act\ActionDefaut(),
         };
@@ -64,7 +64,6 @@ class Dispatcher
                 <ul class="nav-links dropdown-menu bg-secondary bg-opacity-25 border-0"" aria-labelledby="dropdownMenuButton" id="dropdownMenu">
                     <li><a class="dropdown-item bg-transparent" href="?action=createSoiree">Créer Une Soirée</a></li>
                     <li><a class="dropdown-item bg-transparent" href="?action=createSpectacle">Créer Un Spectacle</a></li>
-                    <li><a class="dropdown-item bg-transparent" href="?action=cancelSpectacle">Annuler un spectacle</a></li>
                     <li><a class="dropdown-item bg-transparent" href="?action=editSpectacle">Modifier Un Spectacle</a></li>
                     <li><a class="dropdown-item bg-transparent" href="?action=editSoiree">Modifier Une Soirée</a></li>
                 </ul>       
@@ -122,7 +121,7 @@ class Dispatcher
                 </div>
             </header>
             
-            <div class="container p-5">
+            <div class="container p-2">
                 <div class="resultat">$resultat</div>
             </div>
             

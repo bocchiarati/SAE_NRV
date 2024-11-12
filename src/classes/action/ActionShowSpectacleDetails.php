@@ -2,6 +2,9 @@
 
 namespace iutnc\nrv\action;
 
+use iutnc\nrv\auth\AuthnProvider;
+use iutnc\nrv\auth\Authz;
+use iutnc\nrv\exception\AuthException;
 use iutnc\nrv\exception\RepoException;
 use iutnc\nrv\render\ListSpectacleRenderer;
 use iutnc\nrv\render\Renderer;
@@ -56,7 +59,19 @@ class ActionShowSpectacleDetails extends Action
                 }
             }
 
-            return $renderer->render(Renderer::LONG) . $affichageSimilaires;
+            $annulerSpectacle = '';
+            try {
+                $user = AuthnProvider::getSignedInUser();
+                $droit = new Authz($user);
+                if($droit->checkIsOrga()){
+                    $annulerSpectacle = "<a href='?action=cancel&id={$spectacleID}'>Annuler le spectacle</a>";
+                }
+            } catch (AuthException $e) {
+                //aucun user connecté
+            }
+
+            return $renderer->render(Renderer::LONG) . $annulerSpectacle . $affichageSimilaires;
+
         } catch (RepoException $e) {
             return "<p>Erreur lors de la recuperation du spectacle : {$e->getMessage()}</p>";
         }

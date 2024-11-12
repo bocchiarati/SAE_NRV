@@ -89,34 +89,38 @@ class ActionFiltre extends Action {
         }
 
         $affichage .= <<<HTML
-        <div class="container">
-            <div class="filtres">
-                <h2>Filtrer par style</h2>
-                <div class="dropdown">
-                    <button class="dropdown-button">Sélectionner un style</button>
-                    <div class="dropdown-content">
-                        $choix
+            <div class="filtres d-flex justify-content-around w-100">
+                <div class="d-flex flex-column">
+                    <h2>Filtrer par style</h2>
+                    <div class="dropdown">
+                        <button class="dropdown-button">Sélectionner un style</button>
+                        <div class="dropdown-content">
+                            $choix
+                        </div>
                     </div>
                 </div>
                 
-                <h2>Filtrer par date</h2>
-                <form method="post" action="?action=filtre" id="filtre">
-                    <input type="date" id="date" name="date" required>
-                    <button type="submit">Filtrer</button>
-                </form>
+                <div class="d-flex flex-column">
+                    <h2>Filtrer par date</h2>
+                    <form method="post" action="?action=filtre" id="filtre">
+                        <input type="date" id="date" name="date" required>
+                        <button type="submit">Filtrer</button>
+                    </form>
+                </div>
                 
-                <h2>Filtrer par lieu</h2>
-                <div class="dropdown">
-                    <button class="dropdown-button">Sélectionner un lieu</button>
-                    <div class="dropdown-content">
-                        $options
+                <div class="d-flex flex-column">
+                    <h2>Filtrer par lieu</h2>
+                    <div class="dropdown">
+                        <button class="dropdown-button">Sélectionner un lieu</button>
+                        <div class="dropdown-content">
+                            $options
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="affichage">
+            <div class="affichage w-100">
             {$this->output}
             </div>
-        </div>
         HTML;
 
         return $affichage;
