@@ -173,7 +173,7 @@ END;
                 else
                     return $pdo->modifierLieuSoiree($_POST['soiree'], null, $_POST['new-location'], $_POST['address']);
             case 'addSpectacle':
-                return $pdo->saveSoireeToSpectacle($_POST['soiree'], $_POST['nouveauSpectacle']);
+                return $pdo->saveSoireeToSpectacle($_POST['nouveauSpectacle'], $_POST['soiree']);
             default :
                 return "<p>aucune modification</p>";
         }
