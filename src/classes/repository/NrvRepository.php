@@ -453,7 +453,7 @@ class NrvRepository
     }
 
     public function setSpectacleAnnuler(int $spectacleID, bool $annuler): void{
-        $query = "alter table spectacle set annuler = :annuler where spectacleid = :idspectacle;";
+        $query = "update spectacle set annuler = :annuler where spectacleid = :idspectacle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['idspectacle' => $spectacleID, 'annuler' => $annuler]);
     }

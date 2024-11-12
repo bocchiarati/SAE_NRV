@@ -5,8 +5,9 @@ namespace iutnc\nrv\action;
 use iutnc\nrv\auth\AuthnProvider;
 use iutnc\nrv\auth\Authz;
 use iutnc\nrv\exception\AuthException;
+use iutnc\nrv\repository\NrvRepository;
 
-class ActionToggleCancelSpectacle extends Action
+class ActionCancelSpectacle extends Action
 {
 
     function executeGet(): string
@@ -23,6 +24,8 @@ class ActionToggleCancelSpectacle extends Action
         }
 
         if(isset($_GET['id'])){
+            $pdo = NrvRepository::getInstance();
+            $pdo->setSpectacleAnnuler($_GET['id'],true);
             return "Le spectacle a correctement été annulé";
         }else{
             return "Aucun spectacle a annulé";
