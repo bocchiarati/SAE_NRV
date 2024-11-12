@@ -144,7 +144,6 @@ END;
 
         } else {
             $styleID = intval($_POST['style']); // Conversion en entier
-            var_dump($styleID);
             $nomStyle = null;
         }
 
