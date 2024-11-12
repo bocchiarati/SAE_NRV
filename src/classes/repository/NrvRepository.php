@@ -300,14 +300,18 @@ class NrvRepository
     //  retourne la date du spectacle par son id
     public function getDateForSpectacle(int $spectacleID): string {
         $query = "SELECT s.date 
-                  FROM Soiree s
-                  INNER JOIN SoireeToSpectacle sts ON s.soireeID = sts.soireeID
-                  WHERE sts.spectacleID = :spectacleID";
+              FROM Soiree s
+              INNER JOIN SoireeToSpectacle sts ON s.soireeID = sts.soireeID
+              WHERE sts.spectacleID = :spectacleID";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['spectacleID' => $spectacleID]);
         $result = $stmt->fetch();
 
-        return $result['date'];
+        if(isset($result['date'])){
+            return $result['date'];
+        }else{
+            return "NULL";
+        }
     }
 
     // retourne le nom du lieu du spectacle

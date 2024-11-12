@@ -4,6 +4,7 @@ namespace iutnc\nrv\action;
 
 use iutnc\nrv\render\ListSpectacleRenderer;
 use iutnc\nrv\render\Renderer;
+use iutnc\nrv\render\SoireeRenderer;
 use iutnc\nrv\repository\NrvRepository;
 
 class ActionFiltre extends Action {
@@ -40,17 +41,9 @@ class ActionFiltre extends Action {
                 $this->output .= "";
                 foreach ($filteredSoirees as $soiree) {
                     $spectacles = $pdo->getSpectacleBySoiree($soiree->id);
-                    $deuxDate = explode(' ', $soiree->date);
-
                     if (count($spectacles->spectacles) >= 1) {
-                        $spectacleRenderer = new ListSpectacleRenderer($spectacles);
-                        $this->output .= "<div style='margin-bottom: 20px;'>";
-                        $this->output .= "<h3>Soiree : {$soiree->nom}</h3>";
-                        $this->output .= "<h3>-> {$soiree->nomLieu}</h3>";
-                        $this->output .= "<p><strong>Le:</strong> {$deuxDate[0]} <strong>à</strong> {$deuxDate[1]}</p>";
-                        $this->output .= "<p><strong>Adresse:</strong> {$soiree->adresseLieu}</p>";
-                        $this->output .= $spectacleRenderer->render(Renderer::LONG);
-                        $this->output .= "</div>";
+                        $soireeRenderer = new SoireeRenderer($soiree);
+                        $this->output .= $soireeRenderer->render(Renderer::LONG);
                     } else {
                         $this->output .= "<p>Aucun spectacle pour la soiree a {$soiree->nomLieu}.</p>";
                     }
@@ -148,12 +141,8 @@ class ActionFiltre extends Action {
 
         $this->output = "<h2>Spectacles pour la date : $selectedDate</h2><ul>";
         foreach ($filteredSoirees as $soiree) {
-
-            $spectacles = $repository->getSpectacleBySoiree($soiree->getID());
-
-            $renderer = new ListSpectacleRenderer($spectacles);
-
-            $this->output.= $renderer->render(Renderer::LONG);
+            $renderer = new SoireeRenderer($soiree);
+            $this->output .= $renderer->render(Renderer::COMPACT);
         }
         $this->output .= "</ul>";
         return $this->executeGet();

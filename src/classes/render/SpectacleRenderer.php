@@ -2,6 +2,7 @@
 
 namespace iutnc\nrv\render;
 
+use iutnc\nrv\exception\RepoException;
 use iutnc\nrv\programme\Spectacle;
 use iutnc\nrv\repository\NrvRepository;
 
@@ -37,7 +38,7 @@ class SpectacleRenderer implements Renderer {
         $date = $repository->getDateForSpectacle($this->spec->getID());
 
         //cas où le spectacle n'est pas programmé à une soirée
-        if(!$date){
+        if($date === "NULL"){
             $deuxDate = [0 => 'Indéfini', 1 => 'Indéfini'];
         }else {
             $deuxDate = explode(' ', $date);
