@@ -244,7 +244,7 @@ class NrvRepository
 
     public function getAllStyle(): array{
         $tab = [];
-        $query = "Select * from stylemusic ;";
+        $query = "Select * from stylemusic order by nomstyle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         while($fetch = $stmt->fetch()){
@@ -255,7 +255,7 @@ class NrvRepository
 
     public function getAllLieu(): array{
         $tab = [];
-        $query = "Select * from lieu ;";
+        $query = "Select * from lieu order by nom;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         while($fetch = $stmt->fetch()){
@@ -266,11 +266,11 @@ class NrvRepository
 
     public function getAllDate(): array{
         $tab = [];
-        $query = "SELECT DISTINCT date FROM Soiree ORDER BY date";
+        $query = "SELECT DISTINCT DATE_FORMAT(date, '%Y-%m-%d') FROM Soiree ORDER BY date";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
-        while($fetch = $stmt->fetch()){
-            $tab[] = $fetch['date'];
+        while($fetch = $stmt->fetch(\PDO::FETCH_NUM)){
+            $tab[] = $fetch[0];
         }
         return $tab;
     }

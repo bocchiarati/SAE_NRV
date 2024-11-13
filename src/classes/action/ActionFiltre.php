@@ -86,12 +86,16 @@ class ActionFiltre extends Action {
 
     // Filtrer les spectacles par date
     private function filterByDate(string $date) : void {
-        $filteredSoirees = $this->pdo->getSoireeByDate($date);
-        if (empty($filteredSoirees)) {
-            $this->output = "<p>Aucun spectacle n'est prévu pour cette date.</p>";
-        } else {
-            foreach ($filteredSoirees as $soiree) {
-                $this->output .= (new SoireeRenderer($soiree))->render(Renderer::LONG);
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+            $this->output = "<p>Erreur avec la date envoyée</p>";
+        }else {
+            $filteredSoirees = $this->pdo->getSoireeByDate($date);
+            if (empty($filteredSoirees)) {
+                $this->output = "<p>Aucun spectacle n'est prévu pour cette date.</p>";
+            } else {
+                foreach ($filteredSoirees as $soiree) {
+                    $this->output .= (new SoireeRenderer($soiree))->render(Renderer::LONG);
+                }
             }
         }
     }
@@ -102,7 +106,25 @@ class ActionFiltre extends Action {
         $locationOptions = $this->buildDropdownLinks($this->pdo->getAllLieu(), 'location');
         $dateOptions = $this->buildDropdownLinks($this->pdo->getAllDate(), 'date');
 
-        // fuction toggleTab pour basculer entre les buttons de filtre (style, location, date), ecrit en JS en Dispatcher
+        $displayStyle = 'none';
+        $displayLieu = 'none';
+        $displayDate = 'none';
+
+        if(isset($_GET['filter'])){
+            switch ($_GET['filter']){
+                case 'location':
+                    $displayLieu = 'block';
+                    break;
+                case 'date':
+                    $displayDate = 'block';
+                    break;
+                default:
+                    $displayStyle = 'block';
+                    break;
+            }
+        }
+
+        // fonction toggleTab pour basculer entre les buttons de filtre (style, location, date), ecrit en JS en Dispatcher
         return <<<HTML
         <div class="filter-container">
             <div class="tabs">
@@ -110,9 +132,9 @@ class ActionFiltre extends Action {
                 <button onclick="toggleTab('location')">Lieux</button>
                 <button onclick="toggleTab('date')">Jours</button>
             </div>
-            <div class="tab-content" id="style">{$styleOptions}</div>
-            <div class="tab-content" id="location" style="display:none;">{$locationOptions}</div>
-            <div class="tab-content" id="date" style="display:none;">{$dateOptions}</div>
+            <div class="tab-content" id="style" style="display:{$displayStyle}">{$styleOptions}</div>
+            <div class="tab-content" id="location" style="display:{$displayLieu};">{$locationOptions}</div>
+            <div class="tab-content" id="date" style="display:{$displayDate};">{$dateOptions}</div>
         </div>
         <div class="affichage">{$this->output}</div>
         HTML;
@@ -129,22 +151,21 @@ class ActionFiltre extends Action {
         $links = "<div class='dropdown-links-container d-flex flex-wrap p-2'>";
         $links .= "<a href='?action=filtre&filter=$filterType&id=all'>{$allLabels[$filterType]}</a>";
 
-        foreach ($items as $id => $name) {
-            $links .= "<a href='?action=filtre&filter=$filterType&id=$id'>$name</a>";
+        if($filterType === 'date'){
+            foreach ($items as $date) {
+                $links .= "<a href='?action=filtre&filter=$filterType&id=$date'>$date</a>";
+            }
+        }else {
+            foreach ($items as $id => $name) {
+                $links .= "<a href='?action=filtre&filter=$filterType&id=$id'>$name</a>";
+            }
         }
         $links .= "</div>";
         return $links;
     }
 
-    // Execute l'action POST, applique le filtre de date
     public function executePost(): string {
-        $date = $_POST['date'] ?? null;
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
-            $this->output = "<p>Erreur avec la date envoyée</p>";
-        } else {
-            $this->filterByDate($date);
-        }
-        return $this->executeGet();
+        return "nothing to return";
     }
 
 }
