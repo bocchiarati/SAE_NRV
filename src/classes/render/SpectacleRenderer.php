@@ -50,20 +50,23 @@ class SpectacleRenderer implements Renderer {
         }
 
         return <<<HTML
-            <a href='?action=showSpectacleDetails&id={$this->spec->getID()}' class='spectacle-item'>
-                <div class="image-container-compact-render">
-                    <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact">
-                    <img src="../image/triangle-rouge.png" alt="Corner Image" class="corner-image">
-                    {$annuler}
-                    <div class="position-absolute bottom-0 start-0 h-25 fs-6 lh-1 mb-1 ms-1">
-                        <p class="m-0 w-75">{$this->spec->getTitre()}</p>
-                        <p class="m-0">{$deuxDate[0]}</p>
-                        <p class="m-0">À {$deuxDate[1]}</p>  
-                        <p class="m-0">Durée : {$this->spec->getDurationHoursEtMin()}</p>
-                    </div>
+        <a href='?action=showSpectacleDetails&id={$this->spec->getID()}' class='spectacle-item'>
+            <div class="image-container-compact-render position-relative">
+                <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact w-100">
+                
+                {$annuler}
+        
+                <div class="triangle position-absolute bottom-0 start-0"></div>
+                <div class="triangle-text position-absolute start-0 bottom-0 text-white" style="transform: translateY(-20%);">
+                    <p class="m-0" style="max-width: 50%; overflow: hidden; text-overflow: ellipsis;">{$this->spec->getTitre()}</p>
+                    <p class="m-0" style="max-width: 61%">{$deuxDate[0]}</p>
+                    <p class="m-0" style="max-width: 70%">À {$deuxDate[1]}</p>
+                    <p class="m-0">Durée : {$this->spec->getDurationHoursEtMin()}</p>
                 </div>
-            </a>
+            </div>
+        </a>
         HTML;
+
     }
 
     private function renderLong(): string

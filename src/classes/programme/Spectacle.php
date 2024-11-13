@@ -87,7 +87,7 @@ class Spectacle {
         $minutes = $this->duree % 60;
 
         if ($hours > 0 && $minutes > 0) {
-            return "{$hours} h {$minutes} m";
+            return "{$hours} h {$minutes}";
         } elseif ($hours > 0) {
             return "{$hours} h";
         } else {
