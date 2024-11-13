@@ -99,7 +99,7 @@ class ActionFiltre extends Action {
 
         // fonction toggleTab pour basculer entre les buttons de filtre (style, location, date), ecrit en JS en Dispatcher
         return <<<HTML
-        <div class="filter-container">
+        <div class="filter-container align-self-start ms-4">
             <div class="tabs">
                 <button onclick="toggleTab('style')">Styles</button>
                 <button onclick="toggleTab('location')">Lieux</button>
