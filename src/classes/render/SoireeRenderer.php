@@ -2,6 +2,7 @@
 
 namespace iutnc\nrv\render;
 
+use DateTime;
 use iutnc\nrv\programme\Soiree;
 use iutnc\nrv\repository\NrvRepository;
 
@@ -49,12 +50,31 @@ class SoireeRenderer implements Renderer
         HTML;
     }
 
-    private function renderLong(): string
+    public function renderLong(): string
     {
         $pdo = NrvRepository::getInstance();
         $spectacles = $pdo->getSpectacleBySoiree($this->soiree->id);
-        $deuxDate = explode(' ', $this->soiree->date);
-
         $spectacleRenderer = new ListSpectacleRenderer($spectacles);
+        $spectacleListHTML = $spectacleRenderer->render(Renderer::LONG);
+
+        $date = new DateTime($this->soiree->date);
+        $formattedDate = $date->format('d M Y');
+        $formattedTime = $date->format('H:i');
+
+        return <<<HTML
+        <div class="soiree-details">
+            <h1 class="display-3 text-center mb-3 mt-3" >{$this->soiree->nom}</h1>
+            <p class="lead">
+                    <strong>Date:</strong> {$formattedDate} at {$formattedTime} <br>
+                    <strong>Lieu:</strong> {$this->soiree->nomLieu} - {$this->soiree->adresseLieu} <br>
+                    <strong>Thématique:</strong> {$this->soiree->thematique} <br>
+                    <strong>Tarif:</strong> {$this->soiree->tarif}€
+            </p>
+            <div class="spectacle-list">
+                {$spectacleListHTML}
+            </div>
+        </div>
+        HTML;
     }
+
 }

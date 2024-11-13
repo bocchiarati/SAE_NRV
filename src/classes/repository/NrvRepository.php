@@ -660,6 +660,24 @@ class NrvRepository
         $stmt->execute(['userid' => $userid]);
         return $stmt->fetch()['email'];
     }
+
+    // retourne soiree par son id
+    public function getSoireeById(int $soireeId): ?Soiree {
+        $stmt = $this->pdo->prepare('SELECT s.*, l.nom AS nomLieu, l.adresse AS adresseLieu FROM Soiree s INNER JOIN Lieu l ON s.lieuID = l.lieuID WHERE s.soireeID = :soireeId');
+        $stmt->execute(['soireeId' => $soireeId]);
+
+        $soireeData = $stmt->fetch();
+        if (!$soireeData) {
+            return null;
+        }
+
+        $soiree = new Soiree($soireeData['date'], $soireeData['lieuID'], $soireeData['nomLieu'], $soireeData['adresseLieu'],
+            $soireeData['nom'], $soireeData['thematique'], $soireeData['tarif']
+        );
+        $soiree->setId($soireeData['soireeID']);
+
+        return $soiree;
+    }
 }
 
 
