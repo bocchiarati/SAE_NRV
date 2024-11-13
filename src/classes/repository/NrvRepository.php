@@ -90,7 +90,7 @@ class NrvRepository
     public function getSoireeByDate(?string $date): array{
         $listSoiree = [];
 
-        $query = "SELECT * FROM soiree WHERE Date(date) = :date";
+        $query = "SELECT * FROM Soiree WHERE Date(date) = :date";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['date' => $date]);
 
@@ -264,6 +264,16 @@ class NrvRepository
         return $tab;
     }
 
+    public function getAllDate(): array{
+        $tab = [];
+        $query = "SELECT DISTINCT date FROM Soiree ORDER BY date";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        while($fetch = $stmt->fetch()){
+            $tab[] = $fetch['date'];
+        }
+        return $tab;
+    }
     // retourne la liste des soirees par lieu
     public function getSoireeByLocation(int $lieuID): array
     {

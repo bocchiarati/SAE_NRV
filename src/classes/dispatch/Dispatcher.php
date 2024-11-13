@@ -128,6 +128,19 @@ class Dispatcher
             <script src="../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
         </body>
+        <script>
+        function toggleTab(tabName) {
+            var tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                if (tab.id === tabName) {
+                    tab.style.display = tab.style.display === 'block' ? 'none' : 'block';
+                } else {
+                    tab.style.display = 'none';
+                }
+            });
+        }
+        </script>
+
         </html>
         END;
 

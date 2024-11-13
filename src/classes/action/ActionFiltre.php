@@ -7,144 +7,143 @@ use iutnc\nrv\render\Renderer;
 use iutnc\nrv\render\SoireeRenderer;
 use iutnc\nrv\repository\NrvRepository;
 
+/**
+ * Classe ActionFiltre qui permet de filtrer les spectacles
+ */
 class ActionFiltre extends Action {
 
     private string $output = "";
+    private $pdo;
 
-    function executeGet(): string
-    {
-        $affichage = "";
-        $pdo = NrvRepository::getInstance();
-
-        if(isset($_GET['filter']) && isset($_GET['id'])){
-
-            if($_GET['filter'] === "style") {
-                //FILTRE STYLE
-
-                $spectacles = $pdo->getSpectaclesByStyle($_GET['id']);
-
-                $render = new ListSpectacleRenderer($spectacles);
-                $this->output = $render->render(Renderer::LONG);
-            }
-
-            if($_GET['filter'] === "location") {
-                //FILTRE LOCATION
-                $selectedLocation = $_GET['id'];
-
-                $filteredSoirees = $pdo->getSoireeByLocation($selectedLocation);
-
-                if (empty($filteredSoirees)) {
-                    return "<p>Aucun spectacle n'est prevue pour ce lieu.</p>";
-                }
-
-                $this->output = "<h2>Spectacles pour le lieu selectionne</h2><ul>";
-                $this->output .= "";
-                foreach ($filteredSoirees as $soiree) {
-                    $spectacles = $pdo->getSpectacleBySoiree($soiree->id);
-                    if (count($spectacles->spectacles) >= 1) {
-                        $soireeRenderer = new SoireeRenderer($soiree);
-                        $this->output .= $soireeRenderer->render(Renderer::LONG);
-                    } else {
-                        $this->output .= "<p>Aucun spectacle pour la soiree a {$soiree->nomLieu}.</p>";
-                    }
-                }
-                $this->output .= "</div>";
-            }
-        }else{
-            if(!isset($_POST['date'])) {
-                $spectacles = $pdo->findAllSpectacle();
-                $this->output = "";
-                if (count($spectacles->spectacles) > 0) {
-                    $renderer = new ListSpectacleRenderer($spectacles);
-                    $this->output .= $renderer->render(Renderer::COMPACT);
-                } else {
-                    $this->output = "<p>Aucun spectacle programmé</p>";
-                }
-            }
-        }
-
-        $choix = '';
-
-        $pdo = NrvRepository::getInstance();
-        $listStyle = $pdo->getAllStyle();
-
-        foreach ($listStyle as $key => $style) {
-            $choix .= '<a href="?action=filtre&filter=style&id=' . $key . '">' . $style . '</a>';
-        }
-
-        $repository = NrvRepository::getInstance();
-        $locations = $repository->getAllLieu();
-
-        // creation des options pour le select du lieu
-        $options = '';
-        foreach ($locations as $lieuID => $nom) {
-            $options .= "<a href='?action=filtre&filter=location&id={$lieuID}'>{$nom}</a>";
-        }
-
-        $affichage .= <<<HTML
-            <div class="filtres d-flex justify-content-around w-100">
-                <div class="d-flex flex-column">
-                    <h2>Filtrer par style</h2>
-                    <div class="dropdown">
-                        <button class="dropdown-button">Sélectionner un style</button>
-                        <div class="dropdown-content">
-                            $choix
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="d-flex flex-column">
-                    <h2>Filtrer par date</h2>
-                    <form method="post" action="?action=filtre" id="filtre">
-                        <input type="date" id="date" name="date" required>
-                        <button type="submit">Filtrer</button>
-                    </form>
-                </div>
-                
-                <div class="d-flex flex-column">
-                    <h2>Filtrer par lieu</h2>
-                    <div class="dropdown">
-                        <button class="dropdown-button">Sélectionner un lieu</button>
-                        <div class="dropdown-content">
-                            $options
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="affichage w-100">
-            {$this->output}
-            </div>
-        HTML;
-
-        return $affichage;
+    public function __construct() {
+        parent::__construct();
+        $this->pdo = NrvRepository::getInstance();
     }
 
-    function executePost(): string
-    {
-        $date = $_POST['date'];
-
-        // Vérifie que le format est bien "YYYY-MM-DD"
-        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
-            $selectedDate = filter_var($date, FILTER_SANITIZE_STRING);
+    // Execute l'action GET, applique les filtres si necessaires
+    public function executeGet(): string {
+        if (isset($_GET['filter']) && isset($_GET['id'])) {
+            $this->handleFilters($_GET['filter'], $_GET['id']);
         } else {
-            $this->output = "<p>Erreur avec la date envoyée</p>";
-            return $this->executeGet();
+            $this->showAllSpectacles();
         }
 
-        $repository = NrvRepository::getInstance();
-        $filteredSoirees = $repository->getSoireeByDate($selectedDate);
+        return $this->buildHTML();
+    }
 
+    // gestion des filtres pour les spect
+    private function handleFilters($filter, $id): void
+    {
+        // Afficher tous les spectacles si 'Tous' est selectionne
+        if ($id === 'all') {
+            switch ($filter) {
+                case 'style':
+                case 'location':
+                case 'date':
+                    $this->showAllSpectacles();
+                    break;
+            }
+        }
+        // Sinon, filtrer les spectacles selon le filtre selectionne
+        else{
+            switch ($filter) {
+                case 'style':
+                    $spectacles = $this->pdo->getSpectaclesByStyle($id);
+                    $this->output = (new ListSpectacleRenderer($spectacles))->render(Renderer::LONG);
+                    break;
+                case 'location':
+                    $this->filterByLocation($id);
+                    break;
+                case 'date':
+                    $this->filterByDate($id);
+                    break;
+            }
+        }
+
+    }
+
+    // Afficher tous les spectacles disponibles
+    private function showAllSpectacles() : void
+    {
+        $spectacles = $this->pdo->findAllSpectacle();
+        $this->output = $spectacles ?
+            (new ListSpectacleRenderer($spectacles))->render(Renderer::COMPACT) :
+            "<p>Aucun spectacle programmé</p>";
+    }
+
+    // Filtrer les spectacles par lieu
+    private function filterByLocation($locationId): void
+    {
+        $filteredSoirees = $this->pdo->getSoireeByLocation($locationId);
         if (empty($filteredSoirees)) {
-            $this->output = "<p>Aucun spectacle n'est prevu pour la date : $selectedDate.</p>";
-            return $this->executeGet();
+            $this->output = "<p>Aucun spectacle n'est prévu pour ce lieu.</p>";
+        } else {
+            foreach ($filteredSoirees as $soiree) {
+                $this->output .= (new SoireeRenderer($soiree))->render(Renderer::LONG);
+            }
         }
+    }
 
-        $this->output = "<h2>Spectacles pour la date : $selectedDate</h2><ul>";
-        foreach ($filteredSoirees as $soiree) {
-            $renderer = new SoireeRenderer($soiree);
-            $this->output .= $renderer->render(Renderer::COMPACT);
+    // Filtrer les spectacles par date
+    private function filterByDate(string $date) : void {
+        $filteredSoirees = $this->pdo->getSoireeByDate($date);
+        if (empty($filteredSoirees)) {
+            $this->output = "<p>Aucun spectacle n'est prévu pour cette date.</p>";
+        } else {
+            foreach ($filteredSoirees as $soiree) {
+                $this->output .= (new SoireeRenderer($soiree))->render(Renderer::LONG);
+            }
         }
-        $this->output .= "</ul>";
+    }
+
+    // Construit HTML pour l'interface utilisateur
+    private function buildHTML(): string {
+        $styleOptions = $this->buildDropdownLinks($this->pdo->getAllStyle(), 'style');
+        $locationOptions = $this->buildDropdownLinks($this->pdo->getAllLieu(), 'location');
+        $dateOptions = $this->buildDropdownLinks($this->pdo->getAllDate(), 'date');
+
+        // fuction toggleTab pour basculer entre les buttons de filtre (style, location, date), ecrit en JS en Dispatcher
+        return <<<HTML
+        <div class="filter-container">
+            <div class="tabs">
+                <button onclick="toggleTab('style')">Styles</button>
+                <button onclick="toggleTab('location')">Lieux</button>
+                <button onclick="toggleTab('date')">Jours</button>
+            </div>
+            <div class="tab-content" id="style">{$styleOptions}</div>
+            <div class="tab-content" id="location" style="display:none;">{$locationOptions}</div>
+            <div class="tab-content" id="date" style="display:none;">{$dateOptions}</div>
+        </div>
+        <div class="affichage">{$this->output}</div>
+        HTML;
+    }
+
+    // Construit les liens pour chaque categorie de filtre
+    private function buildDropdownLinks(array $items, string $filterType): string {
+        $allLabels = [
+            'style' => 'Tous les styles',
+            'location' => 'Tous les lieux',
+            'date' => 'Tous les jours'
+        ];
+
+        $links = "<div class='dropdown-links-container d-flex flex-wrap p-2'>";
+        $links .= "<a href='?action=filtre&filter=$filterType&id=all'>{$allLabels[$filterType]}</a>";
+
+        foreach ($items as $id => $name) {
+            $links .= "<a href='?action=filtre&filter=$filterType&id=$id'>$name</a>";
+        }
+        $links .= "</div>";
+        return $links;
+    }
+
+    // Execute l'action POST, applique le filtre de date
+    public function executePost(): string {
+        $date = $_POST['date'] ?? null;
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+            $this->output = "<p>Erreur avec la date envoyée</p>";
+        } else {
+            $this->filterByDate($date);
+        }
         return $this->executeGet();
     }
 

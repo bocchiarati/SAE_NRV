@@ -253,3 +253,20 @@ body {
 .dropdown-item {
     padding-left: 5%;
 }
+
+/* ActionFiltre */
+.dropdown-links-container {
+    gap: 10px;
+}
+
+.dropdown-links-container a {
+    color: #ff8c00;
+    text-decoration: none;
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+
+.dropdown-links-container a:hover {
+    background-color: #f3dbc1;
+    color: #cc6a00;
+}
