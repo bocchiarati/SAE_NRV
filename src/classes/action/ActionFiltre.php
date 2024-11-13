@@ -4,7 +4,6 @@ namespace iutnc\nrv\action;
 
 use iutnc\nrv\render\ListSpectacleRenderer;
 use iutnc\nrv\render\Renderer;
-use iutnc\nrv\render\SoireeRenderer;
 use iutnc\nrv\repository\NrvRepository;
 
 /**

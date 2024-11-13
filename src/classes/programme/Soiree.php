@@ -8,6 +8,7 @@ use iutnc\nrv\repository\NrvRepository;
 class Soiree extends ListSpectacle {
 
     protected ?int $id;
+
     protected ?string $date;
     protected ?string $nom;
     protected ?string $thematique;

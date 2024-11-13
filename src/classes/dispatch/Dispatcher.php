@@ -31,6 +31,7 @@ class Dispatcher
             "signin" => new act\ActionSignin(),
             "register" => new act\ActionRegister(),
             "showSpectacleDetails" => new act\ActionShowSpectacleDetails(),
+            "showSoireeDetails" => new act\ActionShowSoireeDetails(),
             "cancelSpectacle" => new act\ActionCancelSpectacle(),
             "createSoiree" => new act\ActionCreateSoiree(),
             "createSpectacle" => new act\ActionCreateSpectacle(),

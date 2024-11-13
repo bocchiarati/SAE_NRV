@@ -162,6 +162,14 @@ class NrvRepository
         return $s;
     }
 
+    public function findPreferences(int $userid): int
+    {
+        $query = 'Select * from userspreferences where userid = '.$userid.';';
+        $resultat = $this->pdo->query($query);
+        $fetch = $resultat->fetch();
+        return $fetch['spetacleid'];
+    }
+
     // retourne la liste des spectacles par soiree
     public function getSpectacleBySoiree(int $soireeID): ListSpectacle {
         $spectacles = [];
@@ -184,14 +192,6 @@ class NrvRepository
         $listSpectacle->setSpectacles($spectacles);
 
         return $listSpectacle;
-    }
-
-    public function findPreferences(int $userid): int
-    {
-        $query = 'Select * from userspreferences where userid = '.$userid.';';
-        $resultat = $this->pdo->query($query);
-        $fetch = $resultat->fetch();
-        return $fetch['spetacleid'];
     }
 
     // retourne le nom du lieu par son id
@@ -449,6 +449,28 @@ class NrvRepository
         $stmt->execute();
         while($fetch = $stmt->fetch()){
             $tab[$fetch['soireeID']] = [$fetch['nom'], $fetch['thematique'], $this->getNomLieuByID($fetch['lieuID'])];
+        }
+        return $tab;
+    }
+
+    public function findAllSoireeWithSpectacle(): array{
+        $tab = [];
+        $query = "Select * from soiree s inner join lieu l on l.lieuID = s.lieuID;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        while($fetch = $stmt->fetch()){
+            $soiree = new Soiree($fetch['date'], $fetch['lieuID'], $this->getNomLieuByID($fetch['lieuID']), $fetch['adresse'], $fetch['nom'], $fetch['thematique'], $fetch['tarif']);
+            $soiree->setId($fetch['soireeID']);
+            $query2 = "Select * from soireetospectacle where soireeID = :idsoiree;";
+            $stmt2 = $this->pdo->prepare($query2);
+            $stmt2->execute(['idsoiree' => $fetch['soireeID']]);
+            $spectacles = [];
+            while($fetch2 = $stmt2->fetch()){
+                $spectacle = $this->getSpectacleByID($fetch2['spectacleID']);
+                $spectacles[] = $spectacle;
+            }
+            $soiree->setSpectacles($spectacles);
+            $tab[] = $soiree;
         }
         return $tab;
     }
