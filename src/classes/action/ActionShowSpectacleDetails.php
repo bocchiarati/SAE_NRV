@@ -17,22 +17,26 @@ class ActionShowSpectacleDetails extends Action
 
     function executeGet(): string
     {
-        $spectacleID = $_GET['id'] ?? null;
-
+        $spectacleID = $_GET['spectacleid'] ?? null;
+        $soireeID = $_GET['soireeid'] ?? null;
         if (!$spectacleID) {
             return "<p>Aucun spectacle selectionne.</p>";
         }
 
         $repository = NrvRepository::getInstance();
         try {
-            $spectacle = $repository->getSpectacleByID($spectacleID);
+            if(isset($soireeID))
+                $spectacle = $repository->getSpectacleBySoireeToSpectacle($soireeID, $spectacleID);
+                /////////// erreur spectacle id ici
+            else
+                $spectacle = $repository->getSpectacleByID($spectacleID);
 
             $renderer = new SpectacleRenderer($spectacle);
 
             // affichage des spectacles du meme style et lieu et date sans le spectacle actuel
-            $spectaclesMemeStyle = $repository->getSpectaclesByStyleSansActuel($spectacle->getStyleID(), $spectacleID);
-            $spectaclesMemeLieu = $repository->getSpectaclesByLieuSansActuel($spectacleID);
-            $spectaclesMemeDate = $repository->getSpectaclesByDateSansActuel($spectacleID);
+            $spectaclesMemeStyle = $repository->getSpectaclesByStyleSansActuel($spectacle->getStyleID(), $spectacleID, $soireeID);
+            $spectaclesMemeLieu = $repository->getSpectaclesByLieuSansActuel($spectacleID, $soireeID);
+            $spectaclesMemeDate = $repository->getSpectaclesByDateSansActuel($spectacleID, $soireeID);
 
             $rendererStyle = new ListSpectacleRenderer($spectaclesMemeStyle);
             $rendererLieu = new ListSpectacleRenderer($spectaclesMemeLieu);

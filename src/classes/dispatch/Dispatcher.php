@@ -39,6 +39,7 @@ class Dispatcher
             "editSpectacle" => new act\ActionEditSpectacle(),
             "cancel" => new act\ActionCancelSpectacle(),
             "filtre" => new act\ActionFiltre(),
+            "promoteOrga" => new act\ActionPromoteToOrga(),
             default => new act\ActionDefaut(),
         };
         $this->renderPage($action->execute());
@@ -55,7 +56,14 @@ class Dispatcher
             $user = new User(-1,"Non connecté","mdp",User::STANDARD_USER);
         }
 
+
         $check = new Authz($user);
+
+        $menuAdmin = "";
+        if($check->checkIsAdmin()) {
+                $menuAdmin .= '<li><a class="dropdown-item bg-transparent" href="?action=promoteOrga">Ajouter Un Organisateur</a></li>';
+            }
+
         if($check->checkIsOrga()) {
             $menuOrga = <<<END
             <div class="dropdown" onmouseleave="hideDropdown()">
@@ -67,6 +75,7 @@ class Dispatcher
                     <li><a class="dropdown-item bg-transparent" href="?action=createSpectacle">Créer Un Spectacle</a></li>
                     <li><a class="dropdown-item bg-transparent" href="?action=editSpectacle">Modifier Un Spectacle</a></li>
                     <li><a class="dropdown-item bg-transparent" href="?action=editSoiree">Modifier Une Soirée</a></li>
+                    $menuAdmin
                 </ul>       
             </div>
             

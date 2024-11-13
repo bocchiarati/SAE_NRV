@@ -91,7 +91,7 @@ INSERT INTO SoireeToSpectacle (soireeID, spectacleID) VALUES
 
 INSERT INTO User (userid, email, mdp, roleid) VALUES
 (1, 'user1@mail.com', '$2y$12$1DNY3EAleSmszEDaIc1Wde08ZWct.yL9zrC7miePmNV/2TMIiu/SG', 1),
-(2, 'orga@mail.com', '$2y$12$YGXb1CjuNpDjls4PFVw3M.qgoi5ZNRzWiab/CW0yjfAH82Ya1f492', 99);
+(2, 'admin@mail.com', '$2y$12$YGXb1CjuNpDjls4PFVw3M.qgoi5ZNRzWiab/CW0yjfAH82Ya1f492', 99);
 
 INSERT INTO UsersPreferences (userID, spectacleID) VALUES
 (1, 1),

@@ -7,7 +7,8 @@ use iutnc\nrv\exception\InvalidPropertyNameException;
 class User
 {
     const STANDARD_USER = 1;
-    const ORGANISATOR_USER = 99;
+    const ORGANISATOR_USER = 98;
+    const ADMINISTRATOR_USER = 99;
 
     private int $id;
     private ?string $email;

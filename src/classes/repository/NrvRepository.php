@@ -258,11 +258,11 @@ class NrvRepository
      */
     public function findAllSpectacle(): ListSpectacle {
         $spectacles = [];
-        $query = 'Select * from spectacle';
+        $query = 'Select * from soireetospectacle sts inner join spectacle s on sts.spectacleid = s.spectacleid';
         $resultat = $this->pdo->prepare($query);
         $resultat->execute();
         while ($fetch = $resultat->fetch()){
-            $spec = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'], $this->getNomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image'], $fetch['annuler']);
+            $spec = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'], $this->getNomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image'], $fetch['annuler'], $fetch['soireeID']);
             $spec->setID($fetch['spectacleID']);
             $spectacles[] = $spec;
         }
@@ -319,14 +319,26 @@ class NrvRepository
         return $spectacle;
     }
 
-    //  retourne la date du spectacle par son id
-    public function getDateForSpectacle(int $spectacleID): string {
-        $query = "SELECT s.date 
-              FROM Soiree s
-              INNER JOIN SoireeToSpectacle sts ON s.soireeID = sts.soireeID
-              WHERE sts.spectacleID = :spectacleID";
+    public function getSpectacleBySoireeToSpectacle(int $soireeID, int $spectacleID) : Spectacle {
+        $query = "SELECT * FROM soireetospectacle sts INNER JOIN spectacle s ON s.spectacleid = sts.spectacleid WHERE sts.spectacleID = :spectacleid AND sts.soireeID = :soireeID";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['spectacleID' => $spectacleID]);
+        $stmt->execute(['spectacleid' => $spectacleID, 'soireeID' => $soireeID]);
+        $fetch = $stmt->fetch();
+        if($fetch === false){
+            throw new RepoException("Spectacle introuvable");
+        }
+        $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->getNomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image'], $fetch['annuler'], $fetch['soireeID']);
+        $spectacle->setID($fetch['spectacleID']);
+        return $spectacle;
+    }
+
+    //  retourne la date du spectacle par son id
+    public function getDateForSpectacle(?int $soireeID): string {
+        $query = "SELECT date 
+              FROM Soiree
+              WHERE soireeID = :soireeID;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['soireeID' => $soireeID]);
         $result = $stmt->fetch();
 
         if(isset($result['date'])){
@@ -337,14 +349,13 @@ class NrvRepository
     }
 
     // retourne le nom du lieu du spectacle
-    public function getLieuNomForSpectacle(int $spectacleID): string {
+    public function getLieuNomForSpectacle(int $soireeID): string {
         $query = "SELECT l.nom 
                   FROM Lieu l
                   INNER JOIN Soiree s ON l.lieuID = s.lieuID
-                  INNER JOIN SoireeToSpectacle sts ON s.soireeID = sts.soireeID
-                  WHERE sts.spectacleID = :spectacleID";
+                  WHERE soireeID = :soireeID";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['spectacleID' => $spectacleID]);
+        $stmt->execute(['soireeID' => $soireeID]);
         $result = $stmt->fetch();
 
         if(isset($result['nom'])){
@@ -355,35 +366,38 @@ class NrvRepository
     }
 
     // retourne la liste des spectacles par style sans le spectacle actuel pour la page ActionShowSpectacleDetails
-    public function getSpectaclesByStyleSansActuel(int $style, int $currentSpectacleID): ListSpectacle
-    {
+
+    /**
+     * @throws RepoException
+     */
+    public function getSpectaclesByStyleSansActuel(int $style, int $currentSpectacleID, int $currentSoireeID): ListSpectacle {
         $list = [];
         $listSpectacles = new ListSpectacle();
 
         $query = "SELECT * FROM spectacle sp 
-              WHERE sp.styleID = :style AND sp.spectacleID != :currentSpectacleID;";
+              INNER JOIN soireeToSpectacle  sts ON sp.spectacleID = sts.spectacleID
+              WHERE sp.styleID = :style AND (sp.spectacleID != :currentSpectacleID OR soireeID != :currentSoireeID);";
         $resultat = $this->pdo->prepare($query);
-        $resultat->execute(['style' => $style, 'currentSpectacleID' => $currentSpectacleID]);
+        $resultat->execute(['style' => $style, 'currentSpectacleID' => $currentSpectacleID, 'currentSoireeID' => $currentSoireeID]);
 
         while ($fetch = $resultat->fetch()){
             $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'],
                 $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'],
-                $fetch['image'], $fetch['annuler']);
+                $fetch['image'], $fetch['annuler'], $fetch['soireeID']);
             $spectacle->setID($fetch['spectacleID']);
             $list[] = $spectacle;
         }
-
         $listSpectacles->setSpectacles($list);
 
         return $listSpectacles;
     }
 
     // retourne la liste des spectacles par lieu sans le spectacle actuel pour la page ActionShowSpectacleDetails
-    public function getSpectaclesByLieuSansActuel(int $currentSpectacleID): ListSpectacle {
+    public function getSpectaclesByLieuSansActuel(int $currentSpectacleID, int $currentSoireeID): ListSpectacle {
         $list = [];
         $listSpectacles = new ListSpectacle();
 
-        $query = "SELECT s.*
+        $query = "SELECT *
               FROM Spectacle s
               JOIN SoireeToSpectacle sts ON s.spectacleID = sts.spectacleID
               JOIN Soiree so ON sts.soireeID = so.soireeID
@@ -392,15 +406,16 @@ class NrvRepository
                   FROM Soiree so2
                   JOIN SoireeToSpectacle sts2 ON so2.soireeID = sts2.soireeID
                   WHERE sts2.spectacleID = :currentSpectacleID
-              ) AND s.spectacleID != :currentSpectacleID;";
+                  AND sts2.soireeID = :currentSoireeID
+              ) AND (sts.spectacleID != :currentSpectacleID OR sts.soireeID != :currentSoireeID);";
 
         $resultat = $this->pdo->prepare($query);
-        $resultat->execute(['currentSpectacleID' => $currentSpectacleID]);
+        $resultat->execute(['currentSpectacleID' => $currentSpectacleID, 'currentSoireeID' => $currentSoireeID]);
 
         while ($fetch = $resultat->fetch()){
             $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'],
                 $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'],
-                $fetch['image'], $fetch['annuler']
+                $fetch['image'], $fetch['annuler'],$fetch['soireeID']
             );
             $spectacle->setID($fetch['spectacleID']);
             $list[] = $spectacle;
@@ -411,11 +426,11 @@ class NrvRepository
     }
 
     // retourne la liste des spectacles par date sans le spectacle actuel pour la page ActionShowSpectacleDetails
-    public function getSpectaclesByDateSansActuel(string $currentSpectacleID): ListSpectacle {
+    public function getSpectaclesByDateSansActuel(string $currentSpectacleID, $soireeID): ListSpectacle {
         $list = [];
         $listSpectacles = new ListSpectacle();
 
-        $query = "SELECT s.*
+        $query = "SELECT *
               FROM Spectacle s
               JOIN SoireeToSpectacle sts ON s.spectacleID = sts.spectacleID
               JOIN Soiree so ON sts.soireeID = so.soireeID
@@ -423,16 +438,17 @@ class NrvRepository
                   SELECT DISTINCT so2.date
                   FROM Soiree so2
                   JOIN SoireeToSpectacle sts2 ON so2.soireeID = sts2.soireeID
-                  WHERE sts2.spectacleID = :currentSpectacleID
-              ) AND s.spectacleID != :currentSpectacleID;";
+                  WHERE sts2.spectacleID = :currentSpectacleID 
+              ) AND (s.spectacleID != :currentSpectacleID 
+              OR sts.soireeID != :soireeID);";
 
         $resultat = $this->pdo->prepare($query);
-        $resultat->execute(['currentSpectacleID' => $currentSpectacleID]);
+        $resultat->execute(['currentSpectacleID' => $currentSpectacleID, 'soireeID' => $soireeID]);
 
         while ($fetch = $resultat->fetch()){
             $spectacle = new Spectacle( $fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'],
                 $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'],
-                $fetch['image'], $fetch['annuler']
+                $fetch['image'], $fetch['annuler'], $fetch['soireeID']
             );
             $spectacle->setID($fetch['spectacleID']);
             $list[] = $spectacle;
@@ -618,6 +634,31 @@ class NrvRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['image' => $nouvelleImage, 'spectacle' => $spectacle]);
         return "<p>Image du spectacle modifier</p>";
+    }
+
+    public function promoteOrga(int $userid) : string{
+        $query = "update User set roleid = 98 where userid = :userid;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['userid' => $userid]);
+        return "<p>Role de l'utilisateur '{$this->getEmailByID($userid)}' changer pour 'Organisateur'</p>";
+    }
+
+    public function getAllUsersNotAdmin() : array {
+        $tab = [];
+        $query = "select userid, email from User where roleid != 99";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        while($fetch = $stmt->fetch()){
+            $tab[$fetch['userid']] = $fetch['email'];
+        }
+        return $tab;
+    }
+
+    public function getEmailByID($userid) : string {
+        $query = "select email from User where userid = :userid;";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['userid' => $userid]);
+        return $stmt->fetch()['email'];
     }
 }
 

@@ -65,6 +65,7 @@ class ActionEditSoiree extends Action
             <input type="text" name="nouvelleThematique" id="nouvelleThematique" style="display: none;" placeholder="Nouvelle Thematique">
             <input type="number" name="nouveauTarif" id="nouveauTarif" style="display: none;" placeholder="Nouveau Tarif">
             <input type="date" name="nouvelleDate" id="nouvelleDate" style="display: none;">
+            <input type="time" name="nouvelHorraire" id="nouvelHorraire" style="display: none;">
             <input type="text" name="nouveauNom" id="nouveauNom" style="display: none;" placeholder="Nouveau Nom">
             <select id="nouveauLieu" name="nouveauLieu" style="display: none;">
                 <option value="" disabled selected>Choisir un lieu</option>
@@ -86,6 +87,7 @@ class ActionEditSoiree extends Action
                 var nomInput = document.getElementById('nouveauNom');
                 var thematiqueInput = document.getElementById('nouvelleThematique');
                 var tarifInput = document.getElementById('nouveauTarif');
+                var horraireInput = document.getElementById('nouvelHorraire');
                 var dateInput = document.getElementById('nouvelleDate');
                 var lieuInput = document.getElementById('nouveauLieu');
                 var newLocationInput = document.getElementById('new-location');
@@ -95,6 +97,7 @@ class ActionEditSoiree extends Action
                 nomInput.style.display = 'none';
                 thematiqueInput.style.display = 'none';
                 tarifInput.style.display = 'none';
+                horraireInput.style.display = 'none';
                 dateInput.style.display = 'none';
                 lieuInput.style.display = 'none';
                 spectacleInput.style.display = 'none';
@@ -112,6 +115,7 @@ class ActionEditSoiree extends Action
                         break;
                     case 'date':
                         dateInput.style.display = 'block';
+                        horraireInput.style.display = 'block';
                         break;
                     case 'lieu':
                         lieuInput.style.display = 'block';
@@ -166,7 +170,7 @@ END;
             case 'tarif':
                 return $pdo->modifierTarif($_POST['soiree'], $_POST['nouveauTarif']);
             case 'date':
-                return $pdo->modifierDate($_POST['soiree'], $_POST['nouvelleDate']);
+                return $pdo->modifierDate($_POST['soiree'], $_POST['nouvelleDate']." ".$_POST['nouvelHorraire']);
             case 'lieu':
                 if($_POST['nouveauLieu'] != 'Autre')
                     return $pdo->modifierLieuSoiree($_POST['soiree'], $_POST['nouveauLieu'], null, null);

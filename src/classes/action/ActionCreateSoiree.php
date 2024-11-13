@@ -100,14 +100,14 @@ END;
         if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['date'])) {
             $_POST['date'] = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
         } else {
-            return "Date invalide";
+            return "Date invalide (Format attendu : YYY-MM-DD, Date reçu : ".$_POST['date'].")";
         }
 
         // Valide le temps au format "HH:MM:SS"
-        if (preg_match('/^\d{2}:\d{2}:\d{2}$/', $_POST['time'])) {
+        if (preg_match('/^\d{2}:\d{2}:\d{2}$/', $_POST['time']) || preg_match('/^\d{2}:\d{2}$/', $_POST['time'])) {
             $_POST['time'] = filter_var($_POST['time'], FILTER_SANITIZE_STRING);
         } else {
-            return "Heure invalide";
+            return "Heure invalide (Format attendu : HH:MM:SS, heure reçu : ".$_POST['time'].")";
         }
 
         //TODO vérifier tous les parametres envoyé par le client

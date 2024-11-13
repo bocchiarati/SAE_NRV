@@ -35,7 +35,7 @@ class SpectacleRenderer implements Renderer {
     {
         // recuperer la date du spectacle
         $repository = NrvRepository::getInstance();
-        $date = $repository->getDateForSpectacle($this->spec->getID());
+        $date = $repository->getDateForSpectacle($this->spec->getSoireeID());
 
         //cas où le spectacle n'est pas programmé à une soirée
         if($date === "NULL"){
@@ -50,7 +50,7 @@ class SpectacleRenderer implements Renderer {
         }
 
         return <<<HTML
-        <a href='?action=showSpectacleDetails&id={$this->spec->getID()}' class='spectacle-item'>
+            <a href='?action=showSpectacleDetails&spectacleid={$this->spec->getID()}&soireeid={$this->spec->getSoireeID()}' class='spectacle-item'>
             <div class="image-container-compact-render position-relative">
                 <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact w-100">
                 
@@ -73,12 +73,12 @@ class SpectacleRenderer implements Renderer {
     {
         // recuperer la date et le lieu du spectacle
         $repository = NrvRepository::getInstance();
-        $date = $repository->getDateForSpectacle($this->spec->getID());
+        $date = $repository->getDateForSpectacle($this->spec->getSoireeID());
         //cas où le spectacle n'est pas programmé à une soirée
         if($date === "NULL"){
             $date = 'Non programmé';
         }
-        $location = $repository->getLieuNomForSpectacle($this->spec->getID());
+        $location = $repository->getLieuNomForSpectacle($this->spec->getSoireeID());
         if($location === "NULL"){
             $location = 'Non programmé';
         }

@@ -24,4 +24,8 @@ class Authz {
     public function checkIsOrga(): bool {
         return $this->authenticated_user->role >= User::ORGANISATOR_USER;
     }
+
+    public function checkIsAdmin(): bool {
+        return $this->authenticated_user->role >= User::ADMINISTRATOR_USER;
+    }
 }
