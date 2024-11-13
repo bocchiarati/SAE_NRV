@@ -52,10 +52,12 @@ class ActionFiltre extends Action {
                     $this->output = (new ListSpectacleRenderer($spectacles))->render(Renderer::LONG);
                     break;
                 case 'location':
-                    $this->filterByLocation($id);
+                    $spectacles = $this->pdo->getSpectaclesByLocation($id);
+                    $this->output = (new ListSpectacleRenderer($spectacles))->render(Renderer::LONG);
                     break;
                 case 'date':
-                    $this->filterByDate($id);
+                    $spectacles = $this->pdo->getSpectaclesByDate($id);
+                    $this->output = (new ListSpectacleRenderer($spectacles))->render(Renderer::LONG);
                     break;
             }
         }
@@ -69,35 +71,6 @@ class ActionFiltre extends Action {
         $this->output = $spectacles ?
             (new ListSpectacleRenderer($spectacles))->render(Renderer::COMPACT) :
             "<p>Aucun spectacle programmé</p>";
-    }
-
-    // Filtrer les spectacles par lieu
-    private function filterByLocation($locationId): void
-    {
-        $filteredSoirees = $this->pdo->getSoireeByLocation($locationId);
-        if (empty($filteredSoirees)) {
-            $this->output = "<p>Aucun spectacle n'est prévu pour ce lieu.</p>";
-        } else {
-            foreach ($filteredSoirees as $soiree) {
-                $this->output .= (new SoireeRenderer($soiree))->render(Renderer::LONG);
-            }
-        }
-    }
-
-    // Filtrer les spectacles par date
-    private function filterByDate(string $date) : void {
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
-            $this->output = "<p>Erreur avec la date envoyée</p>";
-        }else {
-            $filteredSoirees = $this->pdo->getSoireeByDate($date);
-            if (empty($filteredSoirees)) {
-                $this->output = "<p>Aucun spectacle n'est prévu pour cette date.</p>";
-            } else {
-                foreach ($filteredSoirees as $soiree) {
-                    $this->output .= (new SoireeRenderer($soiree))->render(Renderer::LONG);
-                }
-            }
-        }
     }
 
     // Construit HTML pour l'interface utilisateur
