@@ -455,11 +455,11 @@ class NrvRepository
 
     public function findAllSoireeWithSpectacle(): array{
         $tab = [];
-        $query = "Select * from soiree s inner join lieu l on l.lieuID = s.lieuID;";
+        $query = "Select * from soiree;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         while($fetch = $stmt->fetch()){
-            $soiree = new Soiree($fetch['date'], $fetch['lieuID'], $this->getNomLieuByID($fetch['lieuID']), $fetch['adresse'], $fetch['nom'], $fetch['thematique'], $fetch['tarif']);
+            $soiree = new Soiree($fetch['date'], $fetch['lieuID'], $this->getNomLieuByID($fetch['lieuID']), $this->adresseLieuByID($fetch['lieuID']), $fetch['nom'], $fetch['thematique'], $fetch['tarif']);
             $soiree->setId($fetch['soireeID']);
             $query2 = "Select * from soireetospectacle where soireeID = :idsoiree;";
             $stmt2 = $this->pdo->prepare($query2);

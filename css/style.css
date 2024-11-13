@@ -114,8 +114,9 @@ form {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 70%;
-    margin: 0 auto;
+    width: 50%;
+    margin: 2% auto 0 auto;
+    background-color: #242424;
 }
 
 /* Button styling */
@@ -276,4 +277,14 @@ body {
 .dropdown-links-container a:hover {
     background-color: #f3dbc1;
     color: #cc6a00;
+}
+
+.btn-orange {
+    border-color: #cc6a00;
+    color: white;
+}
+
+.btn-orange:hover {
+    background-color: #ff8c00; /* Couleur orange plus foncée au survol */
+    border-color: #ff8c00;
 }

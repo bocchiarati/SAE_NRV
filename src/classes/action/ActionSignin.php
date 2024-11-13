@@ -17,7 +17,7 @@ class ActionSignin extends Action
             <button type="submit">Valider</button>
         </form>
         <br>
-        <a href="?action=register">Pas de compte ? S'enregistrer</a>
+        <a href="?action=register" class="btn btn-outline-warning btn-orange p-2">Pas de compte ? S'enregistrer</a>
         END;
     }
 
@@ -31,9 +31,9 @@ class ActionSignin extends Action
             return <<<END
                 Erreur avec vos credentials
                 <br>
-                <a href="?action=signin">Reesayer</a>
+                <a href="?action=signin" class="btn btn-outline-warning btn-orange p-1">Reesayer</a>
                 <br>
-                <a href="?action=register">S'enregistrer</a>
+                <a href="?action=register" class="btn btn-outline-warning btn-orange p-1">S'enregistrer</a>
             END;
         }
 

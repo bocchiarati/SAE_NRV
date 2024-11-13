@@ -32,18 +32,17 @@ class SoireeRenderer implements Renderer
 
     public function renderCompact(): string
     {
-        $output = '';
 
-        $pdo = NrvRepository::getInstance();
         $deuxDate = explode(' ', $this->soiree->date);
 
         return <<<HTML
-        <div class="promo-section" style="padding: 40px 20px; text-align: center; border-radius: 8px;">
+        <div class="col p-4 d-flex flex-column" style="text-align: center; border-radius: 8px;">
+            <h2 style="color: #ff8c00">{$this->soiree->nom}</h2>
             <div style="font-size: 1.1rem; margin-bottom: 20px;">
-                <strong>Le:</strong> {$deuxDate[0]} <strong>à</strong> {$deuxDate[1]} <br>
+                <strong>Le</strong> {$deuxDate[0]} <strong>à</strong> {$deuxDate[1]} <br>
                 <strong>Lieu:</strong> {$this->soiree->nomLieu}, {$this->soiree->adresseLieu}
             </div>
-            <a href="?action=showSoireeDetails&id={$this->soiree->id}" style="padding: 12px 30px; background-color: #f1590a; color: white; text-decoration: none; border-radius: 5px; font-size: 1rem; font-weight: bold; transition: background-color 0.3s;">
+            <a href="?action=showSoireeDetails&id={$this->soiree->id}" class="btn btn-outline-warning btn-orange" style="text-decoration: none; border-radius: 5px; font-size: 1rem; font-weight: bold;">
                 Découvrez plus et réservez votre place (ou pas) ! 
             </a>
         </div>

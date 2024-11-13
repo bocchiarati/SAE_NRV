@@ -123,7 +123,7 @@ class Dispatcher
             </header>
             
             <div class="container p-2">
-                <div class="d-flex flex-column align-items-center">$resultat</div>
+                <div class="d-flex flex-column align-items-center" style="background-color: #1b1b1b">$resultat</div>
             </div>
             
             <script src="../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

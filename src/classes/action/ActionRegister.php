@@ -18,7 +18,7 @@ class ActionRegister extends Action
             <button type="submit">Valider</button>
         </form>
         <br>
-        <a href="?action=signin">Dèjà inscrit ? Se connecter</a>
+        <a href="?action=signin" class="btn btn-outline-warning btn-orange p-2">Dèjà inscrit ? Se connecter</a>
         END;
 
     }
@@ -33,9 +33,9 @@ class ActionRegister extends Action
             return <<<END
                 Nom d'utilisateur invalide
                 <br>
-                <a href="?action=register">Reesayer</a>
+                <a href="?action=register" class="btn btn-outline-warning btn-orange p-1">Reesayer</a>
                 <br>
-                <a href="?action=signin">Se connecter</a>
+                <a href="?action=signin" class="btn btn-outline-warning btn-orange p-1">Se connecter</a>
             END;
         }
 
