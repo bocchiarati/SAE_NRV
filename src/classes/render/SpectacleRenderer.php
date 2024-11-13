@@ -46,7 +46,7 @@ class SpectacleRenderer implements Renderer {
 
         $annuler = '';
         if($repository->getSpectacleAnnuler($this->spec->getID())){
-            $annuler = '<img src="../image/annuler.png" alt="Cancel Image" class="position-absolute top-0 start-0 h-30 w-100 mt-3">';
+            $annuler = '<img src="../image/annuler.png" alt="Cancel Image" class="position-absolute top-0 start-0 h-30 w-100 mt-3" style="background-color: rgba(255, 255, 255, 0.3)">';
         }
 
         return <<<HTML
