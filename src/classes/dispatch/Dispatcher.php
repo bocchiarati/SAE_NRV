@@ -40,6 +40,8 @@ class Dispatcher
             "cancel" => new act\ActionCancelSpectacle(),
             "filtre" => new act\ActionFiltre(),
             "promoteOrga" => new act\ActionPromoteToOrga(),
+            "savePreference" => new act\ActionSavePreference(),
+            "showPreferences" => new act\ActionShowPreferences(),
             default => new act\ActionDefaut(),
         };
         $this->renderPage($action->execute());
@@ -120,6 +122,7 @@ class Dispatcher
                             <a href="?action=signin">Se connecter</a>
                             <a href="?action=signout">Se deconnecter</a>
                             <a href="?action=filtre">Programme</a> 
+                            <a href="?action=showPreferences">Preferences</a>
                             {$menuOrga} 
                         </div>
                 </div>

@@ -37,4 +37,8 @@ class User
             return $this->$attribut;
         throw new InvalidPropertyNameException(" $attribut : invalide propriete");
     }
+
+    public function getID() : int {
+        return $this->id;
+    }
 }

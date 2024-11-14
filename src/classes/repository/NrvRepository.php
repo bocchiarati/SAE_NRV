@@ -154,20 +154,27 @@ class NrvRepository
         return $listSpectacles;
     }
 
+    /**
+     * @throws AuthException
+     */
     public function saveSpectaclePreferences(Spectacle $s): Spectacle {
-        $query = "INSERT INTO userpreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
+        $query = "INSERT INTO userspreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
         $stmt = $this->pdo->prepare($query);
         $user = AuthnProvider::getSignedInUser();
         $stmt->execute(['userid' => $user->id,'spectacleid' => $s->id]);
         return $s;
     }
 
-    public function findPreferences(int $userid): int
+    public function findPreferences(int $userid): array
     {
-        $query = 'Select * from userspreferences where userid = '.$userid.';';
-        $resultat = $this->pdo->query($query);
-        $fetch = $resultat->fetch();
-        return $fetch['spetacleid'];
+        $tab = [];
+        $query = 'Select spectacleid from userspreferences where userid = '.$userid.';';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        while($fetch = $stmt->fetch()){
+            $tab[] = $fetch['spectacleid'];
+        }
+        return $tab;
     }
 
     // retourne la liste des spectacles par soiree
@@ -303,6 +310,7 @@ class NrvRepository
         }
         return $tab;
     }
+
 
     // retourne le spectacle par son id
     public function getSpectacleByID(int $id): Spectacle
@@ -687,6 +695,8 @@ class NrvRepository
 
         return $stmt->fetch()['soireeID'];
     }
+
+
 }
 
 
