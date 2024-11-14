@@ -35,13 +35,16 @@ class SpectacleRenderer implements Renderer {
     {
         // recuperer la date du spectacle
         $repository = NrvRepository::getInstance();
-        $date = $repository->getDateForSpectacle($this->spec->getSoireeID());
+        $date = $repository->getDateForSpectacle($this->spec->getID());
 
         //cas où le spectacle n'est pas programmé à une soirée
         if($date === "NULL"){
-            $deuxDate = [0 => 'Indéfini', 1 => 'Indéfini'];
+            $formattedDate = 'Indéfini';
+            $formattedTime = 'Indéfini';
         }else {
-            $deuxDate = explode(' ', $date);
+            $date = new \DateTime($date);
+            $formattedDate = $date->format('d M Y');
+            $formattedTime = $date->format('H:i');
         }
 
         $annuler = '';
@@ -59,8 +62,8 @@ class SpectacleRenderer implements Renderer {
                 <div class="triangle position-absolute bottom-0 start-0"></div>
                 <div class="triangle-text position-absolute start-0 bottom-0 text-white" style="transform: translateY(-20%);">
                     <p class="m-0" style="max-width: 50%; overflow: hidden; text-overflow: ellipsis;">{$this->spec->getTitre()}</p>
-                    <p class="m-0" style="max-width: 61%">{$deuxDate[0]}</p>
-                    <p class="m-0" style="max-width: 70%">À {$deuxDate[1]}</p>
+                    <p class="m-0" style="max-width: 61%">{$formattedDate}</p>
+                    <p class="m-0" style="max-width: 70%">À {$formattedTime}</p>
                     <p class="m-0">Durée : {$this->spec->getDurationHoursEtMin()}</p>
                 </div>
             </div>
@@ -73,12 +76,12 @@ class SpectacleRenderer implements Renderer {
     {
         // recuperer la date et le lieu du spectacle
         $repository = NrvRepository::getInstance();
-        $date = $repository->getDateForSpectacle($this->spec->getSoireeID());
+        $date = $repository->getDateForSpectacle($this->spec->getID());
         //cas où le spectacle n'est pas programmé à une soirée
         if($date === "NULL"){
             $date = 'Non programmé';
         }
-        $location = $repository->getLieuNomForSpectacle($this->spec->getSoireeID());
+        $location = $repository->getLieuNomForSpectacle($this->spec->getID());
         if($location === "NULL"){
             $location = 'Non programmé';
         }

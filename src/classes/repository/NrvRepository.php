@@ -333,12 +333,12 @@ class NrvRepository
     }
 
     //  retourne la date du spectacle par son id
-    public function getDateForSpectacle(?int $soireeID): string {
+    public function getDateForSpectacle(int $spectacleID): string {
         $query = "SELECT date 
-              FROM Soiree
-              WHERE soireeID = :soireeID;";
+              FROM Soiree s inner join soireetospectacle st on s.soireeID = st.soireeID
+              WHERE spectacleID = :spectacleID;";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['soireeID' => $soireeID]);
+        $stmt->execute(['spectacleID' => $spectacleID]);
         $result = $stmt->fetch();
 
         if(isset($result['date'])){
@@ -349,13 +349,14 @@ class NrvRepository
     }
 
     // retourne le nom du lieu du spectacle
-    public function getLieuNomForSpectacle(int $soireeID): string {
+    public function getLieuNomForSpectacle(int $spectacleID): string {
         $query = "SELECT l.nom 
                   FROM Lieu l
                   INNER JOIN Soiree s ON l.lieuID = s.lieuID
-                  WHERE soireeID = :soireeID";
+                  INNER JOIN SoireetoSpectacle st on s.soireeID = st.soireeID
+                  WHERE spectacleID = :spectacleID ;";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['soireeID' => $soireeID]);
+        $stmt->execute(['spectacleID' => $spectacleID]);
         $result = $stmt->fetch();
 
         if(isset($result['nom'])){

@@ -15,7 +15,6 @@ class Spectacle {
     protected ?string $cheminExtrait;
     protected ?string $image;
     protected ?int $soireeID;
-
     protected bool $cancel;
 
     public function __construct(?string $titre, ?string $groupe, ?int $duree, ?int $styleID, ?string $nomStyle, ?string $description, ?string $cheminExtrait, ?string $image, bool $cancel, ?int $soireeID = null)
