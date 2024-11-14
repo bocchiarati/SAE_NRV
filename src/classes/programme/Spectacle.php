@@ -14,10 +14,9 @@ class Spectacle {
     protected ?string $description;
     protected ?string $cheminExtrait;
     protected ?string $image;
-    protected ?int $soireeID;
     protected bool $cancel;
 
-    public function __construct(?string $titre, ?string $groupe, ?int $duree, ?int $styleID, ?string $nomStyle, ?string $description, ?string $cheminExtrait, ?string $image, bool $cancel, ?int $soireeID = null)
+    public function __construct(?string $titre, ?string $groupe, ?int $duree, ?int $styleID, ?string $nomStyle, ?string $description, ?string $cheminExtrait, ?string $image, bool $cancel)
     {
         $this->titre = $titre;
         $this->groupe = $groupe;
@@ -28,9 +27,6 @@ class Spectacle {
         $this->cheminExtrait = $cheminExtrait;
         $this->image = $image;
         $this->cancel = $cancel;
-        if (isset($soireeID)) {
-            $this->soireeID = $soireeID;
-        }
     }
 
     public function setID(mixed $id){
@@ -78,13 +74,6 @@ class Spectacle {
 
     public function getImage(): ?string {
         return $this->image;
-    }
-
-    public function getSoireeID(): ?string {
-        if(isset($this->soireeID))
-            return $this->soireeID;
-        else
-            return null;
     }
 
     // convertir duree en heures et minutes

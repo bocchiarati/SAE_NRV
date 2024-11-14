@@ -94,7 +94,7 @@ class NrvRepository
         $resultat->execute(['style' => $style]);
 
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->getNomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image'], $fetch['annuler']);
+            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler']);
             $spectacle->setID($fetch['spectacleID']);
             $list[] = $spectacle;
         }
@@ -183,7 +183,7 @@ class NrvRepository
         $resultat->execute(['soireeID' => $soireeID]);
 
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->getNomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image'], $fetch['annuler']);
+            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler']);
             $spectacle->setID($fetch['spectacleID']);
             $spectacles[] = $spectacle;
         }
@@ -262,7 +262,7 @@ class NrvRepository
         $resultat = $this->pdo->prepare($query);
         $resultat->execute();
         while ($fetch = $resultat->fetch()){
-            $spec = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'], $this->getNomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image'], $fetch['annuler'], $fetch['soireeID']);
+            $spec = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler']);
             $spec->setID($fetch['spectacleID']);
             $spectacles[] = $spec;
         }
@@ -314,7 +314,7 @@ class NrvRepository
         if($fetch === false){
             throw new RepoException("Spectacle introuvable");
         }
-        $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->getNomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image'], $fetch['annuler']);
+        $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler']);
         $spectacle->setID($fetch['spectacleID']);
         return $spectacle;
     }
@@ -327,7 +327,7 @@ class NrvRepository
         if($fetch === false){
             throw new RepoException("Spectacle introuvable");
         }
-        $spectacle = new Spectacle($fetch['titre'],$fetch['groupe'],$fetch['duree'],$fetch['styleID'],$this->getNomStyleByID($fetch['styleID']),$fetch['description'],$fetch['extrait'],$fetch['image'], $fetch['annuler'], $fetch['soireeID']);
+        $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler']);
         $spectacle->setID($fetch['spectacleID']);
         return $spectacle;
     }
@@ -384,7 +384,7 @@ class NrvRepository
         while ($fetch = $resultat->fetch()){
             $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'],
                 $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'],
-                $fetch['image'], $fetch['annuler'], $fetch['soireeID']);
+                $fetch['image'], $fetch['annuler']);
             $spectacle->setID($fetch['spectacleID']);
             $list[] = $spectacle;
         }
@@ -416,7 +416,7 @@ class NrvRepository
         while ($fetch = $resultat->fetch()){
             $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'],
                 $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'],
-                $fetch['image'], $fetch['annuler'],$fetch['soireeID']
+                $fetch['image'], $fetch['annuler']
             );
             $spectacle->setID($fetch['spectacleID']);
             $list[] = $spectacle;
@@ -447,9 +447,9 @@ class NrvRepository
         $resultat->execute(['currentSpectacleID' => $currentSpectacleID, 'soireeID' => $soireeID]);
 
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle( $fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'],
+            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'],
                 $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'],
-                $fetch['image'], $fetch['annuler'], $fetch['soireeID']
+                $fetch['image'], $fetch['annuler']
             );
             $spectacle->setID($fetch['spectacleID']);
             $list[] = $spectacle;
@@ -678,6 +678,14 @@ class NrvRepository
         $soiree->setId($soireeData['soireeID']);
 
         return $soiree;
+    }
+
+    public function getSoireeIDBySpectacleID(int $spectacleID): int{
+        $query = 'Select s.soireeID from soiree s inner join soireetospectacle st on st.soireeID = s.soireeID where st.spectacleID = :spectacleid;';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['spectacleid' => $spectacleID]);
+
+        return $stmt->fetch()['soireeID'];
     }
 }
 

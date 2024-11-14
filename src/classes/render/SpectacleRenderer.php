@@ -53,7 +53,7 @@ class SpectacleRenderer implements Renderer {
         }
 
         return <<<HTML
-            <a href='?action=showSpectacleDetails&spectacleid={$this->spec->getID()}&soireeid={$this->spec->getSoireeID()}' class='spectacle-item'>
+            <a href='?action=showSpectacleDetails&spectacleid={$this->spec->getID()}&soireeid={$repository->getSoireeIDBySpectacleID($this->spec->getID())}' class='spectacle-item'>
             <div class="image-container-compact-render position-relative">
                 <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact w-100">
                 
