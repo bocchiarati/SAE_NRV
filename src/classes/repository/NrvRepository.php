@@ -638,17 +638,17 @@ class NrvRepository
     }
 
     public function promoteOrga(int $userid) : string{
-        $query = "update User set roleid = 98 where userid = :userid;";
+        $query = "update User set roleid = :roleid where userid = :userid;";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['userid' => $userid]);
+        $stmt->execute(['userid' => $userid, 'roleid' => User::ORGANISATOR_USER]);
         return "<p>Role de l'utilisateur '{$this->getEmailByID($userid)}' changer pour 'Organisateur'</p>";
     }
 
-    public function getAllUsersNotAdmin() : array {
+    public function getAllUsersNotOrga() : array {
         $tab = [];
-        $query = "select userid, email from User where roleid != 99";
+        $query = "select userid, email from User where roleid < :roleid";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
+        $stmt->execute(['roleid' => User::ORGANISATOR_USER]);
         while($fetch = $stmt->fetch()){
             $tab[$fetch['userid']] = $fetch['email'];
         }
