@@ -125,7 +125,9 @@ class ActionFiltre extends Action {
 
         if($filterType === 'date'){
             foreach ($items as $date) {
-                $links .= "<a href='?action=filtre&filter=$filterType&id=$date'>$date</a>";
+                $dateAffiche = new \DateTime($date);
+                $dateAffiche = $dateAffiche->format('d M Y');
+                $links .= "<a href='?action=filtre&filter=$filterType&id=$date'>$dateAffiche</a>";
             }
         }else {
             foreach ($items as $id => $name) {
