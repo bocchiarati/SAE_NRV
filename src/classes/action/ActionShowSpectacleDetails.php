@@ -75,7 +75,7 @@ class ActionShowSpectacleDetails extends Action
             }
 
             $savePreference = '';
-            $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='ms-5 btn-spect-det mb-4'>Sauvegarder une préférence</a>";
+            $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='ms-5 btn-spect-det mb-4'><img src='/image/shape.png' alt='Like' height='23'></a>";
 
 
             return $renderer->render(Renderer::LONG) .
