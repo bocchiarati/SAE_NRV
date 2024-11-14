@@ -68,14 +68,14 @@ class ActionShowSpectacleDetails extends Action
                 $user = AuthnProvider::getSignedInUser();
                 $droit = new Authz($user);
                 if($droit->checkIsOrga()){
-                    $annulerSpectacle = "<a href='?action=cancel&id={$spectacleID}' style='padding-right: 50px'>Annuler le spectacle</a>";
+                    $annulerSpectacle = "<a href='?action=cancel&id={$spectacleID}' class='btn-spect-det mb-4'>Annuler le spectacle</a>";
                 }
             } catch (AuthException $e) {
                 //aucun user connecté
             }
 
             $savePreference = '';
-            $savePreference = "<a href='?action=savePreference&id={$spectacleID}'>Sauvgarder une préférence</a>";
+            $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='ms-5 btn-spect-det mb-4'>Sauvegarder une préférence</a>";
 
 
             return $renderer->render(Renderer::LONG) .
