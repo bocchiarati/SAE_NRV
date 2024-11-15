@@ -16,7 +16,7 @@ class Spectacle {
     protected ?string $image;
     protected bool $cancel;
 
-    public function __construct(?string $titre, ?string $groupe, ?int $duree, ?int $styleID, ?string $nomStyle, ?string $description, ?string $cheminExtrait, ?string $image, bool $cancel)
+    public function __construct(?string $titre, ?string $groupe, ?int $duree, ?int $styleID, ?string $nomStyle, ?string $description, ?string $cheminExtrait, ?string $image, bool $cancel,  ?int $soireeID = null)
     {
         $this->titre = $titre;
         $this->groupe = $groupe;
@@ -27,6 +27,9 @@ class Spectacle {
         $this->cheminExtrait = $cheminExtrait;
         $this->image = $image;
         $this->cancel = $cancel;
+        if (isset($soireeID)) {
+            $this->soireeID = $soireeID;
+        }
     }
 
     public function setID(mixed $id){
@@ -37,6 +40,13 @@ class Spectacle {
         if (property_exists($this, $attribut))
             return $this->$attribut;
         throw new InvalidPropertyNameException(" $attribut : invalide propriete");
+    }
+
+    public function getSoireeID(): ?string {
+        if(isset($this->soireeID))
+            return $this->soireeID;
+        else
+            return null;
     }
 
     // getters
@@ -93,4 +103,6 @@ class Spectacle {
             return "{$minutes} m";
         }
     }
+
+
 }
