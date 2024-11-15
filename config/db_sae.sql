@@ -88,30 +88,30 @@ INSERT INTO StyleMusic (nomstyle) VALUES
 ('Rock'),
 ('Reggae'),
 ('Jazz'),
-('Electro'),
+('Électro'),
 ('Hip Hop');
 
 INSERT INTO Soiree (nom, thematique, tarif, date, lieuID) VALUES
-('Soiree blues','Concert de blues',5.99,'2025-06-01 20:00:00', 1),
-('Soiree Rock','Concert de rock',5.99,'2025-06-01 21:00:00', 2),
-('Reggae night','Démo de reggae',5.99,'2025-06-02 20:00:00', 3),
-('Jazz Night', 'Night of smooth jazz', 10.00, '2025-06-02 19:30:00', 4),
-('Electro Beat', 'Electronic music party', 15.00, '2025-06-03 21:30:00', 2),
-('Hip Hop Battles', 'Hip hop music and dance battles', 12.00, '2023-12-03 20:00', 1);
+('Soirée Blues', 'Concert de blues', 5.99, '2025-06-01 20:00:00', 1),
+('Soirée Rock', 'Concert de rock', 5.99, '2025-06-01 21:00:00', 2),
+('Nuit Reggae', 'Démo de reggae', 5.99, '2025-06-02 20:00:00', 3),
+('Nuit Jazz', 'Soirée de jazz doux', 10.00, '2025-06-02 19:30:00', 4),
+('Rythme Électro', 'Fête de musique électronique', 15.00, '2025-06-03 21:30:00', 2),
+('Batailles Hip Hop', 'Batailles de musique et de danse hip hop', 12.00, '2023-12-03 20:00:00', 1);
 
 INSERT INTO Spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) VALUES
-('Blues Night', 'The Blue Cats', 120, 'Dive into an evening of soul-stirring blues performed by the legendary The Blue Cats. Experience heartfelt storytelling through music.', NULL, 'bluesnight.jpg', 1, FALSE),
-('Delta Blues Bash', 'Mississippi Group', 120, 'Enjoy a unique blend of traditional Delta blues infused with modern rhythms and sounds, bringing a fresh twist to this classic genre.', NULL, 'deltabluesbash.png', 1, FALSE),
-('Rock Fest', 'The Rocking Stones', 150, 'Get ready to rock at the Rock Fest with The Rocking Stones. Expect high-energy performances featuring both classic hits and new anthems.', NULL, 'rockfest.jpg', 2, FALSE),
-('Guitar Heroes', 'Axe Legends', 110, 'Axe Legends takes the stage to deliver breathtaking guitar solos and rock anthems that have stood the test of time.', NULL, 'guitarheroes.png', 2, FALSE),
-('Reggae Rhythms', 'The Reggae Beats', 130, 'Relax and unwind with The Reggae Beats as they bring smooth reggae tunes that echo the rhythms of the Caribbean.', NULL, 'reggaerythms.jpg', 3, TRUE),
-('Sunset Reggae', 'Island Beats', 85, 'Immerse yourself in the laid-back island rhythms as Island Beats performs contemporary reggae hits against a backdrop of a sunset.', NULL, 'sunsetreggae.jpg', 3, FALSE),
-('Jazz in Paris', 'Jazz Masters', 90, 'Spend an evening with Jazz Masters as they blend classic jazz with modern influences, creating a perfect Parisian jazz night.', NULL, 'jazzinparis.png', 4, FALSE),
-('Jazz Fusion Fest', 'Fusion Band', 150, 'Fusion Band presents an evening of experimental and boundary-pushing jazz fusion, perfect for enthusiasts looking to explore beyond traditional jazz.', NULL, 'jazzfusionfest.jpg', 4, FALSE),
-('Electro Night', 'DJ Electro', 180, 'Join DJ Electro for a night of pulsating electronic beats and a vibrant light show that will keep you dancing till dawn.', NULL, 'electronight.png', 5, FALSE),
-('Techno Night', 'Bass Masters', 125, 'Experience a spectacular showcase of cutting-edge techno music with Bass Masters, featuring deep beats and a mesmerizing audio-visual display.', NULL, 'technonight.jpg', 5, FALSE),
-('Hip Hop Showdown', 'The Street Beats', 150, 'The Street Beats bring their A-game with powerful lyrics, dynamic beats, and an electrifying display of street dance.', NULL, 'hiphopshowdown.png', 6, FALSE),
-('Rap Battle', 'Mic Warriors', 90, 'Witness intense rap battles hosted by Mic Warriors, where the best MCs clash with their fiercest lyrics and sharpest rhymes.', NULL, 'rapbattle.jpg', 6, FALSE);
+('Nuit de Blues', 'B.B. King', 120, 'Plongez dans une soirée de blues profond avec le légendaire B.B. King. Vivez une narration émouvante à travers sa musique.', 'https://youtu.be/SgXSomPE_FY?si=9OuFJBlaEqorfwKU', 'bluesnight.jpg', 1, FALSE),
+('Fête Delta Blues', 'The Black Keys', 120, 'Profitez d''un mélange unique de blues Delta traditionnel enrichi de rythmes et de sons modernes, apportant une touche novatrice à ce genre classique.', 'https://youtu.be/M513zr-J5Cg?si=q4JVnkhUX3PPWvsu', 'deltabluesbash.png', 1, FALSE),
+('Festival de Rock', 'The Rolling Stones', 150, 'Préparez-vous à rocker au Festival de Rock avec The Rolling Stones. Attendez-vous à des performances énergiques comprenant à la fois des classiques et de nouveaux hymnes.', 'https://youtu.be/O4irXQhgMqg?si=6JL904WDW6GqdFxY', 'rockfest.jpg', 2, FALSE),
+('Héros de la Guitare', 'Guns N'' Roses', 110, 'Guns N'' Roses monte sur scène pour livrer des solos de guitare époustouflants et des hymnes rock intemporels.', 'https://youtu.be/1w7OgIMMRc4?si=dtLvggDcwsne7g5S', 'guitarheroes.png', 2, FALSE),
+('Rythmes Reggae', 'Bob Marley and The Wailers', 130, 'Détendez-vous et relaxez-vous avec Bob Marley and The Wailers, qui apportent des airs de reggae doux qui résonnent avec les rythmes des Caraïbes.', 'https://youtu.be/1ti2YCFgCoI?si=MjdvE3X9mgGJKIpD', 'reggaerythms.jpg', 3, TRUE),
+('Reggae au Coucher du Soleil', 'Sean Paul', 85, 'Immergez-vous dans les rythmes insulaires décontractés alors que Sean Paul interprète des hits reggae contemporains sur fond de coucher de soleil.', 'https://youtu.be/dW2MmuA1nI4?si=UOBJpIXpEeBvKBOh', 'sunsetreggae.jpg', 3, FALSE),
+('Jazz à Paris', 'Miles Davis', 90, 'Passez une soirée avec Miles Davis alors qu''il mélange le jazz classique avec des influences modernes, créant une nuit de jazz parisienne parfaite.', 'https://youtu.be/grLYFVrV81I?si=QzRVxBXdU7VX7GD9', 'jazzinparis.png', 4, FALSE),
+('Festival Fusion Jazz', 'Herbie Hancock', 150, 'Herbie Hancock présente une soirée de performances de fusion jazz innovantes, parfaites pour les amateurs souhaitant explorer au-delà du jazz traditionnel.', 'https://youtu.be/GHhD4PD75zY?si=J9RcCC7iA_quF5Lv', 'jazzfusionfest.jpg', 4, FALSE),
+('Nuit Électro', 'David Guetta', 180, 'Rejoignez David Guetta pour une nuit de beats électro pulsants et un spectacle de lumières vif qui vous feront danser jusqu''à l''aube.', 'https://youtu.be/NUVCQXMUVnI?si=9iS3-spNcj0a5Kkr', 'electronight.png', 5, FALSE),
+('Nuit Techno', 'Daft Punk', 125, 'Vivez un spectacle spectaculaire de musique techno de pointe avec Daft Punk, présentant des beats profonds et un affichage audio-visuel captivant.', 'https://youtu.be/a5uQMwRMHcs?si=xXJPBTFHzMa5CTQP', 'technonight.jpg', 5, FALSE),
+('Affrontement Hip Hop', 'Kanye West', 150, 'Kanye West apporte son meilleur jeu avec des paroles puissantes, des beats dynamiques, et une représentation électrisante de danse de rue.', 'https://youtu.be/6CHs4x2uqcQ?si=yZmq_ROB6dlLeFgb', 'hiphopshowdown.png', 6, FALSE),
+('Bataille de Rap', 'Eminem', 90, 'Assistez à des batailles de rap intenses organisées par Eminem, où les meilleurs MCs s''affrontent avec leurs paroles les plus féroces et leurs rimes les plus aiguës.', 'https://youtu.be/S9bCLPwzSC0?si=JZB9oXmTEGuS3SNH', 'rapbattle.jpg', 6, FALSE);
 
 INSERT INTO SoireeToSpectacle (soireeID, spectacleID) VALUES
 (1, 1),
