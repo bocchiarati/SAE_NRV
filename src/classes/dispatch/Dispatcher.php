@@ -32,12 +32,11 @@ class Dispatcher
             "register" => new act\ActionRegister(),
             "showSpectacleDetails" => new act\ActionShowSpectacleDetails(),
             "showSoireeDetails" => new act\ActionShowSoireeDetails(),
-            "cancelSpectacle" => new act\ActionCancelSpectacle(),
+            "cancelSpectacle", "cancel" => new act\ActionCancelSpectacle(),
             "createSoiree" => new act\ActionCreateSoiree(),
             "createSpectacle" => new act\ActionCreateSpectacle(),
             "editSoiree" => new act\ActionEditSoiree(),
             "editSpectacle" => new act\ActionEditSpectacle(),
-            "cancel" => new act\ActionCancelSpectacle(),
             "filtre" => new act\ActionFiltre(),
             "promoteOrga" => new act\ActionPromoteToOrga(),
             "savePreference" => new act\ActionTogglePreference(),
@@ -53,10 +52,13 @@ class Dispatcher
     {
         try {
             $user = AuthnProvider::getSignedInUser();
+            $isLoggedIn = true;
         } catch (AuthException $e) {
             $user = new User(-1,"Non connecté","mdp",User::STANDARD_USER);
+            $isLoggedIn = false;
         }
 
+        $logoutLink = $isLoggedIn ? '<a href="?action=signout">Se deconnecter</a>' : '';
 
         $check = new Authz($user);
 
@@ -119,7 +121,7 @@ class Dispatcher
                         <div class="nav-links d-flex align-items-center gap-3">
                             <a href="?">Accueil</a>
                             <a href="?action=signin">Se connecter</a>
-                            <a href="?action=signout">Se deconnecter</a>
+                            {$logoutLink}
                             <a href="?action=filtre">Programme</a> 
                             {$menuOrga} 
                         </div>
