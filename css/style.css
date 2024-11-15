@@ -341,3 +341,14 @@ body {
     font-size: 19px;
     line-height: 1.5;
 }
+
+
+     /* Style de la balise audio */
+ audio {
+     background-color: #000; /* Fond noir */
+     color: #FF8C00; /* Texte orange */
+     border: 2px solid #FF8C00; /* Bordure orange */
+     border-radius: 5px;
+     padding: 5px;
+     width: 300px; /* Largeur fixe pour l'audio */
+ }
