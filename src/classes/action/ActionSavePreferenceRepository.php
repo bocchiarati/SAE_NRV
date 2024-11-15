@@ -22,7 +22,7 @@ class ActionSavePreferenceRepository extends Action
             $pdo->delAllPreferences($user->id);
             $listpref = unserialize($_SESSION['pref']);
             foreach ($listpref->spectacles as $spec){
-                $pdo->saveSpectaclePreferences($user->id,$spec->id);
+                $pdo->saveSpectaclePreferences($user->id,$spec->id,$spec->soireeID);
             }
             return "Vos préférences ont été mise à jour sur votre compte";
         }else{

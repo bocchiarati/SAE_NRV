@@ -166,10 +166,10 @@ class NrvRepository
         return $listSpectacles;
     }
 
-    public function saveSpectaclePreferences(int $userid, int $spectacleid): void {
-        $query = "INSERT INTO userspreferences (userid,spectacleid) VALUES (:userid,:spectacleid) ;";
+    public function saveSpectaclePreferences(int $userid, int $spectacleid, int $soireeid): void {
+        $query = "INSERT INTO userspreferences (userid,spectacleid,soireeid) VALUES (:userid,:spectacleid,:soireeid) ;";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['userid' => $userid,'spectacleid' => $spectacleid]);
+        $stmt->execute(['userid' => $userid,'spectacleid' => $spectacleid,'soireeid' => $soireeid]);
     }
 
     public function delAllPreferences(int $userid): void {

@@ -6,6 +6,8 @@ use iutnc\nrv\exception\InvalidPropertyNameException;
 
 class Spectacle {
     protected ?int $id;
+
+    protected ?int $soireeID;
     protected ?string $titre;
     protected ?string $groupe;
     protected ?int $duree;
