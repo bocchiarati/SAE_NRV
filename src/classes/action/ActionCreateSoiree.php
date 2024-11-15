@@ -63,10 +63,9 @@ class ActionCreateSoiree extends Action
 <script>
     // Script to show/hide the new location and address inputs based on the selection
     document.getElementById('location').addEventListener('change', function() {
-        var newLocationInput = document.getElementById('new-location');
-        var addressInput = document.getElementById('address');
-        var placeInput = document.getElementById('places');
-        
+        let newLocationInput = document.getElementById('new-location');
+        let addressInput = document.getElementById('address');
+        let placeInput = document.getElementById('places');
         if (this.value === 'Autre') {
             newLocationInput.style.display = 'block';
             addressInput.style.display = 'block';
