@@ -3,6 +3,7 @@
 namespace iutnc\nrv\repository;
 
 
+use InvalidArgumentException;
 use iutnc\nrv\auth\AuthnProvider;
 use iutnc\nrv\auth\User;
 use iutnc\nrv\exception\AuthException;
@@ -88,8 +89,13 @@ class NrvRepository
         $list = [];
         $listSpectacles = new ListSpectacle();
 
-        $query = "SELECT * FROM spectacle sp 
-        WHERE sp.styleID = :style;";
+        $style = filter_var($style, FILTER_VALIDATE_INT);
+        if (false === $style) {
+            throw new InvalidArgumentException("Invalid style ID provided.");
+        }
+
+        $query = "SELECT s.titre, s.groupe, s.duree, s.description, s.extrait, s.image, s.styleID, s.annuler, sts.soireeID, sts.spectacleID FROM spectacle s inner join soireetospectacle sts on s.spectacleID = sts.spectacleID
+        WHERE s.styleID = :style;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['style' => $style]);
 
@@ -109,6 +115,10 @@ class NrvRepository
     {
         $listSpectacles = new ListSpectacle();
         $list = [];
+
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+            throw new InvalidArgumentException("Invalid date format provided.");
+        }
 
         $query = "SELECT sp.* FROM spectacle sp
               JOIN soireetospectacle sts ON sts.spectacleID = sp.spectacleID
@@ -135,6 +145,11 @@ class NrvRepository
     {
         $listSpectacles = new ListSpectacle();
         $list = [];
+
+        $locationId = filter_var($locationId, FILTER_VALIDATE_INT);
+        if (false === $locationId) {
+            throw new InvalidArgumentException("Invalid location ID provided.");
+        }
 
         $query = "SELECT sp.* FROM spectacle sp
               JOIN soireetospectacle sts ON sts.spectacleID = sp.spectacleID
