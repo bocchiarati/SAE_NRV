@@ -196,7 +196,7 @@ class NrvRepository
         $resultat->execute(['soireeID' => $soireeID]);
 
         while ($fetch = $resultat->fetch()){
-            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler'],  $fetch['soireeID']);
+            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler'],  $soireeID);
             $spectacle->setID($fetch['spectacleID']);
             $spectacles[] = $spectacle;
         }
