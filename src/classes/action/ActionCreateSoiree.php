@@ -52,6 +52,7 @@ class ActionCreateSoiree extends Action
 
     <input type="text" id="new-location" name="new-location" placeholder="Nouveau lieu" style="display: none;">
     <input type="text" id="address" name="address" placeholder="Adresse" style="display: none;">
+    <input type="number" id="places" name="places" placeholder="Capacité" style="display:None;">
     
     <input type="number" id="tarif" name="tarif" placeholder="Tarif" required>
     <input type="text" id="nom" name="nom" placeholder="Nom" required>
@@ -62,15 +63,17 @@ class ActionCreateSoiree extends Action
 <script>
     // Script to show/hide the new location and address inputs based on the selection
     document.getElementById('location').addEventListener('change', function() {
-        var newLocationInput = document.getElementById('new-location');
-        var addressInput = document.getElementById('address');
-        
+        let newLocationInput = document.getElementById('new-location');
+        let addressInput = document.getElementById('address');
+        let placeInput = document.getElementById('places');
         if (this.value === 'Autre') {
             newLocationInput.style.display = 'block';
             addressInput.style.display = 'block';
+            placeInput.style.display = 'block';
         } else {
             newLocationInput.style.display = 'none';
             addressInput.style.display = 'none';
+            placeInput.style.display = 'none';
         }
     });
 </script>
@@ -114,11 +117,11 @@ END;
 
         $pdo = NrvRepository::getInstance();
         if($_POST['location'] === "Autre"){
-            $pdo->saveSoiree($_POST['date'], $_POST['time'], null, $_POST['new-location'], $_POST['address'], $_POST['tarif'], $_POST['nom'], $_POST['thematique']);
+            $pdo->saveSoiree($_POST['date'], $_POST['time'], null, $_POST['new-location'], $_POST['address'], $_POST['places'], $_POST['tarif'], $_POST['nom'], $_POST['thematique']);
             $message =  "<p>Soirée et Lieu créée avec succes</p>";
         }
         else{
-            $pdo->saveSoiree($_POST['date'], $_POST['time'], $_POST['location'],null, null, $_POST['tarif'], $_POST['nom'], $_POST['thematique']);
+            $pdo->saveSoiree($_POST['date'], $_POST['time'], $_POST['location'],null, null, null, $_POST['tarif'], $_POST['nom'], $_POST['thematique']);
             $message = "Soirée créée avec succes";
         }
         return $message;

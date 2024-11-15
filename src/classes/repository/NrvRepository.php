@@ -157,12 +157,10 @@ class NrvRepository
     /**
      * @throws AuthException
      */
-    public function saveSpectaclePreferences(Spectacle $s): Spectacle {
+    public function saveSpectaclePreferences(int $userid, int $spectacleid): void {
         $query = "INSERT INTO userspreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
         $stmt = $this->pdo->prepare($query);
-        $user = AuthnProvider::getSignedInUser();
-        $stmt->execute(['userid' => $user->id,'spectacleid' => $s->id]);
-        return $s;
+        $stmt->execute(['userid' => $userid,'spectacleid' => $spectacleid]);
     }
 
     public function findPreferences(int $userid): array
@@ -240,9 +238,9 @@ class NrvRepository
     /**
      * @throws RepoException
      */
-    public function saveSoiree(?string $date, ?string $time, ?int $lieuID, ?string $nomLieu, ?string $adresse, float $tarif, ?string $nom, ?string $thematique): Soiree {
+    public function saveSoiree(?string $date, ?string $time, ?int $lieuID, ?string $nomLieu, ?string $adresse, ?int $places, float $tarif, ?string $nom, ?string $thematique): Soiree {
         if($lieuID === null){
-            $lieuID = $this->saveLieu($nomLieu, $adresse);
+            $lieuID = $this->saveLieu($nomLieu, $adresse, $places);
         }
 
         $query = "insert into Soiree (tarif, nom, thematique, date, lieuID) values (:tarif, :nom, :thematique, :date,:lieuid)";
@@ -253,10 +251,10 @@ class NrvRepository
         return $soiree;
     }
 
-    public function saveLieu($nomLieu, $adress) : int {
-        $query = "insert into Lieu (nom, adresse) values (:nom, :adresse)";
+    public function saveLieu($nomLieu, $adress, $places) : int {
+        $query = "insert into Lieu (nom, adresse, capacite) values (:nom, :adresse, :capacite)";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['nom' => $nomLieu,'adresse' => $adress]);
+        $stmt->execute(['nom' => $nomLieu,'adresse' => $adress, 'capacite' => $places]);
         return $this->pdo->lastInsertId();
     }
 
@@ -583,9 +581,9 @@ class NrvRepository
         return "<p>Nom de la soiree modifier</p>";
     }
 
-    public function modifierLieuSoiree(int $soiree, ?int $nouveauLieu, ?string $nomLieu, ?string $address) : string {
+    public function modifierLieuSoiree(int $soiree, ?int $nouveauLieu, ?string $nomLieu, ?string $address, ?int $place) : string {
         if($nouveauLieu === null){
-            $nouveauLieu = $this->saveLieu($nomLieu, $address);
+            $nouveauLieu = $this->saveLieu($nomLieu, $address, $place);
         }
         $query = "update Soiree set lieuID = :lieu where soireeid = :soiree;";
         $stmt = $this->pdo->prepare($query);

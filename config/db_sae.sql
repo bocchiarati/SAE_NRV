@@ -3,7 +3,8 @@
 CREATE TABLE Lieu(
 	lieuID INT(3) AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
-    adresse VARCHAR(255) NOT NULL
+    adresse VARCHAR(255) NOT NULL,
+    capacite INT(5)
 );
 
 -- creation de la table soiree
@@ -78,10 +79,10 @@ CREATE TABLE UsersPreferences(
 -- insertion des données
 
 INSERT INTO Lieu (nom, adresse) VALUES
-('La Bellevilloise', '19-21 Rue Boyer, 54000 Nancy'),
-('Le Trianon', '80 Boulevard de Rochechouart, 54000 Nancy'),
-('Le Bataclan', '50 Boulevard Voltaire, 54000 Nancy'),
-('Le Point Éphémère', '200 Quai de Valmy, 54000 Nancy');
+('La Bellevilloise', '19-21 Rue Boyer, 54000 Nancy', 1490),
+('Le Trianon', '80 Boulevard de Rochechouart, 54000 Nancy', 1090),
+('Le Bataclan', '50 Boulevard Voltaire, 54000 Nancy', 1500),
+('Le Point Éphémère', '200 Quai de Valmy, 54000 Nancy', 800);
 
 INSERT INTO StyleMusic (nomstyle) VALUES
 ('Blues'),
