@@ -1,5 +1,7 @@
 # Projet SAE_NRV
 ### CHERCHARI Sofien - MERLIN Clément - BABACHANAKH Kateryna - SASSI--WEBER Joel
+#### Le site web sur Webety :
+https://webetu.iutnc.univ-lorraine.fr/www/merlin51u/NRV
 #### Google Doc : 
 https://docs.google.com/document/d/1r57fueeO0YZ949hOTO5hfqoy4nAVO-Ew296fkyHECfw/edit?usp=sharing
 
