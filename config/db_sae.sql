@@ -78,7 +78,7 @@ CREATE TABLE UsersPreferences(
 
 -- insertion des données
 
-INSERT INTO Lieu (nom, adresse) VALUES
+INSERT INTO Lieu (nom, adresse, capacite) VALUES
 ('La Bellevilloise', '19-21 Rue Boyer, 54000 Nancy', 1490),
 ('Le Trianon', '80 Boulevard de Rochechouart, 54000 Nancy', 1090),
 ('Le Bataclan', '50 Boulevard Voltaire, 54000 Nancy', 1500),

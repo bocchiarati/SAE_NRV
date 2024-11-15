@@ -68,23 +68,24 @@ class ActionShowSpectacleDetails extends Action
                 $user = AuthnProvider::getSignedInUser();
                 $droit = new Authz($user);
                 if($droit->checkIsOrga()){
-                    $annulerSpectacle = "<a href='?action=cancel&id={$spectacleID}' class='btn-spect-det mb-4'>Annuler le spectacle</a>";
+                    $annulerSpectacle = "<a href='?action=cancel&id={$spectacleID}' class='btn-spect-det m-2'>Annuler le spectacle</a>";
                 }
             } catch (AuthException $e) {
                 //aucun user connecté
             }
 
+            $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='btn-spect-det m-2'><img src='../image/etoileVide.png' alt='Like' height='23'></a>";
             if(isset($_SESSION['pref'])){
                 $listpref = unserialize($_SESSION['pref']);
                 if($listpref->contientSpectacle($spectacle)){
-                    $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='ms-5 btn-spect-det mb-4'><img src='../image/etoilePleine.png' alt='Like' height='23'></a>";
-                }else{
-                    $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='ms-5 btn-spect-det mb-4'><img src='../image/etoileVide.png' alt='Like' height='23'></a>";
+                    $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='btn-spect-det m-2'><img src='../image/etoilePleine.png' alt='Like' height='23'></a>";
                 }
             }
 
+            $boutonSoiree = "<a href='?action=showSoireeDetails&id={$soireeID}' class='btn-spect-det m-2'>Accèder à la Soirée</a>";
+
             return $renderer->render(Renderer::LONG) .
-                "<div style='display:flex'>" . $annulerSpectacle . $savePreference . "</div>" .
+                "<div class='d-flex align-items-center'>" . $annulerSpectacle . $savePreference . $boutonSoiree . "</div>" .
                 $affichageSimilaires;
 
         } catch (RepoException $e) {

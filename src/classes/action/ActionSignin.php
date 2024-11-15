@@ -4,6 +4,7 @@ namespace iutnc\nrv\action;
 
 use iutnc\nrv\auth\AuthnProvider;
 use iutnc\nrv\exception\AuthException;
+use iutnc\nrv\repository\NrvRepository;
 
 class ActionSignin extends Action
 {
@@ -38,6 +39,16 @@ class ActionSignin extends Action
             </div>
             END;
         }
+
+        try {
+            $user = AuthnProvider::getSignedInUser();
+        } catch (AuthException $e) {
+            return "erreur";
+        }
+
+        $pdo = NrvRepository::getInstance();
+        $list = $pdo->findPreferences($user->id);
+        $_SESSION['pref'] = serialize($list);
 
         return <<<END
         <div class="alert alert-success text-center d-flex justify-content-center" role="alert">

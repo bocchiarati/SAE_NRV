@@ -40,6 +40,8 @@ class Dispatcher
             "filtre" => new act\ActionFiltre(),
             "promoteOrga" => new act\ActionPromoteToOrga(),
             "savePreference" => new act\ActionTogglePreference(),
+            "delpref" => new act\ActionSupprimerPreferences(),
+            "saveprefrepo" => new act\ActionSavePreferenceRepository(),
             default => new act\ActionDefaut(),
         };
         $this->renderPage($action->execute());
