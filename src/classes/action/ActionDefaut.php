@@ -40,7 +40,7 @@ class ActionDefaut extends Action
         $output .= '</div></div>';
 
         return <<<END
-            <h1><strong>Bienvenue au Festival NRV !<strong></h1>
+            <h1 class="mt-4"><strong>Bienvenue au Festival NRV !<strong></h1>
             <div>
                 {$output}
             </div>
