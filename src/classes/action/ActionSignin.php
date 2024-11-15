@@ -18,7 +18,7 @@ class ActionSignin extends Action
             <button type="submit">Valider</button>
         </form>
         <br>
-        <a href="?action=register" class="btn btn-outline-warning btn-orange p-2">Pas de compte ? S'enregistrer</a>
+        <a href="?action=register" class="btn btn-outline-warning btn-orange p-2 mb-4">Pas de compte ? S'enregistrer</a>
         END;
     }
 
@@ -30,11 +30,13 @@ class ActionSignin extends Action
             AuthnProvider::signin($login, $mdp);
         } catch (AuthException $e) {
             return <<<END
-                Erreur avec vos credentials
-                <br>
-                <a href="?action=signin" class="btn btn-outline-warning btn-orange p-1">Reesayer</a>
-                <br>
-                <a href="?action=register" class="btn btn-outline-warning btn-orange p-1">S'enregistrer</a>
+            <div class="alert alert-danger text-center mt-4" role="alert">
+                Erreur lors de la connexion avec vos identifiants.
+            </div>
+            <div class="d-flex justify-content-center align-items-center flex-column mb-4">
+                <a href="?action=signin" class="btn btn-outline-warning btn-orange p-2 my-2">Réessayer</a>
+                <a href="?action=register" class="btn btn-outline-warning btn-orange p-2">S'enregistrer</a>
+            </div>
             END;
         }
 
@@ -49,7 +51,21 @@ class ActionSignin extends Action
         $_SESSION['pref'] = serialize($list);
 
         return <<<END
-            Bienvenue sur votre session $login<br>
+        <div class="alert alert-success text-center d-flex justify-content-center" role="alert">
+            Connexion réussie en tant que {$login}. Redirection vers la page d'accueil dans <span id="countdown" class = 'ms-2'>3</span>...
+        </div>
+        <script>
+            var seconds = 3;
+            var countdown = document.getElementById('countdown');
+            var interval = setInterval(function() {
+                seconds--;
+                countdown.innerHTML = seconds;
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    window.location.href = '?action=default';
+                }
+            }, 1000);
+        </script>
         END;
     }
 }
