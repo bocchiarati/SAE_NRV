@@ -2,6 +2,7 @@
 
 namespace iutnc\nrv\action;
 
+use iutnc\nrv\programme\ListSpectacle;
 use iutnc\nrv\render\ListSpectacleRenderer;
 use iutnc\nrv\render\Renderer;
 use iutnc\nrv\repository\NrvRepository;
@@ -41,6 +42,14 @@ class ActionFiltre extends Action {
                 case 'date':
                     $this->showAllSpectacles();
                     break;
+                case 'pref':
+                    if(isset($_SESSION['pref'])){
+                        $spectacles = unserialize($_SESSION['pref']);
+                    }else{
+                        $spectacles = new ListSpectacle();
+                    }
+                    $this->output = (new ListSpectacleRenderer($spectacles))->render(Renderer::LONG);
+                    break;
             }
         }
         // Sinon, filtrer les spectacles selon le filtre selectionne
@@ -56,6 +65,14 @@ class ActionFiltre extends Action {
                     break;
                 case 'date':
                     $spectacles = $this->pdo->getSpectaclesByDate($id);
+                    $this->output = (new ListSpectacleRenderer($spectacles))->render(Renderer::LONG);
+                    break;
+                case 'pref':
+                    if(isset($_SESSION['pref'])){
+                        $spectacles = unserialize($_SESSION['pref']);
+                    }else{
+                        $spectacles = new ListSpectacle();
+                    }
                     $this->output = (new ListSpectacleRenderer($spectacles))->render(Renderer::LONG);
                     break;
             }
@@ -78,9 +95,18 @@ class ActionFiltre extends Action {
         $locationOptions = $this->buildDropdownLinks($this->pdo->getAllLieu(), 'location');
         $dateOptions = $this->buildDropdownLinks($this->pdo->getAllDate(), 'date');
 
+        $prefOptions = <<<END
+        <div class='dropdown-links-container d-flex flex-wrap p-2'>
+            <a href='?action=filtre&filter=pref&id=all'>Toutes Vos Préférences</a>
+            <a href='?action=delpref'>Supprimer Vos Préférences</a>
+            <a href='?action=saveprefrepo'>Sauvegarder vos préférences sur votre compte (être connecté)</a>
+        </div>
+        END;
+
         $displayStyle = 'none';
         $displayLieu = 'none';
         $displayDate = 'none';
+        $displayPref = 'none';
 
         if(isset($_GET['filter'])){
             switch ($_GET['filter']){
@@ -89,6 +115,9 @@ class ActionFiltre extends Action {
                     break;
                 case 'date':
                     $displayDate = 'block';
+                    break;
+                case 'pref':
+                    $displayPref = 'block';
                     break;
                 default:
                     $displayStyle = 'block';
@@ -103,10 +132,12 @@ class ActionFiltre extends Action {
                 <button onclick="toggleTab('style')">Styles</button>
                 <button onclick="toggleTab('location')">Lieux</button>
                 <button onclick="toggleTab('date')">Jours</button>
+                <button onclick="toggleTab('pref')">Préférences</button>
             </div>
             <div class="tab-content" id="style" style="display:{$displayStyle}">{$styleOptions}</div>
             <div class="tab-content" id="location" style="display:{$displayLieu};">{$locationOptions}</div>
             <div class="tab-content" id="date" style="display:{$displayDate};">{$dateOptions}</div>
+            <div class="tab-content" id="pref" style="display:{$displayPref};">{$prefOptions}</div>
         </div>
         <div class="affichage">{$this->output}</div>
         HTML;

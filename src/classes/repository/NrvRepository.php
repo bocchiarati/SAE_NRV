@@ -154,25 +154,32 @@ class NrvRepository
         return $listSpectacles;
     }
 
-    /**
-     * @throws AuthException
-     */
     public function saveSpectaclePreferences(int $userid, int $spectacleid): void {
-        $query = "INSERT INTO userspreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
+        $query = "INSERT INTO userspreferences (userid,spectacleid) VALUES (:userid,:spectacleid) ;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['userid' => $userid,'spectacleid' => $spectacleid]);
     }
 
-    public function findPreferences(int $userid): array
-    {
-        $tab = [];
-        $query = 'Select spectacleid from userspreferences where userid = '.$userid.';';
+    public function delAllPreferences(int $userid): void {
+        $query = "DELETE FROM userspreferences where userid = :userid ;";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
+        $stmt->execute(['userid' => $userid]);
+    }
+
+    public function findPreferences(int $userid): ListSpectacle
+    {
+        $spectacles = [];
+        $query = 'Select * from userspreferences up inner join spectacle s on s.spectacleID = up.spectacleID where userid = :userid ;';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['userid' => $userid]);
         while($fetch = $stmt->fetch()){
-            $tab[] = $fetch['spectacleid'];
+            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler']);
+            $spectacle->setID($fetch['spectacleID']);
+            $spectacles[] = $spectacle;
         }
-        return $tab;
+        $list = new ListSpectacle();
+        $list->setSpectacles($spectacles);
+        return $list;
     }
 
     // retourne la liste des spectacles par soiree

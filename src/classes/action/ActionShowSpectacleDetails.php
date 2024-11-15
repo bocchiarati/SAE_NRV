@@ -74,12 +74,11 @@ class ActionShowSpectacleDetails extends Action
                 //aucun user connecté
             }
 
+            $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='ms-5 btn-spect-det mb-4'><img src='../image/etoileVide.png' alt='Like' height='23'></a>";
             if(isset($_SESSION['pref'])){
                 $listpref = unserialize($_SESSION['pref']);
                 if($listpref->contientSpectacle($spectacle)){
                     $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='ms-5 btn-spect-det mb-4'><img src='../image/etoilePleine.png' alt='Like' height='23'></a>";
-                }else{
-                    $savePreference = "<a href='?action=savePreference&id={$spectacleID}' class='ms-5 btn-spect-det mb-4'><img src='../image/etoileVide.png' alt='Like' height='23'></a>";
                 }
             }
 
