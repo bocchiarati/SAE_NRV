@@ -122,20 +122,24 @@ class SpectacleRenderer implements Renderer {
         $formattedTime = $date->format('H:i');
 
         return <<<HTML
-        <div style="margin: 10px; display:flex">
-            <div class="me-3">
-                <h3 class="render-long-title mt-2 mb-3">{$this->spec->getTitre()}</h3>
-                <strong class="render-long-strong mb-2">Groupe:</strong> {$this->spec->getGroupe()}<br>
-                <strong class="render-long-strong mb-2">Date:</strong> {$formattedDate} at {$formattedTime} <br>
-                <strong class="render-long-strong mb-2">Lieu:</strong> {$location}<br>
-                <strong class="render-long-strong mb-2">Duree:</strong> {$this->spec->getDuree()} min<br>
-                <strong class="render-long-strong mb-2">Description:</strong> {$this->spec->getDescription()}<br>
-                <strong class="render-long-strong mb-2">Style:</strong> {$this->spec->getNomStyle()}<br>
-                <strong class="render-long-strong mb-2">Capacité :</strong> {$repository->getCapacite($this->spec->getSoireeID())}<br>
-            </div>
-            $extrait
-            <div class="image-container" style="margin-left: 10px">
-                <img src="image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="290">
+        <div class="ms-4">
+            <div class="row">
+                <h3 class="render-long-title mt-2 mb-3 text-center">{$this->spec->getTitre()}</h3>
+                <div class="col render-large-text">
+                    <strong class="render-long-strong mb-2">Groupe:</strong> {$this->spec->getGroupe()}<br>
+                    <strong class="render-long-strong mb-2">Date:</strong> {$formattedDate} at {$formattedTime} <br>
+                    <strong class="render-long-strong mb-2">Lieu:</strong> {$location}<br>
+                    <strong class="render-long-strong mb-2">Duree:</strong> {$this->spec->getDuree()} min<br>
+                    <strong class="render-long-strong mb-2">Description:</strong> {$this->spec->getDescription()}<br>
+                    <strong class="render-long-strong mb-2">Style:</strong> {$this->spec->getNomStyle()}<br>
+                    <strong class="render-long-strong mb-2">Capacité :</strong> {$repository->getCapacite($this->spec->getSoireeID())}<br>
+                </div>
+                <div class="col d-flex align-items-center">
+                    $extrait
+                 </div>
+                <div class="col d-flex align-items-center">
+                    <img src="image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="290">
+                </div>
             </div>
         </div>
         HTML;

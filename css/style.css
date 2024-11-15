@@ -336,3 +336,8 @@ body {
     background-color: #ff8c00;
     color: white;
 }
+
+.render-large-text {
+    font-size: 19px;
+    line-height: 1.5;
+}
