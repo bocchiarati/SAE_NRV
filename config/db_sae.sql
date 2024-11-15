@@ -78,10 +78,10 @@ CREATE TABLE UsersPreferences(
 -- insertion des données
 
 INSERT INTO Lieu (nom, adresse) VALUES
-('La Bellevilloise', '19-21 Rue Boyer, 75020 Paris'),
-('Le Trianon', '80 Boulevard de Rochechouart, 75018 Paris'),
-('Le Bataclan', '50 Boulevard Voltaire, 75011 Paris'),
-('Le Point Éphémère', '200 Quai de Valmy, 75010 Paris');
+('La Bellevilloise', '19-21 Rue Boyer, 54000 Nancy'),
+('Le Trianon', '80 Boulevard de Rochechouart, 54000 Nancy'),
+('Le Bataclan', '50 Boulevard Voltaire, 54000 Nancy'),
+('Le Point Éphémère', '200 Quai de Valmy, 54000 Nancy');
 
 INSERT INTO StyleMusic (nomstyle) VALUES
 ('Blues'),
@@ -97,7 +97,7 @@ INSERT INTO Soiree (nom, thematique, tarif, date, lieuID) VALUES
 ('Nuit Reggae', 'Démo de reggae', 5.99, '2025-06-02 20:00:00', 3),
 ('Nuit Jazz', 'Soirée de jazz doux', 10.00, '2025-06-02 19:30:00', 4),
 ('Rythme Électro', 'Fête de musique électronique', 15.00, '2025-06-03 21:30:00', 2),
-('Batailles Hip Hop', 'Batailles de musique et de danse hip hop', 12.00, '2023-12-03 20:00:00', 1);
+('Batailles Hip Hop', 'Batailles de musique et de danse hip hop', 12.00, '2025-06-04 20:00:00', 1);
 
 INSERT INTO Spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) VALUES
 ('Nuit de Blues', 'B.B. King', 120, 'Plongez dans une soirée de blues profond avec le légendaire B.B. King. Vivez une narration émouvante à travers sa musique.', 'https://youtu.be/SgXSomPE_FY?si=9OuFJBlaEqorfwKU', 'bluesnight.jpg', 1, FALSE),
