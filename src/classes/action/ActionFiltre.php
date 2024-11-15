@@ -103,11 +103,6 @@ class ActionFiltre extends Action {
         </div>
         END;
 
-        $displayStyle = 'none';
-        $displayLieu = 'none';
-        $displayDate = 'none';
-        $displayPref = 'none';
-
         if(isset($_GET['filter'])){
             switch ($_GET['filter']){
                 case 'location':
@@ -127,6 +122,7 @@ class ActionFiltre extends Action {
         $activeStyle = (isset($_GET['filter']) && $_GET['filter'] == 'style') ? 'active-filter' : '';
         $activeLocation = (isset($_GET['filter']) && $_GET['filter'] == 'location') ? 'active-filter' : '';
         $activeDate = (isset($_GET['filter']) && $_GET['filter'] == 'date') ? 'active-filter' : '';
+        $activePref = (isset($_GET['filter']) && $_GET['filter'] == 'pref') ? 'active-filter' : '';
 
         // fonction toggleTab pour basculer entre les buttons de filtre (style, location, date), ecrit en JS en Dispatcher
         return <<<HTML
@@ -135,12 +131,12 @@ class ActionFiltre extends Action {
                 <button onclick="toggleTab('style')" class="{$activeStyle}">Styles</button>
                 <button onclick="toggleTab('location')" class="{$activeLocation}">Lieux</button>
                 <button onclick="toggleTab('date')" class="{$activeDate}">Jours</button>
-                <button onclick="toggleTab('pref')">Préférences</button>
+                <button onclick="toggleTab('pref')" class="{$activePref}">Préférences</button>
             </div>
             <div class="tab-content" id="style" style="display:{$this->getDisplay('style')}">{$styleOptions}</div>
             <div class="tab-content" id="location" style="display:{$this->getDisplay('location')};">{$locationOptions}</div>
             <div class="tab-content" id="date" style="display:{$this->getDisplay('date')};">{$dateOptions}</div>
-            <div class="tab-content" id="pref" style="display:{$displayPref};">{$prefOptions}</div>
+            <div class="tab-content" id="pref" style="display:{$this->getDisplay('pref')};">{$prefOptions}</div>
         </div>
         <div class="affichage">{$this->output}</div>
         HTML;
