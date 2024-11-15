@@ -185,7 +185,7 @@ class NrvRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['userid' => $userid]);
         while($fetch = $stmt->fetch()){
-            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler']);
+            $spectacle = new Spectacle($fetch['titre'], $fetch['groupe'], $fetch['duree'], $fetch['styleID'], $this->getNomStyleByID($fetch['styleID']), $fetch['description'], $fetch['extrait'], $fetch['image'], $fetch['annuler'], $fetch['soireeID']);
             $spectacle->setID($fetch['spectacleID']);
             $spectacles[] = $spectacle;
         }
