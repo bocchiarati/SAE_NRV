@@ -47,4 +47,27 @@ class ListSpectacle implements \Iterator{
     public function getSpectacles(): array {
         return $this->spectacles;
     }
+    
+    public function addSpectacle(Spectacle $s): void
+    {
+        $this->spectacles[] = $s;
+    }
+
+    public function delSpectacle(Spectacle $s): void{
+        foreach ($this->spectacles as $key => $spec){
+            if ($spec->id == $s->id){
+                unset($this->spectacles[$key]);
+                return;
+            }
+        }
+    }
+
+    public function contientSpectacle(Spectacle $s): bool{
+        foreach ($this->spectacles as $spec){
+            if ($spec->id == $s->id){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -157,12 +157,10 @@ class NrvRepository
     /**
      * @throws AuthException
      */
-    public function saveSpectaclePreferences(Spectacle $s): Spectacle {
+    public function saveSpectaclePreferences(int $userid, int $spectacleid): void {
         $query = "INSERT INTO userspreferences (userid,spectacleid) VALUES (:userid,:spectacleid)";
         $stmt = $this->pdo->prepare($query);
-        $user = AuthnProvider::getSignedInUser();
-        $stmt->execute(['userid' => $user->id,'spectacleid' => $s->id]);
-        return $s;
+        $stmt->execute(['userid' => $userid,'spectacleid' => $spectacleid]);
     }
 
     public function findPreferences(int $userid): array
