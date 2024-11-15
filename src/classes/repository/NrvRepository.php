@@ -116,6 +116,10 @@ class NrvRepository
         $listSpectacles = new ListSpectacle();
         $list = [];
 
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+            throw new InvalidArgumentException("Invalid date format provided.");
+        }
+
         $query = "SELECT sp.*, sts.soireeID FROM spectacle sp
               JOIN soireetospectacle sts ON sts.spectacleID = sp.spectacleID
               JOIN soiree s ON s.soireeID = sts.soireeID

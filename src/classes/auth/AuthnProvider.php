@@ -35,6 +35,11 @@ class AuthnProvider
         if (! filter_var($email, FILTER_VALIDATE_EMAIL))
             throw new AuthException(" error : invalid user email");
 
+        // verifier la force du mot de passe
+        if (!self::checkPasswordStrength($pass)) {
+            throw new AuthException("Auth error: password is too weak");
+        }
+
         $hash = password_hash($pass, PASSWORD_DEFAULT, ['cost'=>12]);
         $pdo = NrvRepository::getInstance();
         $user = $pdo->saveUser($email,$hash);
@@ -58,5 +63,17 @@ class AuthnProvider
      */
     public static function signout(){
         unset($_SESSION['user']);
+    }
+
+    // verifier la force du mot de passe
+    public static function checkPasswordStrength(string $pass, int $minimumLength = 10): bool
+    {
+        $length = (strlen($pass) >= $minimumLength);
+        $digit = preg_match("#\d#", $pass);         // Au moins un chiffre
+        $special = preg_match("#\W#", $pass);       // Au moins un caractere special
+        $lower = preg_match("#[a-z]#", $pass);      // Au moins une lettre minuscule
+        $upper = preg_match("#[A-Z]#", $pass);      // Au moins une lettre majuscule
+
+        return $length && $digit && $special && $lower && $upper;
     }
 }
