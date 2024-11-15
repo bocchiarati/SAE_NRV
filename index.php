@@ -5,9 +5,9 @@ use iutnc\nrv\repository\NrvRepository;
 
 session_start();
 
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
-NrvRepository::setConfig(__DIR__ . '/../config/nrv.db.ini');
+NrvRepository::setConfig(__DIR__ . '/config/nrv.db.ini');
 
 $repo = NrvRepository::getInstance();
 

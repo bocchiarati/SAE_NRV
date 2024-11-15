@@ -109,9 +109,9 @@ class Dispatcher
         <head>
             <title>Festival NRV</title>
             <meta charset="utf-8">
-            <link rel="stylesheet" href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
+            <link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
             <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-            <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="css/style.css">
         </head>
         <body>
             <header class="jumbotron">
@@ -140,7 +140,7 @@ class Dispatcher
                 <div class="d-flex flex-column align-items-center" style="background-color: #1b1b1b">$resultat</div>
             </div>
             
-            <script src="../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
         </body>
         <script>
