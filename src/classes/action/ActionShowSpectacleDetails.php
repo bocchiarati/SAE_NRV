@@ -45,7 +45,7 @@ class ActionShowSpectacleDetails extends Action
             // si il y a des spectacles similaires on les affiche
             $affichageSimilaires = "";
             if ($spectaclesMemeStyle->getSpectacles() || $spectaclesMemeLieu->getSpectacles() || $spectaclesMemeDate->getSpectacles()) {
-                $affichageSimilaires .= "<h2>VOUS AIMEREZ AUSSI</h2>";
+                $affichageSimilaires .= "<h2 class='mt-5 mb-3'>VOUS AIMEREZ AUSSI</h2>";
 
                 if ($spectaclesMemeStyle->getSpectacles()) {
                     $affichageSimilaires .= "<h3>Spectacles du même style:</h3>"

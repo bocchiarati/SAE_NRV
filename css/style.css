@@ -337,6 +337,12 @@ body {
     color: white;
 }
 
+.render-large-text {
+    font-size: 19px;
+    line-height: 1.5;
+}
+
+
      /* Style de la balise audio */
  audio {
      background-color: #000; /* Fond noir */
