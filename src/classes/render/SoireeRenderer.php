@@ -55,24 +55,33 @@ class SoireeRenderer implements Renderer
         $pdo = NrvRepository::getInstance();
         $spectacles = $pdo->getSpectacleBySoiree($this->soiree->id);
         $spectacleRenderer = new ListSpectacleRenderer($spectacles);
-        $spectacleListHTML = $spectacleRenderer->render(Renderer::LONG);
+        $spectacleList = $spectacleRenderer->render(Renderer::LONG);
 
         $date = new DateTime($this->soiree->date);
         $formattedDate = $date->format('d M Y');
         $formattedTime = $date->format('H:i');
 
+        // On affiche les spectacles de la soirée si il y en a
+        $spectaclesContent = '';
+        if (!empty(trim($spectacleList))) {
+            $spectaclesContent = <<<HTML
+            <div class="spectacle-list">
+                <h2 class="text-center mt-4">Spectacles de la soirée :</h2>
+                {$spectacleList}
+            </div>
+        HTML;
+        }
+
         return <<<HTML
         <div class="soiree-details">
-            <h1 class="display-3 text-center mb-3 mt-3" >{$this->soiree->nom}</h1>
+            <h1 class="render-long-title display-3 text-center mb-3 mt-3" >{$this->soiree->nom}</h1>
             <p class="lead">
-                    <strong>Date:</strong> {$formattedDate} at {$formattedTime} <br>
-                    <strong>Lieu:</strong> {$this->soiree->nomLieu} - {$this->soiree->adresseLieu} <br>
-                    <strong>Thématique:</strong> {$this->soiree->thematique} <br>
-                    <strong>Tarif:</strong> {$this->soiree->tarif}€
+                    <strong class="render-long-strong mb-2">Date:</strong> {$formattedDate} at {$formattedTime} <br>
+                    <strong class="render-long-strong mb-2">Lieu:</strong> {$this->soiree->nomLieu} - {$this->soiree->adresseLieu} <br>
+                    <strong class="render-long-strong mb-2">Thématique:</strong> {$this->soiree->thematique} <br>
+                    <strong class="render-long-strong mb-2">Tarif:</strong> {$this->soiree->tarif}€
             </p>
-            <div class="spectacle-list">
-                {$spectacleListHTML}
-            </div>
+            {$spectaclesContent}
         </div>
         HTML;
     }

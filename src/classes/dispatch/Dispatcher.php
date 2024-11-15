@@ -130,7 +130,7 @@ class Dispatcher
                     <h1>Nancy Rock Vibration Festival 2025</h1>
                     <p class="lead">1st June - 15th June 2025</p>
                     <hr class="my-4" style="width: 10%; margin: auto; border-top: 2px solid #ff8c00;">
-                    <p>Year after year the festival pulls together an incredible lineup unencumbered by genre boundaries, uniting alternative favourites and discerning music fans from across the globe.</p>
+                    <p>Année après année, le festival rassemble une programmation incroyable sans se soucier des frontières de genres, réunissant les favoris de l'alternative et les amateurs de musique exigeants du monde entier.</p>
                 </div>
             </header>
             

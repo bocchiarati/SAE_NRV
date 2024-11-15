@@ -2,6 +2,7 @@
 
 namespace iutnc\nrv\render;
 
+use DateTime;
 use iutnc\nrv\exception\RepoException;
 use iutnc\nrv\programme\Spectacle;
 use iutnc\nrv\repository\NrvRepository;
@@ -76,7 +77,7 @@ class SpectacleRenderer implements Renderer {
     {
         // recuperer la date et le lieu du spectacle
         $repository = NrvRepository::getInstance();
-        $date = $repository->getDateForSpectacle($this->spec->getID());
+        $date = new DateTime($repository->getDateForSpectacle($this->spec->getID()));
         //cas où le spectacle n'est pas programmé à une soirée
         if($date === "NULL"){
             $date = 'Non programmé';
@@ -110,12 +111,15 @@ class SpectacleRenderer implements Renderer {
             END;
         }
 
+        $formattedDate = $date->format('d M Y');
+        $formattedTime = $date->format('H:i');
+
         return <<<HTML
         <div style="margin: 10px; display:flex">
             <div class="me-3">
                 <h3 class="render-long-title mt-2 mb-3">{$this->spec->getTitre()}</h3>
                 <strong class="render-long-strong mb-2">Groupe:</strong> {$this->spec->getGroupe()}<br>
-                <strong class="render-long-strong mb-2">Date:</strong> {$date}<br>
+                <strong class="render-long-strong mb-2">Date:</strong> {$formattedDate} at {$formattedTime} <br>
                 <strong class="render-long-strong mb-2">Lieu:</strong> {$location}<br>
                 <strong class="render-long-strong mb-2">Duree:</strong> {$this->spec->getDuree()} min<br>
                 <strong class="render-long-strong mb-2">Description:</strong> {$this->spec->getDescription()}<br>
