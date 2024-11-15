@@ -74,7 +74,7 @@ CREATE TABLE userspreferences(
     soireeID INT(2)
     PRIMARY KEY (userID,spectacleID),
     FOREIGN KEY (userID) REFERENCES user(userID),
-    FOREIGN KEY (spectacleID) REFERENCES spectacle(spectacleID)
+    FOREIGN KEY (soireeID, spectacleID) REFERENCES soireetospectacle(soireeID, spectacleID)
 );
 
 -- insertion des données
