@@ -705,8 +705,9 @@ class NrvRepository
         $query = "SELECT capacite FROM lieu l INNER JOIN soiree s ON l.lieuID = s.lieuID WHERE soireeID = :soireeID;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['soireeID' => $soireeID]);
-        if(isset($stmt->fetch()['capacite']))
-            return $stmt->fetch()['capacite']." Personnes";
+        $fetch = $stmt->fetch();
+        if(isset($fetch['capacite']))
+            return $fetch['capacite']." Personnes";
         else
             return "Inconnue";
     }
