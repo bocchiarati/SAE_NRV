@@ -78,21 +78,23 @@ class ActionEditSoiree extends Action
             </select>
             <input type="text" name="new-location" id="new-location" style="display: none;" placeholder="Nom Nouveau Lieu">
             <input type="text" name="address" id="address" style="display: none;" placeholder="Adresse Nouveau Lieu">
+            <input type="number" id="places" name="places" placeholder="Capacité" style="display: none;">
             <button type="submit">Enregistrer</button>
         </form> 
 
         <script>
+            let lieuInput = document.getElementById('nouveauLieu');
+            let newLocationInput = document.getElementById('new-location');
+            let addressInput = document.getElementById('address');
+            let placesInput = document.getElementById('places');
             // Script to show/hide the new location and address inputs based on the selection
             document.getElementById('modification').addEventListener('change', function() {
-                var nomInput = document.getElementById('nouveauNom');
-                var thematiqueInput = document.getElementById('nouvelleThematique');
-                var tarifInput = document.getElementById('nouveauTarif');
-                var horraireInput = document.getElementById('nouvelHorraire');
-                var dateInput = document.getElementById('nouvelleDate');
-                var lieuInput = document.getElementById('nouveauLieu');
-                var newLocationInput = document.getElementById('new-location');
-                var addressInput = document.getElementById('address');
-                var spectacleInput = document.getElementById('nouveauSpectacle');
+                let nomInput = document.getElementById('nouveauNom');
+                let thematiqueInput = document.getElementById('nouvelleThematique');
+                let tarifInput = document.getElementById('nouveauTarif');
+                let horraireInput = document.getElementById('nouvelHorraire');
+                let dateInput = document.getElementById('nouvelleDate');
+                let spectacleInput = document.getElementById('nouveauSpectacle');
                 
                 nomInput.style.display = 'none';
                 thematiqueInput.style.display = 'none';
@@ -128,19 +130,24 @@ class ActionEditSoiree extends Action
                 if(this.value !== 'lieu'){
                     newLocationInput.style.display = 'none';
                     addressInput.style.display = 'none';
+                    placesInput.style.display = 'none';
+                }
+                else if(lieuInput.value === "Autre"){
+                    newLocationInput.style.display = 'block';
+                    addressInput.style.display = 'block';
+                    placesInput.style.display = 'block';
                 }
             });
             
-            document.getElementById('nouveauLieu').addEventListener('change', function() {
-                var newLocationInput = document.getElementById('new-location');
-                var addressInput = document.getElementById('address');
-                
+            lieuInput.addEventListener('change', function() {
                 if (this.value === 'Autre') {
                     newLocationInput.style.display = 'block';
                     addressInput.style.display = 'block';
+                    placesInput.style.display = 'block';
                 } else {
                     newLocationInput.style.display = 'none';
                     addressInput.style.display = 'none';
+                    placesInput.style.display = 'none';
                 }
             });
         </script>
@@ -173,9 +180,9 @@ END;
                 return $pdo->modifierDate($_POST['soiree'], $_POST['nouvelleDate']." ".$_POST['nouvelHorraire']);
             case 'lieu':
                 if($_POST['nouveauLieu'] != 'Autre')
-                    return $pdo->modifierLieuSoiree($_POST['soiree'], $_POST['nouveauLieu'], null, null);
+                    return $pdo->modifierLieuSoiree($_POST['soiree'], $_POST['nouveauLieu'], null, null, null);
                 else
-                    return $pdo->modifierLieuSoiree($_POST['soiree'], null, $_POST['new-location'], $_POST['address']);
+                    return $pdo->modifierLieuSoiree($_POST['soiree'], null, $_POST['new-location'], $_POST['address'], $_POST['places']);
             case 'addSpectacle':
                 return $pdo->saveSoireeToSpectacle($_POST['nouveauSpectacle'], $_POST['soiree']);
             default :
