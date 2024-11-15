@@ -86,39 +86,40 @@ class SpectacleRenderer implements Renderer {
             $location = 'Non programmé';
         }
 
-        if(str_ends_with($this->spec->getCheminExtrait(), "mp3")) {
+        // verifier la source de l'extrait
+        $extrait = "";
+        if (strpos($this->spec->getCheminExtrait(), "youtu.be/")) {
+            $videoId = explode("/", $this->spec->getCheminExtrait())[3];
+            $videoId = explode("?", $videoId)[0]; // Gestion des URL avec des parametres sup
+            $extrait = <<<END
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/$videoId" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            END;
+        } else if (str_ends_with($this->spec->getCheminExtrait(), "mp3")) {
             $extrait = <<<END
             <audio controls>
                 <source src="../extrait/{$this->spec->getCheminExtrait()}" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
             END;
-        }
-        else if (str_ends_with($this->spec->getCheminExtrait(), "mp4")) {
+        } else if (str_ends_with($this->spec->getCheminExtrait(), "mp4")) {
             $extrait = <<<END
             <video controls>
                 <source src="../extraits/{$this->spec->getCheminExtrait()}" type="video/mp4">
                 Your browser does not support the video element.
             </video>
             END;
-
-        }
-        else {
-            $extrait = "";
-
         }
 
         return <<<HTML
         <div style="margin: 10px; display:flex">
-            <div>
-                <h3>{$this->spec->getTitre()}</h3>
-                <strong>Groupe:</strong> {$this->spec->getGroupe()}<br>
-                <strong>Date:</strong> {$date}<br>
-                <strong>Lieu:</strong> {$location}<br>
-                <strong>Duree:</strong> {$this->spec->getDuree()} min<br>
-                <strong>Description:</strong> {$this->spec->getDescription()}<br>
-                <strong>Style:</strong> {$this->spec->getNomStyle()}<br>
-                
+            <div class="me-3">
+                <h3 class="render-long-title mt-2 mb-3">{$this->spec->getTitre()}</h3>
+                <strong class="render-long-strong mb-2">Groupe:</strong> {$this->spec->getGroupe()}<br>
+                <strong class="render-long-strong mb-2">Date:</strong> {$date}<br>
+                <strong class="render-long-strong mb-2">Lieu:</strong> {$location}<br>
+                <strong class="render-long-strong mb-2">Duree:</strong> {$this->spec->getDuree()} min<br>
+                <strong class="render-long-strong mb-2">Description:</strong> {$this->spec->getDescription()}<br>
+                <strong class="render-long-strong mb-2">Style:</strong> {$this->spec->getNomStyle()}<br>
             </div>
             $extrait
             <div class="image-container" style="margin-left: 10px">
@@ -127,5 +128,4 @@ class SpectacleRenderer implements Renderer {
         </div>
         HTML;
     }
-
 }

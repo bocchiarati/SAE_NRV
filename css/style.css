@@ -301,3 +301,17 @@ body {
 .btn-spect-det:hover {
     background-color: #cc6a00;
 }
+
+.render-long-title {
+    font-size: 60px;
+    color: #cc6a00;
+    font-weight: bold;
+}
+
+.render-long-strong {
+    background-color: rgba(255, 165, 0, 0.2);
+    border-radius: 5px;
+    padding: 2px;
+    display: inline-block;
+    margin-right: 5px;
+}
