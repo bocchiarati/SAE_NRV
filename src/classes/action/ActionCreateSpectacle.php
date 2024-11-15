@@ -57,7 +57,13 @@ class ActionCreateSpectacle extends Action
     <input type="number" id="duree" name="duree" placeholder="Duree">
     <input type="text" id="description" name="description" placeholder="Description">
     <p>Choisir un extrait audio ou video</p>
+    <select id="modeExt" name="modeExt">
+        <option id="modefichier" name="modefichier" value="modefichier">Fichier</option>
+        <option id="modelien" name="modelien" value="modelien">Ou Lien</option>
+    </select>
     <input type="file" id="extrait" name="extrait" required>
+    <input type="text" id="lien" name="lien" style="display:none">
+    
     <p>Choisir une image</p>
     <input type="file" id="image" name="image" required>    
     <select id="style" name="style">
@@ -72,9 +78,27 @@ class ActionCreateSpectacle extends Action
 </form>
 
 <script>
+    document.getElementById('modeExt').addEventListener('change', function() {
+        let fileInput = document.getElementById('extrait');
+        let lienInput = document.getElementById('lien');
+        if (this.value === 'modefichier'){
+           fileInput.style.display = 'block';     
+           fileInput.required = true;
+           
+           lienInput.style.display = 'none';
+           lienInput.required = false;
+        }
+        else if (this.value === 'modelien'){
+           fileInput.style.display = 'none';
+           fileInput.required = false;
+           
+           lienInput.style.display = 'block';
+           lienInput.required = true;
+        }
+    })
     // Script to show/hide the new location and address inputs based on the selection
     document.getElementById('style').addEventListener('change', function() {
-        var nomStyleInput = document.getElementById('nomStyle');
+        let nomStyleInput = document.getElementById('nomStyle');
         
         if (this.value === 'Autre') {
             nomStyleInput.style.display = 'block';
@@ -121,22 +145,30 @@ END;
         }
 
 
+        if($_POST['modeExt'] === "modefichier"){
+            $upload_dir_extrait = Renderer::REPERTOIRE_EXTRAITS;
+            $extraitname = uniqid();
 
-        $upload_dir_extrait = Renderer::REPERTOIRE_EXTRAITS;
-        $extraitname = uniqid();
-
-        if (isset($_FILES['extrait']) && $_FILES['extrait']['error'] === UPLOAD_ERR_OK) {
-            $tmp = $_FILES['extrait']['tmp_name'];
-            if ($_FILES['extrait']['type'] === 'video/mp4' || $_FILES['extrait']['type'] === 'audio/mpeg') {
-                $dest = $upload_dir_extrait . $extraitname . '.mp4';
-                move_uploaded_file($tmp, $dest);
-                $extrait = $extraitname . '.mp4';
+            if (isset($_FILES['extrait']) && $_FILES['extrait']['error'] === UPLOAD_ERR_OK) {
+                $tmp = $_FILES['extrait']['tmp_name'];
+                if ($_FILES['extrait']['type'] === 'video/mp4') {
+                    $dest = $upload_dir_extrait . $extraitname . '.mp4';
+                    move_uploaded_file($tmp, $dest);
+                    $extrait = $extraitname . '.mp4';
+                } else if ($_FILES['extrait']['type'] === 'audio/mpeg') {
+                    $dest = $upload_dir_extrait . $extraitname . '.mp3';
+                    move_uploaded_file($tmp, $dest);
+                    $extrait = $extraitname . '.mp3';
+                } else {
+                    return "extrait invalide";
+                }
             } else {
-                return "extrait invalide";
+                return "extrait non trouvée ou erreur de téléchargement";
             }
-        } else {
-            return "extrait non trouvée ou erreur de téléchargement";
         }
+        else
+            $extrait = $_POST['lien'];
+
 
         if ($_POST['style'] === "Autre") {
             $styleID = null; // Cas où un nouveau style doit être créé

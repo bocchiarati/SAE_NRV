@@ -4,6 +4,7 @@ namespace iutnc\nrv\action;
 
 use iutnc\nrv\auth\AuthnProvider;
 use iutnc\nrv\auth\Authz;
+use iutnc\nrv\exception\ActionException;
 use iutnc\nrv\exception\AuthException;
 use iutnc\nrv\repository\NrvRepository;
 

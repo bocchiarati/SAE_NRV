@@ -100,7 +100,7 @@ class SpectacleRenderer implements Renderer {
         } else if (str_ends_with($this->spec->getCheminExtrait(), "mp3")) {
             $extrait = <<<END
             <audio controls>
-                <source src="extrait/{$this->spec->getCheminExtrait()}" type="audio/mpeg">
+                <source src="extraits/{$this->spec->getCheminExtrait()}" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
             END;
@@ -115,7 +115,6 @@ class SpectacleRenderer implements Renderer {
         }
         else {
             $extrait = "";
-
         }
 
         $formattedDate = $date->format('d M Y');

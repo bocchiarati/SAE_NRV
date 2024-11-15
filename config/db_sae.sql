@@ -71,6 +71,7 @@ CREATE TABLE user(
 CREATE TABLE userspreferences(
     userID INT(2),
     spectacleID INT(2),
+    soireeID INT(2)
     PRIMARY KEY (userID,spectacleID),
     FOREIGN KEY (userID) REFERENCES user(userID),
     FOREIGN KEY (spectacleID) REFERENCES spectacle(spectacleID)
@@ -133,7 +134,7 @@ INSERT INTO user (userid, email, mdp, roleid) VALUES
 (2, 'orga@mail.com', '$2y$12$lu3U6.BaK0GqjWh16gvo4u9iy5H0JDph/MKEVJEC5.6F5mOb.srDi', 98),
 (3, 'admin@mail.com', '$2y$12$LnrhSzP.U.HuIE/M5qC.yOOjYzpHx.GnoBloV8uT1PLlQgp.wZgRi', 99);
 
-INSERT INTO userspreferences (userID, spectacleID) VALUES
-(1, 1),
-(1, 2),
-(3, 5);
+INSERT INTO userspreferences (userID, spectacleID, soireeID) VALUES
+(1, 1, 1),
+(1, 2, 1),
+(3, 5, 3);
