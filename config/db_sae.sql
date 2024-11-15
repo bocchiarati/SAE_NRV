@@ -1,6 +1,6 @@
 -- creation de la table lieu
- DROP TABLE IF EXISTS `Lieu`;
-CREATE TABLE Lieu(
+ DROP TABLE IF EXISTS `lieu`;
+CREATE TABLE lieu(
 	lieuID INT(3) AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
     adresse VARCHAR(255) NOT NULL,
@@ -8,30 +8,30 @@ CREATE TABLE Lieu(
 );
 
 -- creation de la table soiree
- DROP TABLE IF EXISTS `Soiree`;
+ DROP TABLE IF EXISTS `soiree`;
 
-CREATE TABLE Soiree(
+CREATE TABLE soiree(
 	soireeID INT(3) AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
     thematique VARCHAR(255),
     tarif FLOAT,
     date DATETIME NOT NULL,
     lieuID INT,
-    FOREIGN KEY (lieuID) REFERENCES Lieu(lieuID)
+    FOREIGN KEY (lieuID) REFERENCES lieu(lieuID)
 );
 
 -- creation de la table stylemusic
- DROP TABLE IF EXISTS `StyleMusic`;
+ DROP TABLE IF EXISTS `stylemusic`;
 
-CREATE TABLE StyleMusic(
+CREATE TABLE stylemusic(
     styleID INT(3) AUTO_INCREMENT PRIMARY KEY,
     nomstyle VARCHAR(30) NOT NULL
 );
 
 -- creation de la table spectacle
- DROP TABLE IF EXISTS `Spectacle`;
+ DROP TABLE IF EXISTS `spectacle`;
 
-CREATE TABLE Spectacle(
+CREATE TABLE spectacle(
 	spectacleID INT(3) AUTO_INCREMENT PRIMARY KEY,
     titre VARCHAR(255) NOT NULL,
     groupe VARCHAR(255) NOT NULL,
@@ -41,24 +41,24 @@ CREATE TABLE Spectacle(
     image VARCHAR(255) DEFAULT NULL,
     styleID INT,
     annuler BOOLEAN,
-    FOREIGN KEY (styleID) REFERENCES StyleMusic(styleID)
+    FOREIGN KEY (styleID) REFERENCES stylemusic(styleID)
 );
 
 -- creation de la table soireespectacle
- DROP TABLE IF EXISTS `SoireeToSpectacle`;
+ DROP TABLE IF EXISTS `soireetospectacle`;
 
-CREATE TABLE SoireeToSpectacle(
+CREATE TABLE soireetospectacle(
     soireeID INT(2),
     spectacleID INT(2),
     PRIMARY KEY (soireeID, spectacleID),
-	FOREIGN KEY (soireeID) REFERENCES Soiree(soireeID),
-    FOREIGN KEY (spectacleID) REFERENCES Spectacle(spectacleID)
+	FOREIGN KEY (soireeID) REFERENCES soiree(soireeID),
+    FOREIGN KEY (spectacleID) REFERENCES spectacle(spectacleID)
 );
 
 -- creation de la table user
- DROP TABLE IF EXISTS `User`;
+ DROP TABLE IF EXISTS `user`;
 
-CREATE TABLE User(
+CREATE TABLE user(
     userid INT(3) AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(256) UNIQUE NOT NULL,
     mdp VARCHAR(256) NOT NULL,
@@ -66,25 +66,25 @@ CREATE TABLE User(
 );
 
 -- creation de la table userspreferences
- DROP TABLE IF EXISTS `UsersPreferences`;
+ DROP TABLE IF EXISTS `userspreferences`;
 
-CREATE TABLE UsersPreferences(
+CREATE TABLE userspreferences(
     userID INT(2),
     spectacleID INT(2),
     PRIMARY KEY (userID,spectacleID),
-    FOREIGN KEY (userID) REFERENCES User(userID),
-    FOREIGN KEY (spectacleID) REFERENCES Spectacle(spectacleID)
+    FOREIGN KEY (userID) REFERENCES user(userID),
+    FOREIGN KEY (spectacleID) REFERENCES spectacle(spectacleID)
 );
 
 -- insertion des données
 
-INSERT INTO Lieu (nom, adresse, capacite) VALUES
+INSERT INTO lieu (nom, adresse, capacite) VALUES
 ('La Bellevilloise', '19-21 Rue Boyer, 54000 Nancy', 1490),
 ('Le Trianon', '80 Boulevard de Rochechouart, 54000 Nancy', 1090),
 ('Le Bataclan', '50 Boulevard Voltaire, 54000 Nancy', 1500),
 ('Le Point Éphémère', '200 Quai de Valmy, 54000 Nancy', 800);
 
-INSERT INTO StyleMusic (nomstyle) VALUES
+INSERT INTO stylemusic (nomstyle) VALUES
 ('Blues'),
 ('Rock'),
 ('Reggae'),
@@ -92,7 +92,7 @@ INSERT INTO StyleMusic (nomstyle) VALUES
 ('Électro'),
 ('Hip Hop');
 
-INSERT INTO Soiree (nom, thematique, tarif, date, lieuID) VALUES
+INSERT INTO soiree (nom, thematique, tarif, date, lieuID) VALUES
 ('Soirée Blues', 'Concert de blues', 5.99, '2025-06-01 20:00:00', 1),
 ('Soirée Rock', 'Concert de rock', 5.99, '2025-06-01 21:00:00', 2),
 ('Nuit Reggae', 'Démo de reggae', 5.99, '2025-06-02 20:00:00', 3),
@@ -100,7 +100,7 @@ INSERT INTO Soiree (nom, thematique, tarif, date, lieuID) VALUES
 ('Rythme Électro', 'Fête de musique électronique', 15.00, '2025-06-03 21:30:00', 2),
 ('Batailles Hip Hop', 'Batailles de musique et de danse hip hop', 12.00, '2025-06-04 20:00:00', 1);
 
-INSERT INTO Spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) VALUES
+INSERT INTO spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) VALUES
 ('Nuit de Blues', 'B.B. King', 120, 'Plongez dans une soirée de blues profond avec le légendaire B.B. King. Vivez une narration émouvante à travers sa musique.', 'https://youtu.be/SgXSomPE_FY?si=9OuFJBlaEqorfwKU', 'bluesnight.jpg', 1, FALSE),
 ('Fête Delta Blues', 'The Black Keys', 120, 'Profitez d''un mélange unique de blues Delta traditionnel enrichi de rythmes et de sons modernes, apportant une touche novatrice à ce genre classique.', 'https://youtu.be/M513zr-J5Cg?si=q4JVnkhUX3PPWvsu', 'deltabluesbash.png', 1, FALSE),
 ('Festival de Rock', 'The Rolling Stones', 150, 'Préparez-vous à rocker au Festival de Rock avec The Rolling Stones. Attendez-vous à des performances énergiques comprenant à la fois des classiques et de nouveaux hymnes.', 'https://youtu.be/O4irXQhgMqg?si=6JL904WDW6GqdFxY', 'rockfest.jpg', 2, FALSE),
@@ -114,7 +114,7 @@ INSERT INTO Spectacle (titre, groupe, duree, description, extrait, image, styleI
 ('Affrontement Hip Hop', 'Kanye West', 150, 'Kanye West apporte son meilleur jeu avec des paroles puissantes, des beats dynamiques, et une représentation électrisante de danse de rue.', 'https://youtu.be/6CHs4x2uqcQ?si=yZmq_ROB6dlLeFgb', 'hiphopshowdown.png', 6, FALSE),
 ('Bataille de Rap', 'Eminem', 90, 'Assistez à des batailles de rap intenses organisées par Eminem, où les meilleurs MCs s''affrontent avec leurs paroles les plus féroces et leurs rimes les plus aiguës.', 'https://youtu.be/S9bCLPwzSC0?si=JZB9oXmTEGuS3SNH', 'rapbattle.jpg', 6, FALSE);
 
-INSERT INTO SoireeToSpectacle (soireeID, spectacleID) VALUES
+INSERT INTO soireetospectacle (soireeID, spectacleID) VALUES
 (1, 1),
 (1, 2),
 (2, 3),
@@ -128,12 +128,12 @@ INSERT INTO SoireeToSpectacle (soireeID, spectacleID) VALUES
 (6, 11),
 (6, 12);
 
-INSERT INTO User (userid, email, mdp, roleid) VALUES
+INSERT INTO user (userid, email, mdp, roleid) VALUES
 (1, 'user1@mail.com', '$2y$12$1DNY3EAleSmszEDaIc1Wde08ZWct.yL9zrC7miePmNV/2TMIiu/SG', 1),
 (2, 'orga@mail.com', '$2y$12$lu3U6.BaK0GqjWh16gvo4u9iy5H0JDph/MKEVJEC5.6F5mOb.srDi', 98),
 (3, 'admin@mail.com', '$2y$12$LnrhSzP.U.HuIE/M5qC.yOOjYzpHx.GnoBloV8uT1PLlQgp.wZgRi', 99);
 
-INSERT INTO UsersPreferences (userID, spectacleID) VALUES
+INSERT INTO userspreferences (userID, spectacleID) VALUES
 (1, 1),
 (1, 2),
 (3, 5);

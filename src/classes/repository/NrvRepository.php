@@ -76,7 +76,7 @@ class NrvRepository
         if($stmt->rowCount() === 1){
             throw new AuthException("Utilisateur déjà existant");
         }
-        $query = "insert into User (email,mdp,roleid) values (:email,:mdp,:roleid)";
+        $query = "insert into user (email,mdp,roleid) values (:email,:mdp,:roleid)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email,'mdp' => $mdpHash,'roleid' => User::STANDARD_USER]);
         return new User($this->pdo->lastInsertId(), $email ,$mdpHash,User::STANDARD_USER);
@@ -110,9 +110,9 @@ class NrvRepository
         $listSpectacles = new ListSpectacle();
         $list = [];
 
-        $query = "SELECT sp.* FROM Spectacle sp
-              JOIN SoireeToSpectacle sts ON sts.spectacleID = sp.spectacleID
-              JOIN Soiree s ON s.soireeID = sts.soireeID
+        $query = "SELECT sp.* FROM spectacle sp
+              JOIN soireetospectacle sts ON sts.spectacleID = sp.spectacleID
+              JOIN soiree s ON s.soireeID = sts.soireeID
               WHERE Date(s.date) = :date;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['date' => $date]);
@@ -136,9 +136,9 @@ class NrvRepository
         $listSpectacles = new ListSpectacle();
         $list = [];
 
-        $query = "SELECT sp.* FROM Spectacle sp
-              JOIN SoireeToSpectacle sts ON sts.spectacleID = sp.spectacleID
-              JOIN Soiree s ON s.soireeID = sts.soireeID
+        $query = "SELECT sp.* FROM spectacle sp
+              JOIN soireetospectacle sts ON sts.spectacleID = sp.spectacleID
+              JOIN soiree s ON s.soireeID = sts.soireeID
               WHERE s.lieuID = :locationId;";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['locationId' => $locationId]);
@@ -187,8 +187,8 @@ class NrvRepository
     public function getSpectacleBySoiree(int $soireeID): ListSpectacle {
         $spectacles = [];
         $query = 'SELECT s.spectacleID, s.titre, s.groupe, s.duree, s.description, s.extrait, s.image, s.styleID, s.annuler
-              FROM Spectacle s
-              INNER JOIN SoireeToSpectacle sts ON s.spectacleID = sts.spectacleID
+              FROM spectacle s
+              INNER JOIN soireetospectacle sts ON s.spectacleID = sts.spectacleID
               WHERE sts.soireeID = :soireeID
               ORDER BY s.spectacleID';
 
@@ -251,7 +251,7 @@ class NrvRepository
             $lieuID = $this->saveLieu($nomLieu, $adresse, $places);
         }
 
-        $query = "insert into Soiree (tarif, nom, thematique, date, lieuID) values (:tarif, :nom, :thematique, :date,:lieuid)";
+        $query = "insert into soiree (tarif, nom, thematique, date, lieuID) values (:tarif, :nom, :thematique, :date,:lieuid)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['tarif' => $tarif, 'nom' => $nom, 'thematique' => $thematique,'date' => $date.' '.$time,'lieuid' => $lieuID]);
         $soiree = new Soiree($date,$lieuID, $this->getNomLieuByID($lieuID),$this->adresseLieuByID($lieuID), $nom, $thematique, $tarif);
@@ -260,7 +260,7 @@ class NrvRepository
     }
 
     public function saveLieu($nomLieu, $adress, $places) : int {
-        $query = "insert into Lieu (nom, adresse, capacite) values (:nom, :adresse, :capacite)";
+        $query = "insert into lieu (nom, adresse, capacite) values (:nom, :adresse, :capacite)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['nom' => $nomLieu,'adresse' => $adress, 'capacite' => $places]);
         return $this->pdo->lastInsertId();
@@ -308,7 +308,7 @@ class NrvRepository
 
     public function getAllDate(): array{
         $tab = [];
-        $query = "SELECT DISTINCT DATE_FORMAT(date, '%Y-%m-%d') FROM Soiree ORDER BY date";
+        $query = "SELECT DISTINCT DATE_FORMAT(date, '%Y-%m-%d') FROM soiree ORDER BY date";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         while($fetch = $stmt->fetch(\PDO::FETCH_NUM)){
@@ -349,7 +349,7 @@ class NrvRepository
     //  retourne la date du spectacle par son id
     public function getDateForSpectacle(int $soireeID): string {
         $query = "SELECT date 
-              FROM Soiree
+              FROM soiree
               WHERE soireeID = :soireeID;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['soireeID' => $soireeID]);
@@ -365,8 +365,8 @@ class NrvRepository
     // retourne le nom du lieu du spectacle
     public function getLieuNomForSpectacle(int $soireeID): string {
         $query = "SELECT l.nom 
-                  FROM Lieu l
-                  INNER JOIN Soiree s ON l.lieuID = s.lieuID
+                  FROM lieu l
+                  INNER JOIN soiree s ON l.lieuID = s.lieuID
                   WHERE soireeID = :soireeID";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['soireeID' => $soireeID]);
@@ -389,7 +389,7 @@ class NrvRepository
         $listSpectacles = new ListSpectacle();
 
         $query = "SELECT * FROM spectacle sp 
-              INNER JOIN soireeToSpectacle  sts ON sp.spectacleID = sts.spectacleID
+              INNER JOIN soireetospectacle  sts ON sp.spectacleID = sts.spectacleID
               WHERE sp.styleID = :style AND (sp.spectacleID != :currentSpectacleID OR soireeID != :currentSoireeID);";
         $resultat = $this->pdo->prepare($query);
         $resultat->execute(['style' => $style, 'currentSpectacleID' => $currentSpectacleID, 'currentSoireeID' => $currentSoireeID]);
@@ -412,13 +412,13 @@ class NrvRepository
         $listSpectacles = new ListSpectacle();
 
         $query = "SELECT *
-              FROM Spectacle s
-              JOIN SoireeToSpectacle sts ON s.spectacleID = sts.spectacleID
-              JOIN Soiree so ON sts.soireeID = so.soireeID
+              FROM spectacle s
+              JOIN soireetospectacle sts ON s.spectacleID = sts.spectacleID
+              JOIN soiree so ON sts.soireeID = so.soireeID
               WHERE so.lieuID IN (
                   SELECT DISTINCT so2.lieuID
-                  FROM Soiree so2
-                  JOIN SoireeToSpectacle sts2 ON so2.soireeID = sts2.soireeID
+                  FROM soiree so2
+                  JOIN soireetospectacle sts2 ON so2.soireeID = sts2.soireeID
                   WHERE sts2.spectacleID = :currentSpectacleID
                   AND sts2.soireeID = :currentSoireeID
               ) AND (sts.spectacleID != :currentSpectacleID OR sts.soireeID != :currentSoireeID);";
@@ -445,13 +445,13 @@ class NrvRepository
         $listSpectacles = new ListSpectacle();
 
         $query = "SELECT *
-              FROM Spectacle s
-              JOIN SoireeToSpectacle sts ON s.spectacleID = sts.spectacleID
-              JOIN Soiree so ON sts.soireeID = so.soireeID
+              FROM spectacle s
+              JOIN soireetospectacle sts ON s.spectacleID = sts.spectacleID
+              JOIN soiree so ON sts.soireeID = so.soireeID
               WHERE so.date IN (
                   SELECT DISTINCT so2.date
-                  FROM Soiree so2
-                  JOIN SoireeToSpectacle sts2 ON so2.soireeID = sts2.soireeID
+                  FROM soiree so2
+                  JOIN soireetospectacle sts2 ON so2.soireeID = sts2.soireeID
                   WHERE sts2.spectacleID = :currentSpectacleID 
               ) AND (s.spectacleID != :currentSpectacleID 
               OR sts.soireeID != :soireeID);";
@@ -521,7 +521,7 @@ class NrvRepository
             $styleID = $this->saveStyle($nomStyle);
         }
 
-        $query = "insert into Spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) values (:titre, :groupe, :duree, :desc, :extrait, :image, :styleid, false)";
+        $query = "insert into spectacle (titre, groupe, duree, description, extrait, image, styleID, annuler) values (:titre, :groupe, :duree, :desc, :extrait, :image, :styleid, false)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['titre' => $titre, 'groupe' => $groupe, 'duree' => $duree, 'desc' => $description, 'extrait' => $extrait, 'image' => $image, 'styleid' => $styleID]);
         $spectacle = new Spectacle($titre, $groupe, $duree, $styleID, $nomStyle, $description, $extrait, $image, false, $soireeID);
@@ -541,7 +541,7 @@ class NrvRepository
     }
 
     public function saveSoireeToSpectacle(int $spectacleID, int $soireeID) {
-        $query = "insert into SoireeToSpectacle (spectacleid, soireeid) values (:spectacleid, :soireeid)";
+        $query = "insert into soireetospectacle (spectacleid, soireeid) values (:spectacleid, :soireeid)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['spectacleid' => $spectacleID, 'soireeid' => $soireeID]);
         return "spectacle ajouter à la soirée";
@@ -561,28 +561,28 @@ class NrvRepository
     }
 
     public function modifierNom(int $soiree, string $nouveauNom) : string {
-        $query = "update Soiree set nom = :nom where soireeid = :soiree;";
+        $query = "update soiree set nom = :nom where soireeid = :soiree;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['nom' => $nouveauNom, 'soiree' => $soiree]);
         return "<p>Nom de la soiree modifier</p>";
     }
 
     public function modifierThematique(int $soiree, string $nouvelleThematique) : string {
-        $query = "update Soiree set thematique = :thematique where soireeid = :soiree;";
+        $query = "update soiree set thematique = :thematique where soireeid = :soiree;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['thematique' => $nouvelleThematique, 'soiree' => $soiree]);
         return "<p>Thematique de la soiree modifier</p>";
     }
 
     public function modifierTarif(int $soiree, int $nouveauTarif) : string {
-        $query = "update Soiree set tarif = :tarif where soireeid = :soiree;";
+        $query = "update soiree set tarif = :tarif where soireeid = :soiree;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['tarif' => $nouveauTarif, 'soiree' => $soiree]);
         return "<p>Nom de la soiree modifier</p>";
     }
 
     public function modifierDate(int $soiree, string $nouvelleDate) : string {
-        $query = "update Soiree set date = :date where soireeid = :soiree;";
+        $query = "update soiree set date = :date where soireeid = :soiree;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['date' => $nouvelleDate, 'soiree' => $soiree]);
         return "<p>Nom de la soiree modifier</p>";
@@ -592,35 +592,35 @@ class NrvRepository
         if($nouveauLieu === null){
             $nouveauLieu = $this->saveLieu($nomLieu, $address, $place);
         }
-        $query = "update Soiree set lieuID = :lieu where soireeid = :soiree;";
+        $query = "update soiree set lieuID = :lieu where soireeid = :soiree;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['lieu' => $nouveauLieu, 'soiree' => $soiree]);
         return "<p>Lieu de la soiree modifier</p>";
     }
 
     public function modifierTitre(mixed $spectacle, mixed $nouveauTitre) : string {
-        $query = "update Spectacle set titre = :titre where spectacleid = :spectacle;";
+        $query = "update spectacle set titre = :titre where spectacleid = :spectacle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['titre' => $nouveauTitre, 'spectacle' => $spectacle]);
         return "<p>Titre du spectacle modifier</p>";
     }
 
     public function modifierGroupe(mixed $spectacle, mixed $nouveauGroupe) : string {
-        $query = "update Spectacle set groupe = :groupe where spectacleid = :spectacle;";
+        $query = "update spectacle set groupe = :groupe where spectacleid = :spectacle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['groupe' => $nouveauGroupe, 'spectacle' => $spectacle]);
         return "<p>Groupe du spectacle modifier</p>";
     }
 
     public function modifierDuree(mixed $spectacle, mixed $nouvelleDuree) : string {
-        $query = "update Spectacle set duree = :duree where spectacleid = :spectacle;";
+        $query = "update spectacle set duree = :duree where spectacleid = :spectacle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['duree' => $nouvelleDuree, 'spectacle' => $spectacle]);
         return "<p>Duree du spectacle modifier</p>";
     }
 
     public function modifierDescription(mixed $spectacle, mixed $nouvelleDescription) : string {
-        $query = "update Spectacle set description = :description where spectacleid = :spectacle;";
+        $query = "update spectacle set description = :description where spectacleid = :spectacle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['description' => $nouvelleDescription, 'spectacle' => $spectacle]);
         return "<p>Description du spectacle modifier</p>";
@@ -630,28 +630,28 @@ class NrvRepository
         if($nouveauStyle == null){
             $this->saveStyle($nomStyle);
         }
-        $query = "update Spectacle set styleid = :style where spectacleid = :spectacle;";
+        $query = "update spectacle set styleid = :style where spectacleid = :spectacle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['style' => $nouveauStyle, 'spectacle' => $spectacle]);
         return "<p>Style du spectacle modifier</p>";
     }
 
     public function modifierExtrait(mixed $spectacle, mixed $nouvelExtrait) : string {
-        $query = "update Spectacle set extrait = :extrait where spectacleid = :spectacle;";
+        $query = "update spectacle set extrait = :extrait where spectacleid = :spectacle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['extrait' => $nouvelExtrait, 'spectacle' => $spectacle]);
         return "<p>Extrait du spectacle modifier</p>";
     }
 
     public function modifierImage(mixed $spectacle, mixed $nouvelleImage) : string {
-        $query = "update Spectacle set image = :image where spectacleid = :spectacle;";
+        $query = "update spectacle set image = :image where spectacleid = :spectacle;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['image' => $nouvelleImage, 'spectacle' => $spectacle]);
         return "<p>Image du spectacle modifier</p>";
     }
 
     public function promoteOrga(int $userid) : string{
-        $query = "update User set roleid = :roleid where userid = :userid;";
+        $query = "update user set roleid = :roleid where userid = :userid;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['userid' => $userid, 'roleid' => User::ORGANISATOR_USER]);
         return "<p>Role de l'utilisateur '{$this->getEmailByID($userid)}' changer pour 'Organisateur'</p>";
@@ -659,7 +659,7 @@ class NrvRepository
 
     public function getAllUsersNotOrga() : array {
         $tab = [];
-        $query = "select userid, email from User where roleid < :roleid";
+        $query = "select userid, email from user where roleid < :roleid";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['roleid' => User::ORGANISATOR_USER]);
         while($fetch = $stmt->fetch()){
@@ -669,7 +669,7 @@ class NrvRepository
     }
 
     public function getEmailByID($userid) : string {
-        $query = "select email from User where userid = :userid;";
+        $query = "select email from user where userid = :userid;";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['userid' => $userid]);
         return $stmt->fetch()['email'];
@@ -677,7 +677,7 @@ class NrvRepository
 
     // retourne soiree par son id
     public function getSoireeById(int $soireeId): ?Soiree {
-        $stmt = $this->pdo->prepare('SELECT s.*, l.nom AS nomLieu, l.adresse AS adresseLieu FROM Soiree s INNER JOIN Lieu l ON s.lieuID = l.lieuID WHERE s.soireeID = :soireeId');
+        $stmt = $this->pdo->prepare('SELECT s.*, l.nom AS nomLieu, l.adresse AS adresseLieu FROM soiree s INNER JOIN lieu l ON s.lieuID = l.lieuID WHERE s.soireeID = :soireeId');
         $stmt->execute(['soireeId' => $soireeId]);
 
         $soireeData = $stmt->fetch();
