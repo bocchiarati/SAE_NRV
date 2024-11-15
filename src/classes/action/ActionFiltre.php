@@ -162,11 +162,21 @@ class ActionFiltre extends Action {
         $allActive = ($currentFilter == $filterType && $currentId == 'all') ? 'class="active"' : '';
         $links .= "<a href='?action=filtre&filter=$filterType&id=all' $allActive>{$allLabels[$filterType]}</a>";
 
-        foreach ($items as $id => $name) {
-            // verifier si le lien est actif
-            $activeClass = ($currentFilter == $filterType && $id == $currentId) ? 'class="active"' : '';
-            $links .= "<a href='?action=filtre&filter=$filterType&id=$id' $activeClass>$name</a>";
+        if($filterType === 'date'){
+            foreach ($items as $date) {
+                $dateAffiche = new \DateTime($date);
+                $dateAfficheFormatted = $dateAffiche->format('d M Y');
+                $isActive = ($currentFilter === $filterType && $date === $currentId) ? 'class="active"' : '';
+                $links .= "<a href='?action=filtre&filter=$filterType&id=$date' $isActive>$dateAfficheFormatted</a>";
+            }
+        }else {
+            foreach ($items as $id => $name) {
+                // verifier si le lien est actif
+                $activeClass = ($currentFilter == $filterType && $id == $currentId) ? 'class="active"' : '';
+                $links .= "<a href='?action=filtre&filter=$filterType&id=$id' $activeClass>$name</a>";
+            }
         }
+
         $links .= "</div>";
         return $links;
     }
