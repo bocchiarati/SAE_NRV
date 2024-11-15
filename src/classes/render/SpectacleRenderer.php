@@ -50,13 +50,13 @@ class SpectacleRenderer implements Renderer {
 
         $annuler = '';
         if($repository->getSpectacleAnnuler($this->spec->getID())){
-            $annuler = '<img src="../image/annuler.png" alt="Cancel Image" class="position-absolute top-0 start-0 h-30 w-100 mt-3" style="background-color: rgba(255, 255, 255, 0.3)">';
+            $annuler = '<img src="image/annuler.png" alt="Cancel Image" class="position-absolute top-0 start-0 h-30 w-100 mt-3" style="background-color: rgba(255, 255, 255, 0.3)">';
         }
 
         return <<<HTML
             <a href='?action=showSpectacleDetails&spectacleid={$this->spec->getID()}&soireeid={$this->spec->getSoireeID()}' class='spectacle-item'>
             <div class="image-container-compact-render position-relative">
-                <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact w-100">
+                <img src="image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image-compact w-100">
                 
                 {$annuler}
         
@@ -100,14 +100,14 @@ class SpectacleRenderer implements Renderer {
         } else if (str_ends_with($this->spec->getCheminExtrait(), "mp3")) {
             $extrait = <<<END
             <audio controls>
-                <source src="../extrait/{$this->spec->getCheminExtrait()}" type="audio/mpeg">
+                <source src="extrait/{$this->spec->getCheminExtrait()}" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
             END;
         } else if (str_ends_with($this->spec->getCheminExtrait(), "mp4")) {
             $extrait = <<<END
             <video controls>
-                <source src="../extraits/{$this->spec->getCheminExtrait()}" type="video/mp4">
+                <source src="extraits/{$this->spec->getCheminExtrait()}" type="video/mp4">
                 Your browser does not support the video element.
             </video>
             END;
@@ -135,7 +135,7 @@ class SpectacleRenderer implements Renderer {
             </div>
             $extrait
             <div class="image-container" style="margin-left: 10px">
-                <img src="../image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="290">
+                <img src="image/{$this->spec->getImage()}" alt="{$this->spec->getTitre()}" class="image" width="290">
             </div>
         </div>
         HTML;
