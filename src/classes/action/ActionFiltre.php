@@ -124,23 +124,30 @@ class ActionFiltre extends Action {
                     break;
             }
         }
+        $activeStyle = (isset($_GET['filter']) && $_GET['filter'] == 'style') ? 'active-filter' : '';
+        $activeLocation = (isset($_GET['filter']) && $_GET['filter'] == 'location') ? 'active-filter' : '';
+        $activeDate = (isset($_GET['filter']) && $_GET['filter'] == 'date') ? 'active-filter' : '';
 
         // fonction toggleTab pour basculer entre les buttons de filtre (style, location, date), ecrit en JS en Dispatcher
         return <<<HTML
-        <div class="filter-container align-self-start ms-4">
+        <div class="filter-container align-self-start ms-4 mt-3">
             <div class="tabs">
-                <button onclick="toggleTab('style')">Styles</button>
-                <button onclick="toggleTab('location')">Lieux</button>
-                <button onclick="toggleTab('date')">Jours</button>
+                <button onclick="toggleTab('style')" class="{$activeStyle}">Styles</button>
+                <button onclick="toggleTab('location')" class="{$activeLocation}">Lieux</button>
+                <button onclick="toggleTab('date')" class="{$activeDate}">Jours</button>
                 <button onclick="toggleTab('pref')">Préférences</button>
             </div>
-            <div class="tab-content" id="style" style="display:{$displayStyle}">{$styleOptions}</div>
-            <div class="tab-content" id="location" style="display:{$displayLieu};">{$locationOptions}</div>
-            <div class="tab-content" id="date" style="display:{$displayDate};">{$dateOptions}</div>
+            <div class="tab-content" id="style" style="display:{$this->getDisplay('style')}">{$styleOptions}</div>
+            <div class="tab-content" id="location" style="display:{$this->getDisplay('location')};">{$locationOptions}</div>
+            <div class="tab-content" id="date" style="display:{$this->getDisplay('date')};">{$dateOptions}</div>
             <div class="tab-content" id="pref" style="display:{$displayPref};">{$prefOptions}</div>
         </div>
         <div class="affichage">{$this->output}</div>
         HTML;
+    }
+
+    private function getDisplay($filterType): string {
+        return (isset($_GET['filter']) && $_GET['filter'] == $filterType) ? 'block' : 'none';
     }
 
     // Construit les liens pour chaque categorie de filtre
@@ -151,19 +158,18 @@ class ActionFiltre extends Action {
             'date' => 'Tous les jours'
         ];
 
-        $links = "<div class='dropdown-links-container d-flex flex-wrap p-2'>";
-        $links .= "<a href='?action=filtre&filter=$filterType&id=all'>{$allLabels[$filterType]}</a>";
+        // obtenir le filtre et l'id actuels
+        $currentFilter = $_GET['filter'] ?? '';
+        $currentId = $_GET['id'] ?? '';
 
-        if($filterType === 'date'){
-            foreach ($items as $date) {
-                $dateAffiche = new \DateTime($date);
-                $dateAffiche = $dateAffiche->format('d M Y');
-                $links .= "<a href='?action=filtre&filter=$filterType&id=$date'>$dateAffiche</a>";
-            }
-        }else {
-            foreach ($items as $id => $name) {
-                $links .= "<a href='?action=filtre&filter=$filterType&id=$id'>$name</a>";
-            }
+        $links = "<div class='dropdown-links-container d-flex flex-wrap p-2'>";
+        $allActive = ($currentFilter == $filterType && $currentId == 'all') ? 'class="active"' : '';
+        $links .= "<a href='?action=filtre&filter=$filterType&id=all' $allActive>{$allLabels[$filterType]}</a>";
+
+        foreach ($items as $id => $name) {
+            // verifier si le lien est actif
+            $activeClass = ($currentFilter == $filterType && $id == $currentId) ? 'class="active"' : '';
+            $links .= "<a href='?action=filtre&filter=$filterType&id=$id' $activeClass>$name</a>";
         }
         $links .= "</div>";
         return $links;

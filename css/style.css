@@ -315,3 +315,24 @@ body {
     display: inline-block;
     margin-right: 5px;
 }
+
+.dropdown-links-container a.active {
+    color: #ff8c00;
+    font-weight: bold;
+}
+
+.tab-content a {
+    display: block;
+    padding: 5px;
+    color: #6c6a6a;
+    text-decoration: none;
+}
+
+.tab-content a:hover {
+    background-color: #eee;
+}
+
+.active-filter {
+    background-color: #ff8c00;
+    color: white;
+}
