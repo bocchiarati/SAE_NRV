@@ -79,7 +79,8 @@ class SoireeRenderer implements Renderer
                     <strong class="render-long-strong mb-2">Date:</strong> {$formattedDate} at {$formattedTime} <br>
                     <strong class="render-long-strong mb-2">Lieu:</strong> {$this->soiree->nomLieu} - {$this->soiree->adresseLieu} <br>
                     <strong class="render-long-strong mb-2">Thématique:</strong> {$this->soiree->thematique} <br>
-                    <strong class="render-long-strong mb-2">Tarif:</strong> {$this->soiree->tarif}€
+                    <strong class="render-long-strong mb-2">Tarif:</strong> {$this->soiree->tarif}€ <br>
+                    <strong class="render-long-strong mb-2">Capacite:</strong> {$pdo->getCapacite($this->soiree->id)}
             </p>
             {$spectaclesContent}
         </div>
