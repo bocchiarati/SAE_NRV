@@ -20,7 +20,7 @@ class ActionTogglePreference extends Action
     {
         if(isset($_GET['id'])) {
             $pdo = NrvRepository::getInstance();
-            $spec = $pdo->getSpectacleByID($_GET['id']);
+            $spec = $pdo->getSpectacleBySoireeToSpectacle($pdo->getSoireeIDBySpectacleID($_GET['id']),$_GET['id']);
             if(isset($_SESSION['pref'])){
                 $listSpectacle = unserialize($_SESSION['pref']);
             }else{

@@ -71,8 +71,8 @@ CREATE TABLE user(
 CREATE TABLE userspreferences(
     userID INT(2),
     spectacleID INT(2),
-    soireeID INT(2)
-    PRIMARY KEY (userID,spectacleID),
+    soireeID INT(2),
+    PRIMARY KEY (userID, spectacleID, soireeID),
     FOREIGN KEY (userID) REFERENCES user(userID),
     FOREIGN KEY (soireeID, spectacleID) REFERENCES soireetospectacle(soireeID, spectacleID)
 );

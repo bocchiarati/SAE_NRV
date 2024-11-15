@@ -27,7 +27,6 @@ class ActionShowSpectacleDetails extends Action
         try {
             if(isset($soireeID))
                 $spectacle = $repository->getSpectacleBySoireeToSpectacle($soireeID, $spectacleID);
-                /////////// erreur spectacle id ici
             else
                 $spectacle = $repository->getSpectacleByID($spectacleID);
 
