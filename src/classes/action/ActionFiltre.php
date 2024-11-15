@@ -97,7 +97,7 @@ class ActionFiltre extends Action {
 
         $prefOptions = <<<END
         <div class='dropdown-links-container d-flex flex-wrap p-2'>
-            <a href='?action=filtre&filter=pref&id=all'>Toutes Vos Préférences</a>
+            <a href='?action=filtre&filter=pref&id=all'>Afficher Vos Préférences</a>
             <a href='?action=delpref'>Supprimer Vos Préférences</a>
             <a href='?action=saveprefrepo'>Sauvegarder vos préférences sur votre compte (être connecté)</a>
         </div>
